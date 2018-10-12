@@ -13,7 +13,9 @@ import java.util.ResourceBundle;
 public class SAResourceManager implements ResourceManager
 {
     private static SAResourceManager instance;
-    
+
+    private static final ClassLoader loader = SAResourceManager.class.getClassLoader();
+
     public static final Locale RUS_LOCALE = new Locale.Builder().setLanguage("ru").setRegion("RU").build();
     public static final Locale ENG_LOCALE = new Locale.Builder().setLanguage("en").setRegion("US").build();
 
@@ -86,7 +88,11 @@ public class SAResourceManager implements ResourceManager
     @Override
     public ImageIcon getImageIcon(String name)
     {
-        //TODO: Define the correct path here
-        return new ImageIcon("images/" + name);
+        URL url = loader.getResource(name);
+
+        if (url == null)
+            return new ImageIcon();
+        else
+            return new ImageIcon(url);
     }
 }
