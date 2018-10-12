@@ -35,6 +35,16 @@
             <version>4.0.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.dav.service</groupId>
+            <artifactId>dav-service-1.0</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>
+                D:/JavaLib/dav/dav-service-1.0.jar
+            </systemPath>
+        </dependency>
+
     </dependencies>
 
 
