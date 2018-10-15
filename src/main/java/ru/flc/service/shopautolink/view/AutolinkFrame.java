@@ -41,7 +41,7 @@ public class AutolinkFrame extends JFrame
         resourceManager = SAResourceManager.getInstance();
         titleAdjuster = new TitleAdjuster();
 
-        add(initCommandPanel(), BorderLayout.WEST);
+        add(initCommandPanel2(), BorderLayout.WEST);
         add(initLogPanel());
 
         titleAdjuster.resetComponents();
@@ -80,6 +80,42 @@ public class AutolinkFrame extends JFrame
         panel.add(processLabel, new UsableGBC(0, 2).
                 setInsets(new Insets(20, 0, 0, 0)).
                 setFill(GridBagConstraints.HORIZONTAL).setAnchor(GridBagConstraints.NORTH));
+
+        return panel;
+    }
+
+    public JPanel initCommandPanel2()
+    {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setPreferredSize(new Dimension(120, 400));
+
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        loadPositionsButton = new JButton();
+        titleAdjuster.registerComponent(loadPositionsButton, new Title(resourceManager, "Load_Button_Title"));
+        //loadPositionsButton.setIcon(resourceManager.getImageIcon("load_file.png"));
+        loadPositionsButton.addActionListener((event) ->
+        {
+            processLabel.setIcon(resourceManager.getImageIcon("loading_mod3.gif"));
+        });
+        panel.add(loadPositionsButton);
+
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        linkPositionsButton = new JButton();
+        titleAdjuster.registerComponent(linkPositionsButton, new Title(resourceManager, "Link_Button_Title"));
+        //linkPositionsButton.setIcon(resourceManager.getImageIcon("link_titles.png"));
+        linkPositionsButton.addActionListener((event) ->
+        {
+            processLabel.setIcon(null);
+        });
+        panel.add(linkPositionsButton);
+
+        panel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        processLabel = new JLabel();
+        panel.add(processLabel);
 
         return panel;
     }
