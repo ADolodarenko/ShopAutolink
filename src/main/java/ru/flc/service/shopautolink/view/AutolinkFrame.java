@@ -60,18 +60,28 @@ public class AutolinkFrame extends JFrame
         panel.setBorder(BorderFactory.createEtchedBorder());
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-        panel.add(buttonsFactory.getLoadPositionsButton(new LoadPositionsListener()));
-        panel.add(Box.createRigidArea(new Dimension(0, 2)));
+        JButton[] buttons = new JButton[3];
+        buttons[0] = buttonsFactory.getLoadPositionsButton(new LoadPositionsListener());
+        buttons[1] = buttonsFactory.getLinkPositionsButton(new LinkPositionsListener());
+        buttons[2] = buttonsFactory.getSettingsButton(null);
+        
+        JList<JButton> buttonsList = new JList<>(buttons);
+        panel.add(buttonsList);
+        
+        
+        /*panel.add(buttonsFactory.getLoadPositionsButton(new LoadPositionsListener()));
+		panel.add(Box.createRigidArea(new Dimension(0, 2)));
         panel.add(buttonsFactory.getLinkPositionsButton(new LinkPositionsListener()));
+		panel.add(Box.createRigidArea(new Dimension(0, 2)));
+		panel.add(buttonsFactory.getSettingsButton(null));
+		*/
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         processLabel = new JLabel();
         processLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(processLabel);
 
-        panel.add(Box.createGlue());
-
-        panel.add(buttonsFactory.getSettingsButton(null));
+        
 
         return panel;
     }
