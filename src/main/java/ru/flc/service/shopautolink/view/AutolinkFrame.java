@@ -3,21 +3,24 @@ package ru.flc.service.shopautolink.view;
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
-import org.dav.service.view.UsableGBC;
 import ru.flc.service.shopautolink.SAResourceManager;
 import ru.flc.service.shopautolink.model.LogEventsTableModel;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class AutolinkFrame extends JFrame
 {
+    private static final Dimension PREF_COMMAND_PANEL_SIZE = new Dimension(120, 400);
+    private static final Dimension MAX_BUTTON_SIZE = new Dimension(120, 40);
+
     private ResourceManager resourceManager;
     private TitleAdjuster titleAdjuster;
+    private ButtonsFactory buttonsFactory;
 
-    private JButton loadPositionsButton;
-    private JButton linkPositionsButton;
     private JLabel processLabel;
 
     private LogEventsTableModel logTableModel;
@@ -40,8 +43,10 @@ public class AutolinkFrame extends JFrame
     {
         resourceManager = SAResourceManager.getInstance();
         titleAdjuster = new TitleAdjuster();
+        buttonsFactory = new ButtonsFactory(PREF_COMMAND_PANEL_SIZE, MAX_BUTTON_SIZE,
+                resourceManager, titleAdjuster);
 
-        add(initCommandPanel2(), BorderLayout.WEST);
+        add(initCommandPanel(), BorderLayout.WEST);
         add(initLogPanel());
 
         titleAdjuster.resetComponents();
@@ -49,73 +54,24 @@ public class AutolinkFrame extends JFrame
         pack();
     }
 
-    private JPanel initCommandPanel()
-    {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setPreferredSize(new Dimension(120, 400));
-
-        loadPositionsButton = new JButton();
-        titleAdjuster.registerComponent(loadPositionsButton, new Title(resourceManager, "Load_Button_Title"));
-        //loadPositionsButton.setIcon(resourceManager.getImageIcon("load_file.png"));
-        loadPositionsButton.addActionListener((event) ->
-        {
-            processLabel.setIcon(resourceManager.getImageIcon("loading_mod3.gif"));
-        });
-        panel.add(loadPositionsButton, new UsableGBC(0, 0).
-                setInsets(new Insets(2, 2, 2, 2)).
-                setFill(GridBagConstraints.HORIZONTAL).setAnchor(GridBagConstraints.NORTH));
-
-        linkPositionsButton = new JButton();
-        titleAdjuster.registerComponent(linkPositionsButton, new Title(resourceManager, "Link_Button_Title"));
-        //linkPositionsButton.setIcon(resourceManager.getImageIcon("link_titles.png"));
-        linkPositionsButton.addActionListener((event) ->
-        {
-            processLabel.setIcon(null);
-        });
-        panel.add(linkPositionsButton, new UsableGBC(0, 1).
-                setInsets(new Insets(2, 2, 2, 2)).
-                setFill(GridBagConstraints.HORIZONTAL).setAnchor(GridBagConstraints.NORTH));
-
-        processLabel = new JLabel();
-        panel.add(processLabel, new UsableGBC(0, 2).
-                setInsets(new Insets(20, 0, 0, 0)).
-                setFill(GridBagConstraints.HORIZONTAL).setAnchor(GridBagConstraints.NORTH));
-
-        return panel;
-    }
-
-    public JPanel initCommandPanel2()
+    public JPanel initCommandPanel()
     {
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setPreferredSize(new Dimension(120, 400));
+        panel.setBorder(BorderFactory.createEtchedBorder());
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-
-        loadPositionsButton = new JButton();
-        titleAdjuster.registerComponent(loadPositionsButton, new Title(resourceManager, "Load_Button_Title"));
-        //loadPositionsButton.setIcon(resourceManager.getImageIcon("load_file.png"));
-        loadPositionsButton.addActionListener((event) ->
-        {
-            processLabel.setIcon(resourceManager.getImageIcon("loading_mod3.gif"));
-        });
-        panel.add(loadPositionsButton);
-
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-
-        linkPositionsButton = new JButton();
-        titleAdjuster.registerComponent(linkPositionsButton, new Title(resourceManager, "Link_Button_Title"));
-        //linkPositionsButton.setIcon(resourceManager.getImageIcon("link_titles.png"));
-        linkPositionsButton.addActionListener((event) ->
-        {
-            processLabel.setIcon(null);
-        });
-        panel.add(linkPositionsButton);
-
+        panel.add(buttonsFactory.getLoadPositionsButton(new LoadPositionsListener()));
+        panel.add(Box.createRigidArea(new Dimension(0, 2)));
+        panel.add(buttonsFactory.getLinkPositionsButton(new LinkPositionsListener()));
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         processLabel = new JLabel();
+        processLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(processLabel);
+
+        panel.add(Box.createGlue());
+
+        panel.add(buttonsFactory.getSettingsButton(null));
 
         return panel;
     }
@@ -128,11 +84,31 @@ public class AutolinkFrame extends JFrame
         JScrollPane tablePane = new JScrollPane(logTable);
 
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+        panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(),
                 "", TitledBorder.TOP, TitledBorder.CENTER));
         titleAdjuster.registerComponent(panel, new Title(resourceManager, "Log_Panel_Title"));
         panel.add(tablePane, BorderLayout.CENTER);
 
         return panel;
+    }
+
+    private class LoadPositionsListener implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            processLabel.setIcon(resourceManager.getImageIcon("loading_mod3.gif"));
+        }
+    }
+
+    private class LinkPositionsListener implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            processLabel.setIcon(null);
+        }
     }
 }
