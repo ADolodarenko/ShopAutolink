@@ -50,7 +50,10 @@ public class MainFrame extends JFrame
 
         add(initCommandPanel(), BorderLayout.WEST);
         add(initLogPanel());
-
+	
+		setIconImage(resourceManager.getImageIcon("linking32.png").getImage());
+		titleAdjuster.registerComponent(this, new Title(resourceManager, "Main_Frame_Title"));
+        
         titleAdjuster.resetComponents();
 
         pack();
@@ -76,8 +79,6 @@ public class MainFrame extends JFrame
                 MainFrame.this.setSize(currentDim);
             }
         });
-
-        setIconImage(resourceManager.getImageIcon("linking32.png").getImage());
 
         /*if (windowAttributes != null)
         {
