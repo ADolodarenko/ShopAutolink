@@ -1,6 +1,6 @@
 package ru.flc.service.shopautolink;
 
-import ru.flc.service.shopautolink.view.AutolinkFrame;
+import ru.flc.service.shopautolink.view.MainFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,7 +42,7 @@ public class Main
         {
             setLookAndFeel();
 
-            JFrame mainFrame = new AutolinkFrame();
+            JFrame mainFrame = new MainFrame();
             mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             mainFrame.setVisible(true);
 

@@ -2,6 +2,6 @@ package ru.flc.service.shopautolink.view;
 
 import javax.swing.*;
 
-public class ParamsDialog extends JDialog
+public class PropertiesDialog extends JDialog
 {
 }
