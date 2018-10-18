@@ -7,20 +7,14 @@ import java.util.List;
 public class AseDataSource implements DataSource
 {
 	@Override
-	public boolean clearTitleLinks()
-	{
-		return false;
-	}
+	public void applyUploadedTitleLinks()
+	{}
 	
 	@Override
-	public boolean uploadTitleLinkPack(List<TitleLink> pack)
-	{
-		return false;
-	}
+	public void uploadTitleLinkPack(List<TitleLink> pack)
+	{}
 	
 	@Override
-	public boolean updateTitleLinks()
-	{
-		return false;
-	}
+	public void processTitleLinks()
+	{}
 }

@@ -16,18 +16,18 @@ public class TitleLinkDao
 		this.dataSource = dataSource;
 	}
 	
-	public boolean uploadLinkPack(List<TitleLink> pack)
+	public void uploadLinkPack(List<TitleLink> pack)
 	{
-		return dataSource.uploadTitleLinkPack(pack);
+		dataSource.uploadTitleLinkPack(pack);
 	}
 	
-	public boolean clearLinks()
+	public void applyUploadedLinks()
 	{
-		return dataSource.clearTitleLinks();
+		dataSource.applyUploadedTitleLinks();
 	}
 	
-	public boolean updateLinks()
+	public void processLinks()
 	{
-		return dataSource.updateTitleLinks();
+		dataSource.processTitleLinks();
 	}
 }

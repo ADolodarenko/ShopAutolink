@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class ButtonsFactory
+public class ButtonsManager
 {
     private Dimension prefButtonsPanelSize;
     private Dimension maxButtonSize;
@@ -20,7 +20,7 @@ public class ButtonsFactory
     private JButton linkPositionsButton;
     private JButton settingsButton;
 
-    public ButtonsFactory(Dimension prefButtonsPanelSize, Dimension maxButtonSize,
+    public ButtonsManager(Dimension prefButtonsPanelSize, Dimension maxButtonSize,
                           ResourceManager resourceManager, TitleAdjuster titleAdjuster)
     {
         this.prefButtonsPanelSize = prefButtonsPanelSize;
@@ -79,6 +79,23 @@ public class ButtonsFactory
         resetActionListener(settingsButton, listener);
 
         return settingsButton;
+    }
+
+    public void blockButtons()
+    {
+        setButtonsEnabled(false);
+    }
+
+    public void activateButtons()
+    {
+        setButtonsEnabled(true);
+    }
+
+    private void setButtonsEnabled(boolean enabled)
+    {
+        loadPositionsButton.setEnabled(enabled);
+        linkPositionsButton.setEnabled(enabled);
+        settingsButton.setEnabled(enabled);
     }
 
     private void clearActionListenersList(JButton button)

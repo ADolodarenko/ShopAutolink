@@ -4,7 +4,9 @@ import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
 import ru.flc.service.shopautolink.SAResourceManager;
-import ru.flc.service.shopautolink.model.LogEventsTableModel;
+import ru.flc.service.shopautolink.model.LogEventTableModel;
+import ru.flc.service.shopautolink.model.TitleLinkLoader;
+import ru.flc.service.shopautolink.model.TitleLinkProcessor;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -13,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.beans.PropertyChangeEvent;
 
 public class MainFrame extends JFrame
 {
@@ -22,11 +25,13 @@ public class MainFrame extends JFrame
 
     private ResourceManager resourceManager;
     private TitleAdjuster titleAdjuster;
-    private ButtonsFactory buttonsFactory;
+    private ButtonsManager buttonsManager;
+
+    private TitleLinkLoader linkLoader;
+    private TitleLinkProcessor linkProcessor;
 
     private JLabel processLabel;
-
-    private LogEventsTableModel logTableModel;
+    private LogEventTableModel logTableModel;
     private JTable logTable;
 
     public MainFrame()
@@ -45,7 +50,7 @@ public class MainFrame extends JFrame
     {
         resourceManager = SAResourceManager.getInstance();
         titleAdjuster = new TitleAdjuster();
-        buttonsFactory = new ButtonsFactory(COMMAND_PANEL_PREF_SIZE, BUTTON_MAX_SIZE,
+        buttonsManager = new ButtonsManager(COMMAND_PANEL_PREF_SIZE, BUTTON_MAX_SIZE,
                 resourceManager, titleAdjuster);
 
         add(initCommandPanel(), BorderLayout.WEST);
@@ -112,11 +117,11 @@ public class MainFrame extends JFrame
         panel.setBorder(BorderFactory.createEtchedBorder());
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
-        panel.add(buttonsFactory.getLoadPositionsButton(new LoadPositionsListener()));
+        panel.add(buttonsManager.getLoadPositionsButton(new LoadTitleLinksListener()));
 		panel.add(Box.createRigidArea(new Dimension(0, 1)));
-        panel.add(buttonsFactory.getLinkPositionsButton(new LinkPositionsListener()));
+        panel.add(buttonsManager.getLinkPositionsButton(new ProcessTitleLinksListener()));
 		panel.add(Box.createRigidArea(new Dimension(0, 1)));
-		panel.add(buttonsFactory.getSettingsButton(null));
+		panel.add(buttonsManager.getSettingsButton(null));
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         processLabel = new JLabel();
@@ -128,7 +133,7 @@ public class MainFrame extends JFrame
 
     private JPanel initLogPanel()
     {
-        logTableModel = new LogEventsTableModel();
+        logTableModel = new LogEventTableModel();
         logTable = new JTable(logTableModel);
 
         JScrollPane tablePane = new JScrollPane(logTable);
@@ -142,23 +147,80 @@ public class MainFrame extends JFrame
         return panel;
     }
 
-    private class LoadPositionsListener implements ActionListener
+    private void loadTitleLinks()
     {
+        linkLoader = new TitleLinkLoader(null, null);
 
-        @Override
-        public void actionPerformed(ActionEvent e)
+        linkLoader.addPropertyChangeListener(evt -> {
+            doForWorkerEvent(evt);
+        });
+
+        linkLoader.execute();
+    }
+
+    private void processTitleLinks()
+    {
+        linkProcessor = new TitleLinkProcessor();
+
+        /*linkProcessor.addPropertyChangeListener(evt -> {
+            doForWorkerEvent(evt);
+        });*/
+
+        linkProcessor.getPropertyChangeSupport().addPropertyChangeListener("state", evt -> {
+            doForWorkerEvent(evt);
+        });
+
+        linkProcessor.execute();
+    }
+
+    private void doForWorkerEvent(PropertyChangeEvent event)
+    {
+        if ("state".equals(event.getPropertyName()))
         {
-            processLabel.setIcon(resourceManager.getImageIcon("loading_mod_green.gif"));
+            Object newValue = event.getNewValue();
+
+            if (newValue instanceof SwingWorker.StateValue)
+            {
+                SwingWorker.StateValue stateValue = (SwingWorker.StateValue) newValue;
+
+                switch (stateValue)
+                {
+                    case STARTED:
+                        doForWorkerStarted();
+                    case DONE:
+                        doForWorkerDone();
+                }
+            }
         }
     }
 
-    private class LinkPositionsListener implements ActionListener
+    private void doForWorkerStarted()
+    {
+        processLabel.setIcon(resourceManager.getImageIcon("loading_mod_green.gif"));
+    }
+
+    private void doForWorkerDone()
+    {
+        processLabel.setIcon(null);
+    }
+
+    private class LoadTitleLinksListener implements ActionListener
     {
 
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            processLabel.setIcon(null);
+            loadTitleLinks();
+        }
+    }
+
+    private class ProcessTitleLinksListener implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            processTitleLinks();
         }
     }
 }

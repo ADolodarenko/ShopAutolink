@@ -4,8 +4,9 @@ public class TitleLink
 {
 	private int titleId;
 	private String productCode;
+	private int forSale;
 	
-	public TitleLink(int titleId, String productCode)
+	public TitleLink(int titleId, String productCode, int forSale)
 	{
 		if (titleId < 0)
 			throw new IllegalArgumentException("Illegal titleId = " + titleId + ".");
@@ -15,6 +16,7 @@ public class TitleLink
 		
 		this.titleId = titleId;
 		this.productCode = productCode;
+		this.forSale = forSale;
 	}
 	
 	public int getTitleId()
@@ -25,5 +27,10 @@ public class TitleLink
 	public String getProductCode()
 	{
 		return productCode;
+	}
+
+	public int getForSale()
+	{
+		return forSale;
 	}
 }

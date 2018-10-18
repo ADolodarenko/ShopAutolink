@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DataSource
 {
-	boolean clearTitleLinks();
-	boolean uploadTitleLinkPack(List<TitleLink> pack);
-	boolean updateTitleLinks();
+	void applyUploadedTitleLinks();
+	void uploadTitleLinkPack(List<TitleLink> pack);
+	void processTitleLinks();
 }
