@@ -5,8 +5,8 @@ import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
 import ru.flc.service.shopautolink.SAResourceManager;
 import ru.flc.service.shopautolink.model.LogEventTableModel;
-import ru.flc.service.shopautolink.model.TitleLinkLoader;
-import ru.flc.service.shopautolink.model.TitleLinkProcessor;
+import ru.flc.service.shopautolink.model.logic.TitleLinkLoader;
+import ru.flc.service.shopautolink.model.logic.TitleLinkProcessor;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -187,6 +187,7 @@ public class MainFrame extends JFrame
                 {
                     case STARTED:
                         doForWorkerStarted();
+                        break;
                     case DONE:
                         doForWorkerDone();
                 }
@@ -196,12 +197,14 @@ public class MainFrame extends JFrame
 
     private void doForWorkerStarted()
     {
+    	buttonsManager.blockButtons();
         processLabel.setIcon(resourceManager.getImageIcon("loading_mod_green.gif"));
     }
 
     private void doForWorkerDone()
     {
-        processLabel.setIcon(null);
+        buttonsManager.activateButtons();
+    	processLabel.setIcon(null);
     }
 
     private class LoadTitleLinksListener implements ActionListener

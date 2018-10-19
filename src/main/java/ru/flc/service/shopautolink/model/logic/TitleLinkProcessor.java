@@ -1,4 +1,6 @@
-package ru.flc.service.shopautolink.model;
+package ru.flc.service.shopautolink.model.logic;
+
+import ru.flc.service.shopautolink.model.LogEvent;
 
 import javax.swing.*;
 import java.util.concurrent.ExecutionException;
@@ -10,7 +12,7 @@ public class TitleLinkProcessor extends SwingWorker<LogEvent, LogEvent>
     {
         long sum = 0;
 
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < 10; i++)
             try
             {
                 Thread.sleep(1000);
@@ -20,7 +22,7 @@ public class TitleLinkProcessor extends SwingWorker<LogEvent, LogEvent>
             catch (InterruptedException e)
             {}
 
-        return new LogEvent("%1", sum);
+        return new LogEvent("%n", sum);
     }
 
     @Override
