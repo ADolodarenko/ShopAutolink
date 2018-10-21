@@ -133,7 +133,7 @@ public class MainFrame extends JFrame
 
     private JPanel initLogPanel()
     {
-        logTableModel = new LogEventTableModel();
+        logTableModel = new LogEventTableModel(resourceManager, null);
         logTable = new JTable(logTableModel);
 
         JScrollPane tablePane = new JScrollPane(logTable);
@@ -149,7 +149,7 @@ public class MainFrame extends JFrame
 
     private void loadTitleLinks()
     {
-        linkLoader = new TitleLinkLoader(null, null);
+        linkLoader = new TitleLinkLoader(null, null, null);
 
         linkLoader.addPropertyChangeListener(evt -> {
             doForWorkerEvent(evt);
