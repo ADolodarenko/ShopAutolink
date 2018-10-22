@@ -3,8 +3,8 @@ package ru.flc.service.shopautolink.model.logic;
 import ru.flc.service.shopautolink.model.LogEvent;
 import ru.flc.service.shopautolink.model.LogEventTableModel;
 import ru.flc.service.shopautolink.model.TitleLink;
-import ru.flc.service.shopautolink.model.dao.TitleLinkDao;
-import ru.flc.service.shopautolink.model.fao.TitleLinkFao;
+import ru.flc.service.shopautolink.model.accessobject.TitleLinkDao;
+import ru.flc.service.shopautolink.model.accessobject.TitleLinkFao;
 
 import javax.swing.*;
 import java.util.List;
