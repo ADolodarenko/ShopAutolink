@@ -1,4 +1,4 @@
-package ru.flc.service.shopautolink.model.accessobject.source;
+package ru.flc.service.shopautolink.model.accessobject.source.database;
 
 import ru.flc.service.shopautolink.model.TitleLink;
 import ru.flc.service.shopautolink.model.settings.Settings;
@@ -12,6 +12,7 @@ public class AseDataSource implements DataSource
 		return SingletonHelper.INSTANCE;
 	}
 
+	@Override
 	public void tune(Settings settings)
 	{
 		;

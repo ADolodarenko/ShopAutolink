@@ -1,7 +1,7 @@
 package ru.flc.service.shopautolink.model.accessobject;
 
 import ru.flc.service.shopautolink.model.TitleLink;
-import ru.flc.service.shopautolink.model.accessobject.source.DataSource;
+import ru.flc.service.shopautolink.model.accessobject.source.database.DataSource;
 
 import java.util.List;
 

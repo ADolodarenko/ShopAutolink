@@ -10,12 +10,14 @@ import ru.flc.service.shopautolink.model.logic.TitleLinkProcessor;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
+import java.io.File;
 
 public class MainFrame extends JFrame
 {
@@ -26,6 +28,8 @@ public class MainFrame extends JFrame
     private ResourceManager resourceManager;
     private TitleAdjuster titleAdjuster;
     private ButtonsManager buttonsManager;
+
+    private JFileChooser fileChooser;
 
     private TitleLinkLoader linkLoader;
     private TitleLinkProcessor linkProcessor;
@@ -53,6 +57,8 @@ public class MainFrame extends JFrame
         buttonsManager = new ButtonsManager(COMMAND_PANEL_PREF_SIZE, BUTTON_MAX_SIZE,
                 resourceManager, titleAdjuster);
 
+        initFileChooser();
+
         add(initCommandPanel(), BorderLayout.WEST);
         add(initLogPanel());
 	
@@ -62,6 +68,14 @@ public class MainFrame extends JFrame
         titleAdjuster.resetComponents();
 
         pack();
+    }
+
+    private void initFileChooser()
+    {
+        fileChooser = new JFileChooser(".");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        //TODO: set my own FileFilter here
     }
 
     private void initFrame()
@@ -149,13 +163,16 @@ public class MainFrame extends JFrame
 
     private void loadTitleLinks()
     {
-        linkLoader = new TitleLinkLoader(null, null, null);
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+        {
+            //TODO: work with selected file here
 
-        linkLoader.addPropertyChangeListener(evt -> {
-            doForWorkerEvent(evt);
-        });
-
-        linkLoader.execute();
+            linkLoader = new TitleLinkLoader(null, null, null);
+            linkLoader.getPropertyChangeSupport().addPropertyChangeListener("state", evt -> {
+                doForWorkerEvent(evt);
+            });
+            linkLoader.execute();
+        }
     }
 
     private void processTitleLinks()

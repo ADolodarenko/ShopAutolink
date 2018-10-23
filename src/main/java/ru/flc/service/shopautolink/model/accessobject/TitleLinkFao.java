@@ -1,7 +1,7 @@
 package ru.flc.service.shopautolink.model.accessobject;
 
 import ru.flc.service.shopautolink.model.TitleLink;
-import ru.flc.service.shopautolink.model.accessobject.source.FileSource;
+import ru.flc.service.shopautolink.model.accessobject.source.file.FileSource;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,10 +9,26 @@ import java.util.List;
 public class TitleLinkFao extends AccessObject
 {
 	private static final String FILE_SOURCE_EXCEPTION_STRING = "Empty file source.";
+	private static final String PACK_SIZE_EXCEPTION_STRING = "Wrong pack size.";
 
 	public static TitleLinkFao getInstance()
 	{
 		return SingletonHelper.INSTANCE;
+	}
+
+	private static List<TitleLink> getShallowBufferClone(List<TitleLink> buffer)
+	{
+		if (buffer != null)
+		{
+			List<TitleLink> clone = new LinkedList<>();
+
+			for (TitleLink link : buffer)
+				clone.add(link);
+
+			return clone;
+		}
+		else
+			return null;
 	}
 
 	private int linkPackSize;
@@ -20,19 +36,28 @@ public class TitleLinkFao extends AccessObject
 	private List<TitleLink> buffer;
 	
 	private TitleLinkFao()
-	{}
-
-	public void setFileSource(FileSource fileSource, int linkPackSize)
 	{
+		buffer = new LinkedList<>();
+		linkPackSize = 100;
+	}
+
+	public void setParameters(FileSource fileSource, int linkPackSize)
+	{
+		if (linkPackSize < 1)
+			throw new IllegalArgumentException(PACK_SIZE_EXCEPTION_STRING);
+
+		buffer.clear();
+
 		this.source = fileSource;
 		this.linkPackSize = linkPackSize;
-
-		buffer = new LinkedList<>();
 	}
 	
 	public boolean hasMoreLinks() throws Exception
 	{
 		checkSource(FILE_SOURCE_EXCEPTION_STRING);
+
+		if (buffer.size() > 0)
+			return true;
 
 		TitleLink link = ((FileSource)source).getNextLink();
 
@@ -54,14 +79,15 @@ public class TitleLinkFao extends AccessObject
 			TitleLink link = ((FileSource)source).getNextLink();
 
 			if (link != null)
-			{
 				buffer.add(link);
-			}
 			else
 				break;
 		}
 
-		return buffer; //TODO: clone and clean buffer here
+		List<TitleLink> pack = getShallowBufferClone(buffer);
+		buffer.clear();
+
+		return pack;
 	}
 
 	private static class SingletonHelper
