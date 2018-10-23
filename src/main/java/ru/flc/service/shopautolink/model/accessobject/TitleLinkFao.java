@@ -33,13 +33,35 @@ public class TitleLinkFao extends AccessObject
 	public boolean hasMoreLinks() throws Exception
 	{
 		checkSource(FILE_SOURCE_EXCEPTION_STRING);
-		return false;
+
+		TitleLink link = ((FileSource)source).getNextLink();
+
+		if (link != null)
+		{
+			buffer.add(link);
+			return true;
+		}
+		else
+			return false;
 	}
 	
 	public List<TitleLink> getNextLinkPack() throws Exception
 	{
 		checkSource(FILE_SOURCE_EXCEPTION_STRING);
-		return null;
+
+		while (buffer.size() < linkPackSize)
+		{
+			TitleLink link = ((FileSource)source).getNextLink();
+
+			if (link != null)
+			{
+				buffer.add(link);
+			}
+			else
+				break;
+		}
+
+		return buffer; //TODO: clone and clean buffer here
 	}
 
 	private static class SingletonHelper

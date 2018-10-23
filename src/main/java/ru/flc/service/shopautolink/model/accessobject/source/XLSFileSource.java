@@ -2,6 +2,8 @@ package ru.flc.service.shopautolink.model.accessobject.source;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import ru.flc.service.shopautolink.model.TitleLink;
 import ru.flc.service.shopautolink.model.settings.FileSettings;
@@ -18,12 +20,27 @@ public class XLSFileSource implements FileSource
 	private HSSFWorkbook workbook;
 	private HSSFSheet sheet;
 	private Iterator<Row> rowIterator;
-	private int rowIndex;
 
     public static XLSFileSource getInstance()
     {
         return SingletonHelper.INSTANCE;
     }
+
+	private static int getCellIntValue(Cell cell)
+	{
+		if (cell != null && cell.getCellType() == CellType.NUMERIC)
+			return (int) cell.getNumericCellValue();
+		else
+			return -1;
+	}
+
+	private static String getCellStringValue(Cell cell)
+	{
+		if (cell != null && cell.getCellType() == CellType.STRING)
+			return cell.getStringCellValue();
+		else
+			return null;
+	}
 
     private XLSFileSource()
     {}
@@ -31,21 +48,26 @@ public class XLSFileSource implements FileSource
 	@Override
 	public TitleLink getNextLink()
 	{
-		int titleId = 0;
-		String productCode = "";
-		int forSale = 0;
-
 		if (hasNextRow())
 		{
 			Row row = rowIterator.next();
 
-			for (int i = 0; i < 3; i++)
-			{
-				;
+			Cell cell = row.getCell(0);
+			int titleId = getCellIntValue(cell);
+			if (titleId < 0)
+				return null;
 
-			}
+			cell = row.getCell(1);
+			String productCode = getCellStringValue(cell);
+			if (productCode == null)
+				return null;
 
-			return null;
+			cell = row.getCell(2);
+			int forSale = getCellIntValue(cell);
+			if (forSale < 0)
+				return null;
+
+			return new TitleLink(titleId, productCode, forSale);
 		}
 		else
 			return null;
@@ -106,7 +128,6 @@ public class XLSFileSource implements FileSource
 
 		sheet = null;
 		workbook = null;
-		rowIndex = 0;
 	}
 
 	private static class SingletonHelper
