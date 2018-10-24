@@ -100,7 +100,9 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
             if (!isCancelled())
             {
                 dataObject.applyUploadedLinks();
-                result = linksUploaded;
+
+                if (linksUploaded > 0)
+                    result = linksUploaded;
             }
         }
         catch (Exception e)

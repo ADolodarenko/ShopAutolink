@@ -6,6 +6,12 @@ public class FileSettings implements Settings
 {
 	private File file;
 
+	//Убрать эту треногу
+	public FileSettings(File file)
+	{
+		this.file = file;
+	}
+
 	public File getFile()
 	{
 		return file;
@@ -14,6 +20,7 @@ public class FileSettings implements Settings
 	@Override
 	public void load()
 	{
+
 
 	}
 

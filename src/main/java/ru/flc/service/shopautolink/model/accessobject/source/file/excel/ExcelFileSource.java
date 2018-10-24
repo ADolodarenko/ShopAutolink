@@ -48,7 +48,15 @@ public abstract class ExcelFileSource implements FileSource
 			cell = row.getCell(1);
 			String productCode = getCellStringValue(cell);
 			if (productCode == null)
-				return null;
+			{
+				int tempValue = getCellIntValue(cell);
+
+				if (tempValue != -1)
+					productCode = String.valueOf(tempValue);
+
+				if (productCode == null)
+					return null;
+			}
 
 			cell = row.getCell(2);
 			int forSale = getCellIntValue(cell);

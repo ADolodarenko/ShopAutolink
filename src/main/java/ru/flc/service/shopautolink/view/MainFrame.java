@@ -1,16 +1,25 @@
 package ru.flc.service.shopautolink.view;
 
+import org.apache.commons.io.FilenameUtils;
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
 import ru.flc.service.shopautolink.SAResourceManager;
 import ru.flc.service.shopautolink.model.LogEventTableModel;
+import ru.flc.service.shopautolink.model.accessobject.TitleLinkDao;
+import ru.flc.service.shopautolink.model.accessobject.TitleLinkFao;
+import ru.flc.service.shopautolink.model.accessobject.source.database.AseDataSource;
+import ru.flc.service.shopautolink.model.accessobject.source.database.DataSource;
+import ru.flc.service.shopautolink.model.accessobject.source.file.FileSource;
+import ru.flc.service.shopautolink.model.accessobject.source.file.excel.ExcelFileSourceFactory;
 import ru.flc.service.shopautolink.model.logic.TitleLinkLoader;
 import ru.flc.service.shopautolink.model.logic.TitleLinkProcessor;
+import ru.flc.service.shopautolink.model.settings.FileSettings;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -75,7 +84,7 @@ public class MainFrame extends JFrame
         fileChooser = new JFileChooser(".");
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setAcceptAllFileFilterUsed(false);
-        //TODO: set my own FileFilter here
+        fileChooser.setFileFilter(new FileNameExtensionFilter("XLS(X)", "XLS", "XLSX"));
     }
 
     private void initFrame()
@@ -165,13 +174,29 @@ public class MainFrame extends JFrame
     {
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
-            //TODO: work with selected file here
+            File selectedFile = fileChooser.getSelectedFile();
+            String fileNameExtension = FilenameUtils.getExtension(selectedFile.getAbsolutePath());
 
-            linkLoader = new TitleLinkLoader(null, null, null);
-            linkLoader.getPropertyChangeSupport().addPropertyChangeListener("state", evt -> {
-                doForWorkerEvent(evt);
-            });
-            linkLoader.execute();
+            FileSource fileSource = ExcelFileSourceFactory.getSource(fileNameExtension);
+
+            if (fileSource != null)
+            {
+                fileSource.tune(new FileSettings(selectedFile));
+                TitleLinkFao fileObject = TitleLinkFao.getInstance();
+                fileObject.setParameters(fileSource, 150);
+
+                DataSource dataSource = AseDataSource.getInstance();
+                dataSource.tune(null);
+                TitleLinkDao dataObject = TitleLinkDao.getInstance();
+                dataObject.setDataSource(dataSource);
+
+                linkLoader = new TitleLinkLoader(fileObject, dataObject, logTableModel);
+                linkLoader.getPropertyChangeSupport().addPropertyChangeListener("state", evt -> {
+                    doForWorkerEvent(evt);
+                });
+                linkLoader.execute();
+
+            }
         }
     }
 
