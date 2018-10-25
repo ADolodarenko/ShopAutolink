@@ -43,8 +43,18 @@
         </dependency>
 
         <dependency>
+            <groupId>com.sybase</groupId>
+            <artifactId>jconnect</artifactId>
+            <version>6.0</version>
+            <scope>system</scope>
+            <systemPath>
+                C:/sybase/jConnect-6_0/classes/jconn3.jar
+            </systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>org.dav.service</groupId>
-            <artifactId>dav-service-1.0</artifactId>
+            <artifactId>dav-service</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>

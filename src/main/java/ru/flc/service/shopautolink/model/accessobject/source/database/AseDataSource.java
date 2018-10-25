@@ -1,5 +1,6 @@
 package ru.flc.service.shopautolink.model.accessobject.source.database;
 
+import com.sybase.jdbcx.SybDriver;
 import ru.flc.service.shopautolink.model.TitleLink;
 import ru.flc.service.shopautolink.model.settings.DatabaseSettings;
 import ru.flc.service.shopautolink.model.settings.Settings;
@@ -71,8 +72,20 @@ public class AseDataSource implements DataSource
 	private void resetParameters(DatabaseSettings settings)
 	{
 		//TODO: prepare the needed driver here
-		SybDriver sybDriver = (SybDriver) Class.forName(settings.getDriverName()).newInstance();
-		DriverManager.registerDriver(sybDriver);
+		SybDriver sybDriver = null;
+		try
+		{
+			sybDriver = (SybDriver) Class.forName(settings.getDriverName()).newInstance();
+			DriverManager.registerDriver(sybDriver);
+		}
+		catch (InstantiationException e)
+		{}
+		catch (IllegalAccessException e)
+		{}
+		catch (ClassNotFoundException e)
+		{}
+		catch (SQLException e)
+		{}
 	}
 
 	private void prepareConnection()
