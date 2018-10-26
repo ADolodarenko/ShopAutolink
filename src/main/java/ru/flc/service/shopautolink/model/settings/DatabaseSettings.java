@@ -3,10 +3,16 @@ package ru.flc.service.shopautolink.model.settings;
 public class DatabaseSettings implements Settings
 {
     private String driverName;  //"com.sybase.jdbc3.jdbc.SybDriver"
-    private String serverName;
-    private String catalogName;
+    private String connectionPrefix;
+    private String host;
+    private int port;
+    private String catalog;
     private String userName;
     private String password;
+    private String tableName;
+    private String storedProcedureName;
+    private int channelId;
+    private int priceId;
 
     @Override
     public void load()
@@ -26,15 +32,25 @@ public class DatabaseSettings implements Settings
     {
         return driverName;
     }
-
-    public String getServerName()
+    
+    public String getConnectionPrefix()
     {
-        return serverName;
+        return connectionPrefix;
     }
-
-    public String getCatalogName()
+    
+    public String getHost()
     {
-        return catalogName;
+        return host;
+    }
+    
+    public int getPort()
+    {
+        return port;
+    }
+    
+    public String getCatalog()
+    {
+        return catalog;
     }
 
     public String getUserName()
@@ -45,5 +61,25 @@ public class DatabaseSettings implements Settings
     public String getPassword()
     {
         return password;
+    }
+    
+    public String getTableName()
+    {
+        return tableName;
+    }
+    
+    public String getStoredProcedureName()
+    {
+        return storedProcedureName;
+    }
+    
+    public int getChannelId()
+    {
+        return channelId;
+    }
+    
+    public int getPriceId()
+    {
+        return priceId;
     }
 }

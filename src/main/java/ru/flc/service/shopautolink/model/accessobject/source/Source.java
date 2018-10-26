@@ -4,5 +4,5 @@ import ru.flc.service.shopautolink.model.settings.Settings;
 
 public interface Source
 {
-    void tune(Settings settings);
+    void tune(Settings settings) throws Exception;
 }

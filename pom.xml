@@ -48,7 +48,7 @@
             <version>6.0</version>
             <scope>system</scope>
             <systemPath>
-                C:/sybase/jConnect-6_0/classes/jconn3.jar
+                /opt/javalib/sybase/jconn3.jar
             </systemPath>
         </dependency>
 
@@ -58,7 +58,7 @@
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>
-                D:/JavaLib/dav/dav-service-1.0.jar
+                /opt/javalib/dav/dav-service-1.0.jar
             </systemPath>
         </dependency>
 

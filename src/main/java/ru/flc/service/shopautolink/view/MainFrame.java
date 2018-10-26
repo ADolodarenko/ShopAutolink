@@ -181,21 +181,28 @@ public class MainFrame extends JFrame
 
             if (fileSource != null)
             {
-                fileSource.tune(new FileSettings(selectedFile));
-                TitleLinkFao fileObject = TitleLinkFao.getInstance();
-                fileObject.setParameters(fileSource, 150);
-
-                DataSource dataSource = AseDataSource.getInstance();
-                dataSource.tune(null);
-                TitleLinkDao dataObject = TitleLinkDao.getInstance();
-                dataObject.setDataSource(dataSource);
-
-                linkLoader = new TitleLinkLoader(fileObject, dataObject, logTableModel);
-                linkLoader.getPropertyChangeSupport().addPropertyChangeListener("state", evt -> {
-                    doForWorkerEvent(evt);
-                });
-                linkLoader.execute();
-
+                try
+                {
+                    fileSource.tune(new FileSettings(selectedFile));
+                    TitleLinkFao fileObject = TitleLinkFao.getInstance();
+                    fileObject.setParameters(fileSource, 150);
+    
+                    DataSource dataSource = AseDataSource.getInstance();
+                    dataSource.tune(null);
+                    TitleLinkDao dataObject = TitleLinkDao.getInstance();
+                    dataObject.setDataSource(dataSource);
+    
+                    linkLoader = new TitleLinkLoader(fileObject, dataObject, logTableModel);
+                    linkLoader.getPropertyChangeSupport().addPropertyChangeListener("state", evt ->
+                    {
+                        doForWorkerEvent(evt);
+                    });
+                    linkLoader.execute();
+                }
+                catch (Exception e)
+                {
+                	//TODO: add a LogEvent to model here
+                }
             }
         }
     }
@@ -203,10 +210,6 @@ public class MainFrame extends JFrame
     private void processTitleLinks()
     {
         linkProcessor = new TitleLinkProcessor();
-
-        /*linkProcessor.addPropertyChangeListener(evt -> {
-            doForWorkerEvent(evt);
-        });*/
 
         linkProcessor.getPropertyChangeSupport().addPropertyChangeListener("state", evt -> {
             doForWorkerEvent(evt);
