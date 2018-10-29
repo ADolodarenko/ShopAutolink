@@ -23,7 +23,7 @@ public class AseDataSource implements DataSource
 
 	private String url;
 	private String user;
-	private String password;
+	private char[] password;
 	private String tableName;
 	private String storedProcedureName;
 	private int channelId;
@@ -58,7 +58,7 @@ public class AseDataSource implements DataSource
 	@Override
 	public void open() throws SQLException
 	{
-		connection = DriverManager.getConnection(url, user, password);
+		connection = DriverManager.getConnection(url, user, new String(password));
 		connection.setAutoCommit(false);
 		
 		DatabaseMetaData metaData = connection.getMetaData();
