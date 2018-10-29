@@ -10,6 +10,9 @@ import java.util.List;
 
 public class AseDataSource implements DataSource
 {
+	private static final String SETTINGS_EMPTY_EXCEPTION_STRING = "Database settings are empty.";
+	private static final String SETTINGS_WRONG_EXCEPTION_STRING = "Wrong database settings.";
+	
 	private static final String TMP_TABLE_NAME = "#tmp_link";
 	private static final String TMP_TABLE_CREATE_COMMAND = "create table " + TMP_TABLE_NAME +
 			" (gr_id numeric(18) not null, product_code varchar(40) not null, sale int not null)";
@@ -33,27 +36,9 @@ public class AseDataSource implements DataSource
 	
 	private boolean supportBatchUpdates;
 	private boolean supportStoredProcedures;
-
-	@Override
-	public void tune(Settings settings) throws Exception
-	{
-		close();
-
-		if (settings != null)
-		{
-			String settingsClassName = settings.getClass().getSimpleName();
-
-			if ("DatabaseSettings".equals(settingsClassName))
-			{
-				resetParameters((DatabaseSettings)settings);
-				open();
-				prepareTemporaryTable();
-			}
-		}
-		else
-			throw new IllegalArgumentException("Database settings are empty.");
-
-	}
+	
+	
+	private AseDataSource(){}
 	
 	@Override
 	public void open() throws SQLException
@@ -65,6 +50,8 @@ public class AseDataSource implements DataSource
 		
 		supportBatchUpdates = metaData.supportsBatchUpdates();
 		supportStoredProcedures = metaData.supportsStoredProcedures();
+		
+		prepareTemporaryTable();
 	}
 	
 	@Override
@@ -72,6 +59,24 @@ public class AseDataSource implements DataSource
 	{
 		if (connection != null)
 			connection.close();
+	}
+
+	@Override
+	public void tune(Settings settings) throws Exception
+	{
+		close();
+
+		if (settings != null)
+		{
+			String settingsClassName = settings.getClass().getSimpleName();
+
+			if ("DatabaseSettings".equals(settingsClassName))
+				resetParameters((DatabaseSettings)settings);
+			else
+				throw new IllegalArgumentException(SETTINGS_WRONG_EXCEPTION_STRING);
+		}
+		else
+			throw new IllegalArgumentException(SETTINGS_EMPTY_EXCEPTION_STRING);
 	}
 	
 	@Override
@@ -103,6 +108,28 @@ public class AseDataSource implements DataSource
 				uploadPackAsBatch(pack);
 			else
 				uploadPackOneByOne(pack);
+	}
+	
+	@Override
+	public void processTitleLinks() throws SQLException
+	{
+		if (supportStoredProcedures)
+			try (CallableStatement statement = connection.prepareCall("{call " +
+					storedProcedureName + " (?, ?)}"))
+			{
+				statement.setInt(1, priceId);
+				statement.setInt(2, channelId);
+				
+				statement.executeUpdate();
+				
+				connection.commit();
+			}
+			catch (SQLException e)
+			{
+				connection.rollback();
+				
+				throw e;
+			}
 	}
 	
 	private void uploadPackAsBatch(List<TitleLink> pack) throws SQLException
@@ -152,28 +179,6 @@ public class AseDataSource implements DataSource
 			
 			throw e;
 		}
-	}
-	
-	@Override
-	public void processTitleLinks() throws SQLException
-	{
-		if (supportStoredProcedures)
-			try (CallableStatement statement = connection.prepareCall("{call " +
-					storedProcedureName + " (?, ?)}"))
-			{
-				statement.setInt(1, channelId);
-				statement.setInt(2, priceId);
-				
-				statement.executeUpdate();
-				
-				connection.commit();
-			}
-			catch (SQLException e)
-			{
-				connection.rollback();
-				
-				throw e;
-			}
 	}
 
 	private void resetParameters(DatabaseSettings settings) throws Exception

@@ -11,14 +11,14 @@ import ru.flc.service.shopautolink.model.accessobject.TitleLinkFao;
 import ru.flc.service.shopautolink.model.accessobject.source.database.AseDataSource;
 import ru.flc.service.shopautolink.model.accessobject.source.database.DataSource;
 import ru.flc.service.shopautolink.model.accessobject.source.file.FileSource;
-import ru.flc.service.shopautolink.model.accessobject.source.file.excel.ExcelFileSourceFactory;
+import ru.flc.service.shopautolink.model.accessobject.source.file.FileSourceFactory;
 import ru.flc.service.shopautolink.model.logic.TitleLinkLoader;
 import ru.flc.service.shopautolink.model.logic.TitleLinkProcessor;
+import ru.flc.service.shopautolink.model.settings.DatabaseSettings;
 import ru.flc.service.shopautolink.model.settings.FileSettings;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -177,20 +177,18 @@ public class MainFrame extends JFrame
             File selectedFile = fileChooser.getSelectedFile();
             String fileNameExtension = FilenameUtils.getExtension(selectedFile.getAbsolutePath());
 
-            FileSource fileSource = ExcelFileSourceFactory.getSource(fileNameExtension);
+            FileSource fileSource = FileSourceFactory.getSource(fileNameExtension);
 
             if (fileSource != null)
             {
                 try
                 {
                     fileSource.tune(new FileSettings(selectedFile));
-                    TitleLinkFao fileObject = TitleLinkFao.getInstance();
-                    fileObject.setParameters(fileSource, 150);
+                    TitleLinkFao fileObject = new TitleLinkFao(fileSource, 150);
     
                     DataSource dataSource = AseDataSource.getInstance();
-                    dataSource.tune(null);
-                    TitleLinkDao dataObject = TitleLinkDao.getInstance();
-                    dataObject.setDataSource(dataSource);
+                    dataSource.tune(new DatabaseSettings());
+                    TitleLinkDao dataObject = new TitleLinkDao(dataSource);
     
                     linkLoader = new TitleLinkLoader(fileObject, dataObject, logTableModel);
                     linkLoader.getPropertyChangeSupport().addPropertyChangeListener("state", evt ->

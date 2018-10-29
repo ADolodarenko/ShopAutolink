@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface DataSource extends Source
 {
-	void open() throws SQLException;
-	void close() throws SQLException;
 	void applyUploadedTitleLinks() throws SQLException;
 	void uploadTitleLinkPack(List<TitleLink> pack) throws Exception;
 	void processTitleLinks() throws SQLException;

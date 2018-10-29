@@ -6,15 +6,10 @@ import ru.flc.service.shopautolink.model.accessobject.source.file.FileSource;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TitleLinkFao extends AccessObject
+public class TitleLinkFao implements AccessObject
 {
 	private static final String FILE_SOURCE_EXCEPTION_STRING = "Empty file source.";
 	private static final String PACK_SIZE_EXCEPTION_STRING = "Wrong pack size.";
-
-	public static TitleLinkFao getInstance()
-	{
-		return SingletonHelper.INSTANCE;
-	}
 
 	private static List<TitleLink> getShallowBufferClone(List<TitleLink> buffer)
 	{
@@ -31,35 +26,41 @@ public class TitleLinkFao extends AccessObject
 			return null;
 	}
 
+	private FileSource source;
 	private int linkPackSize;
-	
 	private List<TitleLink> buffer;
 	
-	private TitleLinkFao()
+	public TitleLinkFao(FileSource source, int linkPackSize)
 	{
-		buffer = new LinkedList<>();
-		linkPackSize = 100;
-	}
-
-	public void setParameters(FileSource fileSource, int linkPackSize)
-	{
+		if (source == null)
+			throw new IllegalArgumentException(FILE_SOURCE_EXCEPTION_STRING);
+		
 		if (linkPackSize < 1)
 			throw new IllegalArgumentException(PACK_SIZE_EXCEPTION_STRING);
-
-		buffer.clear();
-
-		this.source = fileSource;
+		
+		this.source = source;
 		this.linkPackSize = linkPackSize;
+		this.buffer = new LinkedList<>();
+	}
+	
+	@Override
+	public void open() throws Exception
+	{
+		source.open();
+	}
+	
+	@Override
+	public void close() throws Exception
+	{
+		source.close();
 	}
 	
 	public boolean hasMoreLinks() throws Exception
 	{
-		checkSource(FILE_SOURCE_EXCEPTION_STRING);
-
 		if (buffer.size() > 0)
 			return true;
 
-		TitleLink link = ((FileSource)source).getNextLink();
+		TitleLink link = source.getNextLink();
 
 		if (link != null)
 		{
@@ -72,11 +73,9 @@ public class TitleLinkFao extends AccessObject
 	
 	public List<TitleLink> getNextLinkPack() throws Exception
 	{
-		checkSource(FILE_SOURCE_EXCEPTION_STRING);
-
 		while (buffer.size() < linkPackSize)
 		{
-			TitleLink link = ((FileSource)source).getNextLink();
+			TitleLink link = source.getNextLink();
 
 			if (link != null)
 				buffer.add(link);
@@ -88,10 +87,5 @@ public class TitleLinkFao extends AccessObject
 		buffer.clear();
 
 		return pack;
-	}
-
-	private static class SingletonHelper
-	{
-		private static final TitleLinkFao INSTANCE = new TitleLinkFao();
 	}
 }

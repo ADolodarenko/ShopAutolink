@@ -87,6 +87,8 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
 
         try
         {
+        	openAccessObjects();
+        	
             while (!isCancelled() && fileObject.hasMoreLinks())
             {
                 List<TitleLink> pack = fileObject.getNextLinkPack();
@@ -109,7 +111,28 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
         {
 
         }
+        finally
+		{
+			try
+			{
+				closeAccessObjects();
+			}
+			catch (Exception e)
+			{}
+		}
 
         return result;
     }
+    
+    private void openAccessObjects() throws Exception
+	{
+		fileObject.open();
+		dataObject.open();
+	}
+	
+	private void closeAccessObjects() throws Exception
+	{
+		dataObject.close();
+		fileObject.close();
+	}
 }

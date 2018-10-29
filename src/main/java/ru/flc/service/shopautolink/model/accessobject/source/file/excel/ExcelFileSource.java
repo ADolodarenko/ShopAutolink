@@ -12,6 +12,9 @@ import java.util.Iterator;
 
 public abstract class ExcelFileSource implements FileSource
 {
+	private static final String SETTINGS_EMPTY_EXCEPTION_STRING = "File settings are empty.";
+	private static final String SETTINGS_WRONG_EXCEPTION_STRING = "Wrong file settings.";
+	
 	protected File file;
 	protected Workbook workbook;
 	protected Sheet sheet;
@@ -32,7 +35,43 @@ public abstract class ExcelFileSource implements FileSource
 		else
 			return null;
 	}
-
+	
+	@Override
+	public void open() throws Exception
+	{
+		getWorkbook();
+		sheet = workbook.getSheetAt(0);
+		rowIterator = sheet.iterator();
+	}
+	
+	@Override
+	public void close() throws Exception
+	{
+		if (workbook != null)
+			workbook.close();
+		
+		sheet = null;
+		workbook = null;
+	}
+	
+	@Override
+	public void tune(Settings settings) throws Exception
+	{
+		close();
+		
+		if (settings != null)
+		{
+			String settingsClassName = settings.getClass().getSimpleName();
+			
+			if ("FileSettings".equals(settingsClassName))
+				resetParameters((FileSettings)settings);
+			else
+				throw new IllegalArgumentException(SETTINGS_WRONG_EXCEPTION_STRING);
+		}
+		else
+			throw new IllegalArgumentException(SETTINGS_EMPTY_EXCEPTION_STRING);
+	}
+	
 	@Override
 	public TitleLink getNextLink()
 	{
@@ -69,22 +108,7 @@ public abstract class ExcelFileSource implements FileSource
 			return null;
 	}
 
-	@Override
-	public void tune(Settings settings)
-	{
-		closeWorkbook();
-
-		if (settings != null)
-		{
-			String settingsClassName = settings.getClass().getSimpleName();
-
-			if ("FileSettings".equals(settingsClassName))
-			{
-				resetParameters((FileSettings)settings);
-				prepareWorkbook();
-			}
-		}
-	}
+	
 
 	protected boolean hasNextRow()
 	{
@@ -92,36 +116,7 @@ public abstract class ExcelFileSource implements FileSource
 				rowIterator != null && rowIterator.hasNext());
 	}
 
-	protected void prepareWorkbook()
-	{
-		try
-		{
-			getWorkbook();
-			sheet = workbook.getSheetAt(0);
-			rowIterator = sheet.iterator();
-		}
-		catch (IOException e)
-		{}
-	}
-
 	protected abstract void getWorkbook() throws IOException;
-
-	protected void closeWorkbook()
-	{
-		if (workbook != null)
-		{
-			try
-			{
-				workbook.close();
-			}
-			catch (IOException e)
-			{
-			}
-		}
-
-		sheet = null;
-		workbook = null;
-	}
 
 	protected void resetParameters(FileSettings settings)
 	{
