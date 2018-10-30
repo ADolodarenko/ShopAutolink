@@ -7,7 +7,8 @@ public class SettingsFactory
         switch (type)
         {
             case FILE_SETTINGS:
-                return new FileSettings(null);
+                //return new FileSettings(null);
+                return null;
             case VIEW_SETTINGS:
                 return new ViewSettings();
             case DATABASE_SETTINGS:

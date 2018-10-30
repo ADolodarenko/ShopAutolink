@@ -6,6 +6,7 @@ import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
 import ru.flc.service.shopautolink.SAResourceManager;
 import ru.flc.service.shopautolink.model.LogEventTableModel;
+import ru.flc.service.shopautolink.model.accessobject.AccessObjectFactory;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkDao;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkFao;
 import ru.flc.service.shopautolink.model.accessobject.source.database.AseDataSource;
@@ -175,40 +176,35 @@ public class MainFrame extends JFrame
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
             File selectedFile = fileChooser.getSelectedFile();
-            String fileNameExtension = FilenameUtils.getExtension(selectedFile.getAbsolutePath());
 
-            FileSource fileSource = FileSourceFactory.getSource(fileNameExtension);
+            FileSettings fileSettings = new FileSettings(selectedFile, 100);
+            TitleLinkFao fileObject = AccessObjectFactory.getFileAccessObject(fileSettings);
+            if (fileObject == null)
+                return;
 
-            if (fileSource != null)
+            DatabaseSettings databaseSettings = new DatabaseSettings();
+            TitleLinkDao dataObject = AccessObjectFactory.getDataAccessObject(databaseSettings);
+            if (dataObject == null)
+                return;
+
+            linkLoader = new TitleLinkLoader(fileObject, dataObject, logTableModel);
+            linkLoader.getPropertyChangeSupport().addPropertyChangeListener("state", evt ->
             {
-                try
-                {
-                    fileSource.tune(new FileSettings(selectedFile));
-                    TitleLinkFao fileObject = new TitleLinkFao(fileSource, 150);
-    
-                    DataSource dataSource = AseDataSource.getInstance();
-                    dataSource.tune(new DatabaseSettings());
-                    TitleLinkDao dataObject = new TitleLinkDao(dataSource);
-    
-                    linkLoader = new TitleLinkLoader(fileObject, dataObject, logTableModel);
-                    linkLoader.getPropertyChangeSupport().addPropertyChangeListener("state", evt ->
-                    {
-                        doForWorkerEvent(evt);
-                    });
-                    linkLoader.execute();
-                }
-                catch (Exception e)
-                {
-                	//TODO: add a LogEvent to model here
-                }
-            }
+                doForWorkerEvent(evt);
+            });
+
+            linkLoader.execute();
         }
     }
 
     private void processTitleLinks()
     {
-        linkProcessor = new TitleLinkProcessor();
+        DatabaseSettings databaseSettings = new DatabaseSettings();
+        TitleLinkDao dataObject = AccessObjectFactory.getDataAccessObject(databaseSettings);
+        if (dataObject == null)
+            return;
 
+        linkProcessor = new TitleLinkProcessor(dataObject, logTableModel);
         linkProcessor.getPropertyChangeSupport().addPropertyChangeListener("state", evt -> {
             doForWorkerEvent(evt);
         });

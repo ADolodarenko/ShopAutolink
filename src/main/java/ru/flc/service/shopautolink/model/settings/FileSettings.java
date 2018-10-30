@@ -5,16 +5,23 @@ import java.io.File;
 public class FileSettings implements Settings
 {
 	private File file;
+	private int packSize;
 
 	//Убрать эту треногу
-	public FileSettings(File file)
+	public FileSettings(File file, int packSize)
 	{
 		this.file = file;
+		this.packSize = packSize;
 	}
 
 	public File getFile()
 	{
 		return file;
+	}
+
+	public int getPackSize()
+	{
+		return packSize;
 	}
 
 	@Override

@@ -12,12 +12,12 @@ public class AseDataSource implements DataSource
 {
 	private static final String SETTINGS_EMPTY_EXCEPTION_STRING = "Database settings are empty.";
 	private static final String SETTINGS_WRONG_EXCEPTION_STRING = "Wrong database settings.";
-	
+	private static final String DB_WITHOUT_SP_SUPPORT_EXCEPTION_STRING = "This database doesn't support stored procedures.";
 	private static final String TMP_TABLE_NAME = "#tmp_link";
 	private static final String TMP_TABLE_CREATE_COMMAND = "create table " + TMP_TABLE_NAME +
-			" (gr_id numeric(18) not null, product_code varchar(40) not null, sale int not null)";
+			" (gr_id numeric(18,0), product_code varchar(7), prizn numeric(18,0))";
 	private static final String TMP_TABLE_INSERT_COMMAND = "insert " + TMP_TABLE_NAME +
-			" (gr_id, product_code, sale) values (?, ?, ?)";
+			" (gr_id, product_code, prizn) values (?, ?, ?)";
 	
 	public static AseDataSource getInstance()
 	{
@@ -57,7 +57,7 @@ public class AseDataSource implements DataSource
 	@Override
 	public void close() throws SQLException
 	{
-		if (connection != null)
+		if (connection != null && !connection.isClosed())
 			connection.close();
 	}
 
@@ -111,25 +111,36 @@ public class AseDataSource implements DataSource
 	}
 	
 	@Override
-	public void processTitleLinks() throws SQLException
+	public void processTitleLinks() throws Exception
 	{
 		if (supportStoredProcedures)
+		{
+			connection.setAutoCommit(true);
+
 			try (CallableStatement statement = connection.prepareCall("{call " +
 					storedProcedureName + " (?, ?)}"))
 			{
 				statement.setInt(1, priceId);
 				statement.setInt(2, channelId);
-				
+
 				statement.executeUpdate();
-				
+
 				connection.commit();
 			}
 			catch (SQLException e)
 			{
 				connection.rollback();
-				
+
 				throw e;
 			}
+			finally
+			{
+				connection.setAutoCommit(false);
+			}
+		}
+		else
+			throw new Exception(DB_WITHOUT_SP_SUPPORT_EXCEPTION_STRING);
+
 	}
 	
 	private void uploadPackAsBatch(List<TitleLink> pack) throws SQLException

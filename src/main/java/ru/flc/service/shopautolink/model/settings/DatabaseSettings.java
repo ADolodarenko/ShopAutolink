@@ -6,10 +6,10 @@ public class DatabaseSettings implements Settings
     private String connectionPrefix = "jdbc:sybase:Tds";
     private String host = "dbsrv";
     private int port = 5000;
-    private String catalog = "O";
+    private String catalog = "FLC_RU";
     private String userName = "dolodarenko";
-    private char[] password;
-    private String tableName = "dav_tmp_table";  //dav_shop_prod
+    private char[] password = {'k', 'i', 'l', 'l', 'a', 'l', 'l', 'h', 'u', 'm', 'a', 's'};
+    private String tableName = "O..dav_tmp_table";  //dav_shop_prod
     private String storedProcedureName = "dav_tmp_proc";  //usp_shop_prod_buff_add
     private int channelId = 729;
     private int priceId = 28;
