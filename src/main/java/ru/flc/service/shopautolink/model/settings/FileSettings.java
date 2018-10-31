@@ -7,11 +7,22 @@ public class FileSettings implements Settings
 	private File file;
 	private int packSize;
 
-	//Убрать эту треногу
-	public FileSettings(File file, int packSize)
+	@Override
+	public void load() throws Exception
 	{
-		this.file = file;
-		this.packSize = packSize;
+		SettingsManager.loadSettings();
+
+		file = new File(SettingsManager.getStringParameter(SettingsManager.PARAM_NAME_SOURCE_FILE));
+		packSize = SettingsManager.getIntParameter(SettingsManager.PARAM_NAME_PACK_SIZE);
+	}
+
+	@Override
+	public void save() throws Exception
+	{
+		SettingsManager.setStringParameter(SettingsManager.PARAM_NAME_SOURCE_FILE, file.getAbsolutePath());
+		SettingsManager.setIntParameter(SettingsManager.PARAM_NAME_PACK_SIZE, packSize);
+
+		SettingsManager.saveSettings();
 	}
 
 	public File getFile()
@@ -24,16 +35,13 @@ public class FileSettings implements Settings
 		return packSize;
 	}
 
-	@Override
-	public void load()
+	public void setFile(File file)
 	{
-
-
+		this.file = file;
 	}
 
-	@Override
-	public void save()
+	public void setPackSize(int packSize)
 	{
-
+		this.packSize = packSize;
 	}
 }

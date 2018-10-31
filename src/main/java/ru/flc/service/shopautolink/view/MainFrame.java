@@ -177,7 +177,9 @@ public class MainFrame extends JFrame
         {
             File selectedFile = fileChooser.getSelectedFile();
 
-            FileSettings fileSettings = new FileSettings(selectedFile, 100);
+            FileSettings fileSettings = new FileSettings();
+            fileSettings.setFile(selectedFile);
+            fileSettings.setPackSize(100);
             TitleLinkFao fileObject = AccessObjectFactory.getFileAccessObject(fileSettings);
             if (fileObject == null)
                 return;

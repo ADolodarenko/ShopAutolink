@@ -77,7 +77,7 @@ public class SAResourceManager implements ResourceManager
     
         if (fullJarPath != null)
         {
-            String fullConfPath = Paths.get(fullJarPath).getParent().toAbsolutePath() + File.separator + "shopautolink.config";
+            String fullConfPath = Paths.get(fullJarPath).getParent().toAbsolutePath() + File.separator + "shop_autolink.conf";
             
             result = new File(fullConfPath);
         }
