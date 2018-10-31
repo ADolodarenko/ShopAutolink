@@ -25,12 +25,16 @@ public class SettingsManager
     public static final String PARAM_NAME_DB_SP = "DatabaseStoredProcedure";
     public static final String PARAM_NAME_CHANNEL = "ChannelId";
     public static final String PARAM_NAME_PRICE_LIST = "PriceListId";
-    public static final String PARAM_NAME_SOURCE_FILE = "SourceFileName";
     public static final String PARAM_NAME_PACK_SIZE = "PacketSize";
 
     private static ResourceManager resourceManager = SAResourceManager.getInstance();
     private static Properties properties = new Properties();
 
+    public static boolean hasParameter(String key)
+    {
+        return properties.containsKey(key);
+    }
+    
     public static String getStringParameter(String key)
     {
         return properties.getProperty(key);

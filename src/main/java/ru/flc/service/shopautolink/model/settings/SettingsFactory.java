@@ -10,7 +10,8 @@ public class SettingsFactory
                 //return new FileSettings(null);
                 return null;
             case VIEW_SETTINGS:
-                return new ViewSettings();
+                //return new ViewSettings();
+                return null;
             case DATABASE_SETTINGS:
                 return new DatabaseSettings();
             default:

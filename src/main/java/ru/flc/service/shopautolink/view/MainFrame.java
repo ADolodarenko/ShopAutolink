@@ -1,46 +1,48 @@
 package ru.flc.service.shopautolink.view;
 
-import org.apache.commons.io.FilenameUtils;
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
 import ru.flc.service.shopautolink.SAResourceManager;
+import ru.flc.service.shopautolink.model.LogEvent;
 import ru.flc.service.shopautolink.model.LogEventTableModel;
 import ru.flc.service.shopautolink.model.accessobject.AccessObjectFactory;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkDao;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkFao;
-import ru.flc.service.shopautolink.model.accessobject.source.database.AseDataSource;
-import ru.flc.service.shopautolink.model.accessobject.source.database.DataSource;
-import ru.flc.service.shopautolink.model.accessobject.source.file.FileSource;
-import ru.flc.service.shopautolink.model.accessobject.source.file.FileSourceFactory;
 import ru.flc.service.shopautolink.model.logic.TitleLinkLoader;
 import ru.flc.service.shopautolink.model.logic.TitleLinkProcessor;
 import ru.flc.service.shopautolink.model.settings.DatabaseSettings;
 import ru.flc.service.shopautolink.model.settings.FileSettings;
+import ru.flc.service.shopautolink.model.settings.ViewSettings;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
 
 public class MainFrame extends JFrame
 {
     private static final Dimension WIN_MIN_SIZE = new Dimension(400, 350);
+    private static final Dimension WIN_PREF_SIZE = new Dimension(600, 400);
     private static final Dimension COMMAND_PANEL_PREF_SIZE = new Dimension(120, 400);
     private static final Dimension BUTTON_MAX_SIZE = new Dimension(120, 60);
 
     private ResourceManager resourceManager;
     private TitleAdjuster titleAdjuster;
     private ButtonsManager buttonsManager;
-
+    
+    private ViewSettings viewSettings;
+    private DatabaseSettings dbSettings;
+    private FileSettings fileSettings;
+    
     private JFileChooser fileChooser;
-
+    
+    private TitleLinkFao fileObject;
+    private TitleLinkDao dataObject;
+    
     private TitleLinkLoader linkLoader;
     private TitleLinkProcessor linkProcessor;
 
@@ -50,14 +52,16 @@ public class MainFrame extends JFrame
 
     public MainFrame()
     {
-        loadProperties();
+        loadSettings();
         initComponents();
         initFrame();
     }
 
-    private void loadProperties()
+    private void loadSettings()
     {
-
+        viewSettings = new ViewSettings(WIN_PREF_SIZE);
+        dbSettings = new DatabaseSettings();
+        fileSettings = new FileSettings();
     }
 
     private void initComponents()
@@ -66,7 +70,7 @@ public class MainFrame extends JFrame
         titleAdjuster = new TitleAdjuster();
         buttonsManager = new ButtonsManager(COMMAND_PANEL_PREF_SIZE, BUTTON_MAX_SIZE,
                 resourceManager, titleAdjuster);
-
+        
         initFileChooser();
 
         add(initCommandPanel(), BorderLayout.WEST);
@@ -91,6 +95,7 @@ public class MainFrame extends JFrame
     private void initFrame()
     {
         setMinimumSize(WIN_MIN_SIZE);
+        setPreferredSize(WIN_PREF_SIZE);
 
         addComponentListener(new ComponentAdapter()
         {
@@ -108,16 +113,23 @@ public class MainFrame extends JFrame
                 MainFrame.this.setSize(currentDim);
             }
         });
-
-        /*if (windowAttributes != null)
+        
+        try
         {
-            if (windowAttributes.isMaximized())
+            viewSettings.load();
+            
+            if (viewSettings.isMainWindowMaximized())
                 setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
             else
-                setBounds(windowAttributes.getLeftTopCorner().x,
-                        windowAttributes.getLeftTopCorner().y,
-                        windowAttributes.getMeasurements().width,
-                        windowAttributes.getMeasurements().height);
+                setBounds(viewSettings.getMainWindowPosition().x,
+                        viewSettings.getMainWindowPosition().y,
+                        viewSettings.getMainWindowSize().width,
+                        viewSettings.getMainWindowSize().height);
+        }
+        catch (Exception e)
+        {
+            if (logTableModel != null)
+                logTableModel.addRow(new LogEvent(e));
         }
 
         addWindowListener(new WindowAdapter()
@@ -125,14 +137,11 @@ public class MainFrame extends JFrame
             @Override
             public void windowClosing(WindowEvent e)
             {
-                cancelSearch();
-                setWindowAttributes();
-                saveProperties();
-
-                if (mustRestart)
-                    restart();
+                //cancelSearch();
+                //setWindowAttributes();
+                //saveProperties();
             }
-        });*/
+        });
     }
 
     public JPanel initCommandPanel()
@@ -175,17 +184,11 @@ public class MainFrame extends JFrame
     {
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
-            File selectedFile = fileChooser.getSelectedFile();
-
-            FileSettings fileSettings = new FileSettings();
-            fileSettings.setFile(selectedFile);
-            fileSettings.setPackSize(100);
-            TitleLinkFao fileObject = AccessObjectFactory.getFileAccessObject(fileSettings);
+            fileObject = getFileObject(fileChooser.getSelectedFile());
             if (fileObject == null)
                 return;
 
-            DatabaseSettings databaseSettings = new DatabaseSettings();
-            TitleLinkDao dataObject = AccessObjectFactory.getDataAccessObject(databaseSettings);
+            dataObject = getDataObject();
             if (dataObject == null)
                 return;
 
@@ -201,8 +204,7 @@ public class MainFrame extends JFrame
 
     private void processTitleLinks()
     {
-        DatabaseSettings databaseSettings = new DatabaseSettings();
-        TitleLinkDao dataObject = AccessObjectFactory.getDataAccessObject(databaseSettings);
+        dataObject = getDataObject();
         if (dataObject == null)
             return;
 
@@ -212,6 +214,43 @@ public class MainFrame extends JFrame
         });
 
         linkProcessor.execute();
+    }
+    
+    private TitleLinkFao getFileObject(File selectedFile)
+    {
+        TitleLinkFao object = null;
+    
+        try
+        {
+            fileSettings.load();
+            fileSettings.setFile(selectedFile);
+            object = AccessObjectFactory.getFileAccessObject(fileSettings);
+        }
+        catch (Exception e)
+        {
+            if (logTableModel != null)
+                logTableModel.addRow(new LogEvent(e));
+        }
+        
+        return object;
+    }
+    
+    private TitleLinkDao getDataObject()
+    {
+        TitleLinkDao object = null;
+        
+        try
+        {
+            dbSettings.load();
+            object = AccessObjectFactory.getDataAccessObject(dbSettings);
+        }
+        catch (Exception e)
+        {
+            if (logTableModel != null)
+                logTableModel.addRow(new LogEvent(e));
+        }
+        
+        return object;
     }
 
     private void doForWorkerEvent(PropertyChangeEvent event)

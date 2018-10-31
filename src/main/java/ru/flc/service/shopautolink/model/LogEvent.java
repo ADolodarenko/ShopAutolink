@@ -23,6 +23,11 @@ public class LogEvent
 
         this.dateTime = LocalDateTime.now();
     }
+    
+    public LogEvent(Exception exception)
+    {
+        this(exception.getMessage());
+    }
 
     public LocalDateTime getDateTime()
     {
