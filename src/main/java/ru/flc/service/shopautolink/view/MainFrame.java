@@ -32,7 +32,7 @@ public class MainFrame extends JFrame
 
     private ResourceManager resourceManager;
     private TitleAdjuster titleAdjuster;
-    private ButtonsManager buttonsManager;
+    private MainFrameButtonsManager buttonsManager;
     
     private ViewSettings viewSettings;
     private DatabaseSettings dbSettings;
@@ -57,6 +57,7 @@ public class MainFrame extends JFrame
         initFrame();
     }
 
+
     private void loadSettings()
     {
         viewSettings = new ViewSettings(WIN_PREF_SIZE);
@@ -68,7 +69,7 @@ public class MainFrame extends JFrame
     {
         resourceManager = SAResourceManager.getInstance();
         titleAdjuster = new TitleAdjuster();
-        buttonsManager = new ButtonsManager(COMMAND_PANEL_PREF_SIZE, BUTTON_MAX_SIZE,
+        buttonsManager = new MainFrameButtonsManager(COMMAND_PANEL_PREF_SIZE, BUTTON_MAX_SIZE,
                 resourceManager, titleAdjuster);
         
         initFileChooser();
@@ -128,8 +129,7 @@ public class MainFrame extends JFrame
         }
         catch (Exception e)
         {
-            if (logTableModel != null)
-                logTableModel.addRow(new LogEvent(e));
+            log(e);
         }
 
         addWindowListener(new WindowAdapter()
@@ -138,10 +138,26 @@ public class MainFrame extends JFrame
             public void windowClosing(WindowEvent e)
             {
                 //cancelSearch();
-                //setWindowAttributes();
-                //saveProperties();
+                updateViewSettings();
             }
         });
+    }
+
+    private void updateViewSettings()
+    {
+        viewSettings.setAppLocale(resourceManager.getCurrentLocale());
+        viewSettings.setMainWindowMaximized(getExtendedState() == JFrame.MAXIMIZED_BOTH);
+        viewSettings.setMainWindowPosition(getBounds().getLocation());
+        viewSettings.setMainWindowSize(getSize());
+
+        try
+        {
+            viewSettings.save();
+        }
+        catch (Exception e)
+        {
+            log(e);
+        }
     }
 
     public JPanel initCommandPanel()
@@ -228,8 +244,7 @@ public class MainFrame extends JFrame
         }
         catch (Exception e)
         {
-            if (logTableModel != null)
-                logTableModel.addRow(new LogEvent(e));
+            log(e);
         }
         
         return object;
@@ -246,8 +261,7 @@ public class MainFrame extends JFrame
         }
         catch (Exception e)
         {
-            if (logTableModel != null)
-                logTableModel.addRow(new LogEvent(e));
+            log(e);
         }
         
         return object;
@@ -285,6 +299,18 @@ public class MainFrame extends JFrame
     {
         buttonsManager.activateButtons();
     	processLabel.setIcon(null);
+    }
+
+    public void setFocus()
+    {
+        if (logTable != null)
+            logTable.requestFocus();
+    }
+
+    public void log(Exception e)
+    {
+        if (logTableModel != null)
+            logTableModel.addRow(new LogEvent(e));
     }
 
     private class LoadTitleLinksListener implements ActionListener

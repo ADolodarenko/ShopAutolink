@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public class SettingsManager
 {
-    public static final String PARAM_NAME_APP_LOCALE = "ApplicationLocale";
+    public static final String PARAM_NAME_APP_LANGUAGE = "Language";
     public static final String PARAM_NAME_MAIN_WIN_X = "MainWindowX";
     public static final String PARAM_NAME_MAIN_WIN_Y = "MainWindowY";
     public static final String PARAM_NAME_MAIN_WIN_MAXIMIZED = "MainWindowMaximized";

@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class ButtonsManager
+public class MainFrameButtonsManager
 {
     private Dimension prefButtonsPanelSize;
     private Dimension maxButtonSize;
@@ -20,8 +20,8 @@ public class ButtonsManager
     private JButton linkPositionsButton;
     private JButton settingsButton;
 
-    public ButtonsManager(Dimension prefButtonsPanelSize, Dimension maxButtonSize,
-                          ResourceManager resourceManager, TitleAdjuster titleAdjuster)
+    public MainFrameButtonsManager(Dimension prefButtonsPanelSize, Dimension maxButtonSize,
+                                   ResourceManager resourceManager, TitleAdjuster titleAdjuster)
     {
         this.prefButtonsPanelSize = prefButtonsPanelSize;
         this.maxButtonSize = maxButtonSize;
