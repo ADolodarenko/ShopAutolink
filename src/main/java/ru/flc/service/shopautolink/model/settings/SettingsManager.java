@@ -30,29 +30,49 @@ public class SettingsManager
     private static ResourceManager resourceManager = SAResourceManager.getInstance();
     private static Properties properties = new Properties();
 
-    public static boolean hasParameter(String key)
+    public static boolean hasValue(String key)
     {
         return properties.containsKey(key);
     }
     
-    public static String getStringParameter(String key)
+    public static String getStringValue(String key)
     {
         return properties.getProperty(key);
     }
 
-    public static void setStringParameter(String key, String value)
+    public static void setStringValue(String key, String value)
     {
         properties.setProperty(key, value);
     }
 
-    public static int getIntParameter(String key) throws NumberFormatException
+    public static int getIntValue(String key) throws NumberFormatException
     {
-        return Integer.parseInt(getStringParameter(key));
+        return Integer.parseInt(getStringValue(key));
     }
 
-    public static void setIntParameter(String key, int value)
+    public static void setIntValue(String key, int value)
     {
-        setStringParameter(key, String.valueOf(value));
+        setStringValue(key, String.valueOf(value));
+    }
+
+    public static Boolean getBooleanValue(String key)
+    {
+        return Boolean.parseBoolean(getStringValue(key));
+    }
+
+    public static void setBooleanValue(String key, boolean value)
+    {
+        setStringValue(key, String.valueOf(value));
+    }
+
+    public static Double getDoubleValue(String key) throws NumberFormatException
+    {
+        return Double.parseDouble(getStringValue(key));
+    }
+
+    public static void setDoubleValue(String key, double value)
+    {
+        setStringValue(key, String.valueOf(value));
     }
 
     public static void loadSettings() throws IOException

@@ -12,13 +12,13 @@ public class FileSettings implements Settings
 	{
 		SettingsManager.loadSettings();
 		
-		packSize = SettingsManager.getIntParameter(SettingsManager.PARAM_NAME_PACK_SIZE);
+		packSize = SettingsManager.getIntValue(SettingsManager.PARAM_NAME_PACK_SIZE);
 	}
 
 	@Override
 	public void save() throws Exception
 	{
-		SettingsManager.setIntParameter(SettingsManager.PARAM_NAME_PACK_SIZE, packSize);
+		SettingsManager.setIntValue(SettingsManager.PARAM_NAME_PACK_SIZE, packSize);
 
 		SettingsManager.saveSettings();
 	}
