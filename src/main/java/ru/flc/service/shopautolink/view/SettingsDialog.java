@@ -3,9 +3,7 @@ package ru.flc.service.shopautolink.view;
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
-import ru.flc.service.shopautolink.model.settings.DatabaseSettings;
-import ru.flc.service.shopautolink.model.settings.FileSettings;
-import ru.flc.service.shopautolink.model.settings.Settings;
+import ru.flc.service.shopautolink.model.settings.*;
 
 import javax.swing.*;
 import java.util.LinkedList;
@@ -18,9 +16,9 @@ public class SettingsDialog extends JDialog
     private ResourceManager resourceManager;
     private TitleAdjuster titleAdjuster;
 
-    private DatabaseSettings dbSettings;
-    private FileSettings fileSettings;
-    private List<Settings> settingsList;
+    private DatabaseSettingsAlt dbSettings;
+    private FileSettingsAlt fileSettings;
+    private List<TransmissiveSettings> settingsList;
 
     private JButton okButton;
     private JButton cancelButton;
@@ -29,8 +27,8 @@ public class SettingsDialog extends JDialog
     {
         super(parent, "", true);
 
-        dbSettings = new DatabaseSettings();
-        fileSettings = new FileSettings();
+        dbSettings = new DatabaseSettingsAlt(resourceManager);
+        fileSettings = new FileSettingsAlt(resourceManager);
 
         settingsList = new LinkedList<>();
         settingsList.add(dbSettings);

@@ -1,27 +1,13 @@
 package ru.flc.service.shopautolink.model.settings;
 
 import org.dav.service.util.ResourceManager;
-import org.dav.service.view.Title;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class DatabaseSettingsAlt implements Settings
+public class DatabaseSettingsAlt extends TransmissiveSettings
 {
-    private static final String RESOURCE_MANAGER_EXCEPTION_STRING = "Resource manager is empty.";
-    private static final String VALUE_TYPE_EXCEPTION_STRING = "Wrong value type.";
-
-    private ResourceManager resourceManager;
-    private Map<String, ParameterAlt> paramMap;
-
     public DatabaseSettingsAlt(ResourceManager resourceManager)
-    {
-        if (resourceManager == null)
-            throw new IllegalArgumentException(RESOURCE_MANAGER_EXCEPTION_STRING);
-
-        this.resourceManager = resourceManager;
-        paramMap = new HashMap<>();
-    }
+	{
+		super(resourceManager);
+	}
 
     @Override
     public void load() throws Exception
@@ -114,30 +100,7 @@ public class DatabaseSettingsAlt implements Settings
         return ((Integer) paramMap.get(SettingsManager.PARAM_NAME_PRICE_LIST).getValue());
     }
 
-    private void loadParameter(String keyString, Class<?> cl) throws Exception
-    {
-        paramMap.put(keyString, getParameter(keyString, cl));
-    }
+    
 
-    private ParameterAlt getParameter(String keyString, Class<?> cl) throws Exception
-    {
-        Title key = new Title(resourceManager, keyString);
-        Object value = null;
-
-        String className = cl.getSimpleName();
-
-        if ("Boolean".equals(className))
-            value = SettingsManager.getBooleanValue(keyString);
-        else if ("Integer".equals(className))
-            value = SettingsManager.getIntValue(keyString);
-        else if ("Double".equals(className))
-            value = SettingsManager.getDoubleValue(keyString);
-        else if ("String".equals(className))
-            value = SettingsManager.getStringValue(keyString);
-
-        if (value == null)
-            throw new Exception(VALUE_TYPE_EXCEPTION_STRING);
-
-        return new ParameterAlt(key, value, cl);
-    }
+    
 }

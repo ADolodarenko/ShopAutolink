@@ -1,7 +1,7 @@
 package ru.flc.service.shopautolink.model.logic;
 
 import ru.flc.service.shopautolink.model.LogEvent;
-import ru.flc.service.shopautolink.model.LogEventTableModel;
+import ru.flc.service.shopautolink.view.table.LogEventTableModel;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkDao;
 
 import javax.swing.*;

@@ -4,6 +4,11 @@ import org.dav.service.view.Title;
 
 public class ParameterAlt
 {
+	public static final String PARAM_NAME_STRING = "ColumnParamNameTitle";
+	public static final String PARAM_VALUE_STRING = "ColumnParamValueTitle";
+	
+	public static final int FIELD_QUANTITY = 2;
+	
     private static final String PARAM_KEY_EXCEPTION_STRING = "Parameter key is empty.";
     private static final String PARAM_VALUE_EXCEPTION_STRING = "Parameter value is empty.";
     private static final String PARAM_TYPE_EXCEPTION_STRING = "Parameter type is empty.";
