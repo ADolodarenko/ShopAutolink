@@ -2,7 +2,8 @@ package ru.flc.service.shopautolink.view.table;
 
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
-import ru.flc.service.shopautolink.model.settings.ParameterAlt;
+import ru.flc.service.shopautolink.model.settings.parameter.ParameterAlt;
+import ru.flc.service.shopautolink.view.Constants;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -10,15 +11,14 @@ import java.util.List;
 
 public class SettingsTableModel extends AbstractTableModel
 {
-	private static final String RESOURCE_MANAGER_EXCEPTION_STRING = "Resource manager is empty.";
+	private ResourceManager resourceManager;
+	private List<ParameterAlt> data;
+	private Title[] titles;
 	
-    private List<ParameterAlt> data;
-    private ResourceManager resourceManager;
-	
-	public SettingsTableModel(ResourceManager resourceManager, List<ParameterAlt> data)
+	public SettingsTableModel(ResourceManager resourceManager, String[] titleKeys, List<ParameterAlt> data)
 	{
 		if (resourceManager == null)
-			throw new IllegalArgumentException(RESOURCE_MANAGER_EXCEPTION_STRING);
+			throw new IllegalArgumentException(Constants.EXCPT_RESOURCE_MANAGER_EMPTY);
 		
 		this.resourceManager = resourceManager;
 		
@@ -27,7 +27,20 @@ public class SettingsTableModel extends AbstractTableModel
 		else
 			this.data = new ArrayList<>();
 		
+		initColumnTitle(titleKeys);
+		
 		fireTableDataChanged();
+	}
+	
+	private void initColumnTitle(String[] titleKeys)
+	{
+		if (titleKeys != null)
+		{
+			titles = new Title[titleKeys.length];
+			
+			for (int i = 0; i < titleKeys.length; i++)
+				titles[i] = new Title(resourceManager, titleKeys[i]);
+		}
 	}
     
     @Override
@@ -39,7 +52,10 @@ public class SettingsTableModel extends AbstractTableModel
     @Override
     public int getColumnCount()
     {
-        return ParameterAlt.FIELD_QUANTITY;
+    	if (titles != null)
+    		return titles.length;
+    	else
+    		return 0;
     }
 
     @Override
@@ -67,17 +83,37 @@ public class SettingsTableModel extends AbstractTableModel
     }
 	
 	@Override
+	public boolean isCellEditable(int rowIndex, int columnIndex)
+	{
+		return columnIndex > 0;
+	}
+	
+	@Override
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+	{
+		if (isCellEditable(rowIndex, columnIndex))
+		{
+			if (rowIndex < getRowCount())
+			{
+				ParameterAlt row = data.get(rowIndex);
+				
+				try
+				{
+					row.setValue(aValue);
+				}
+				catch (IllegalArgumentException e)
+				{}
+			}
+		}
+	}
+	
+	@Override
 	public String getColumnName(int column)
 	{
-		switch (column)
-		{
-			case 0:
-				return Title.getTitleString(resourceManager.getBundle(), ParameterAlt.PARAM_NAME_STRING);
-			case 1:
-				return Title.getTitleString(resourceManager.getBundle(), ParameterAlt.PARAM_VALUE_STRING);
-			default:
-				return null;
-		}
+		if (titles != null && titles.length > column)
+			return titles[column].getText();
+		else
+			return "";
 	}
 	
 	public void addRow(ParameterAlt row)
@@ -85,6 +121,19 @@ public class SettingsTableModel extends AbstractTableModel
 		int index = data.size();
 		data.add(row);
 		fireTableRowsInserted(index, index);
+	}
+	
+	public void addAllRows(List<ParameterAlt> rowList)
+	{
+		if (rowList != null && !rowList.isEmpty())
+		{
+			int firstIndex = data.size();
+			int lastIndex = firstIndex + rowList.size() - 1;
+			
+			data.addAll(rowList);
+			
+			fireTableRowsInserted(firstIndex, lastIndex);
+		}
 	}
 	
 	public ParameterAlt getRow(int rowIndex)

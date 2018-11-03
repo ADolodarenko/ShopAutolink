@@ -1,6 +1,7 @@
 package ru.flc.service.shopautolink.model.settings;
 
 import org.dav.service.view.Title;
+import ru.flc.service.shopautolink.view.Constants;
 
 public class DatabaseSettings implements Settings, ValueGetter
 {
@@ -15,39 +16,45 @@ public class DatabaseSettings implements Settings, ValueGetter
     private String storedProcedureName = "dav_tmp_proc";  //usp_shop_prod_buff_add
     private int channelId = 729;
     private int priceId = 28;
-
+    
+    @Override
+    public void init() throws Exception
+    {
+        //
+    }
+    
     @Override
     public void load() throws Exception
     {
         SettingsManager.loadSettings();
 
-        driverName = SettingsManager.getStringValue(SettingsManager.PARAM_NAME_DB_DRIVER);
-        connectionPrefix = SettingsManager.getStringValue(SettingsManager.PARAM_NAME_DB_CONN_PREF);
-        host = SettingsManager.getStringValue(SettingsManager.PARAM_NAME_DB_HOST);
-        port = SettingsManager.getIntValue(SettingsManager.PARAM_NAME_DB_PORT);
-        catalog = SettingsManager.getStringValue(SettingsManager.PARAM_NAME_DB_CATALOG);
-        userName = SettingsManager.getStringValue(SettingsManager.PARAM_NAME_DB_USER);
-        password = SettingsManager.getStringValue(SettingsManager.PARAM_NAME_DB_PASSWORD);
-        tableName = SettingsManager.getStringValue(SettingsManager.PARAM_NAME_DB_TABLE);
-        storedProcedureName = SettingsManager.getStringValue(SettingsManager.PARAM_NAME_DB_SP);
-        channelId = SettingsManager.getIntValue(SettingsManager.PARAM_NAME_CHANNEL);
-        priceId = SettingsManager.getIntValue(SettingsManager.PARAM_NAME_PRICE_LIST);
+        driverName = SettingsManager.getStringValue(Constants.KEY_PARAM_DB_DRIVER);
+        connectionPrefix = SettingsManager.getStringValue(Constants.KEY_PARAM_DB_CONN_PREF);
+        host = SettingsManager.getStringValue(Constants.KEY_PARAM_DB_HOST);
+        port = SettingsManager.getIntValue(Constants.KEY_PARAM_DB_PORT);
+        catalog = SettingsManager.getStringValue(Constants.KEY_PARAM_DB_CATALOG);
+        userName = SettingsManager.getStringValue(Constants.KEY_PARAM_DB_USER);
+        password = SettingsManager.getStringValue(Constants.KEY_PARAM_DB_PASSWORD);
+        tableName = SettingsManager.getStringValue(Constants.KEY_PARAM_DB_TABLE);
+        storedProcedureName = SettingsManager.getStringValue(Constants.KEY_PARAM_DB_SP);
+        channelId = SettingsManager.getIntValue(Constants.KEY_PARAM_CHANNEL);
+        priceId = SettingsManager.getIntValue(Constants.KEY_PARAM_PRICE_LIST);
     }
 
     @Override
     public void save() throws Exception
     {
-        SettingsManager.setStringValue(SettingsManager.PARAM_NAME_DB_DRIVER, driverName);
-        SettingsManager.setStringValue(SettingsManager.PARAM_NAME_DB_CONN_PREF, connectionPrefix);
-        SettingsManager.setStringValue(SettingsManager.PARAM_NAME_DB_HOST, host);
-        SettingsManager.setIntValue(SettingsManager.PARAM_NAME_DB_PORT, port);
-        SettingsManager.setStringValue(SettingsManager.PARAM_NAME_DB_CATALOG, catalog);
-        SettingsManager.setStringValue(SettingsManager.PARAM_NAME_DB_USER, userName);
-        SettingsManager.setStringValue(SettingsManager.PARAM_NAME_DB_PASSWORD, password);
-        SettingsManager.setStringValue(SettingsManager.PARAM_NAME_DB_TABLE, tableName);
-        SettingsManager.setStringValue(SettingsManager.PARAM_NAME_DB_SP, storedProcedureName);
-        SettingsManager.setIntValue(SettingsManager.PARAM_NAME_CHANNEL, channelId);
-        SettingsManager.setIntValue(SettingsManager.PARAM_NAME_PRICE_LIST, priceId);
+        SettingsManager.setStringValue(Constants.KEY_PARAM_DB_DRIVER, driverName);
+        SettingsManager.setStringValue(Constants.KEY_PARAM_DB_CONN_PREF, connectionPrefix);
+        SettingsManager.setStringValue(Constants.KEY_PARAM_DB_HOST, host);
+        SettingsManager.setIntValue(Constants.KEY_PARAM_DB_PORT, port);
+        SettingsManager.setStringValue(Constants.KEY_PARAM_DB_CATALOG, catalog);
+        SettingsManager.setStringValue(Constants.KEY_PARAM_DB_USER, userName);
+        SettingsManager.setStringValue(Constants.KEY_PARAM_DB_PASSWORD, password);
+        SettingsManager.setStringValue(Constants.KEY_PARAM_DB_TABLE, tableName);
+        SettingsManager.setStringValue(Constants.KEY_PARAM_DB_SP, storedProcedureName);
+        SettingsManager.setIntValue(Constants.KEY_PARAM_CHANNEL, channelId);
+        SettingsManager.setIntValue(Constants.KEY_PARAM_PRICE_LIST, priceId);
 
         SettingsManager.saveSettings();
     }

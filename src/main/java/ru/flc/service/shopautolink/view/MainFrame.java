@@ -39,6 +39,7 @@ public class MainFrame extends JFrame
     private FileSettings fileSettings;
     
     private JFileChooser fileChooser;
+    private SettingsDialog settingsDialog;
     
     private TitleLinkFao fileObject;
     private TitleLinkDao dataObject;
@@ -170,7 +171,7 @@ public class MainFrame extends JFrame
 		panel.add(Box.createRigidArea(new Dimension(0, 1)));
         panel.add(buttonsManager.getLinkPositionsButton(new ProcessTitleLinksListener()));
 		panel.add(Box.createRigidArea(new Dimension(0, 1)));
-		panel.add(buttonsManager.getSettingsButton(null));
+		panel.add(buttonsManager.getSettingsButton(new ShowSettingsListener()));
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         processLabel = new JLabel();
@@ -231,6 +232,25 @@ public class MainFrame extends JFrame
 
         linkProcessor.execute();
     }
+    
+    private void showSettings()
+	{
+		if (settingsDialog == null)
+		{
+			try
+			{
+				settingsDialog = new SettingsDialog(this, resourceManager);
+				settingsDialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+			}
+			catch (Exception e)
+			{
+				log(e);
+			}
+		}
+		
+		if (settingsDialog != null)
+			settingsDialog.setVisible(true);
+	}
     
     private TitleLinkFao getFileObject(File selectedFile)
     {
@@ -332,4 +352,14 @@ public class MainFrame extends JFrame
             processTitleLinks();
         }
     }
+    
+    private class ShowSettingsListener implements ActionListener
+	{
+		
+		@Override
+		public void actionPerformed(ActionEvent e)
+		{
+			showSettings();
+		}
+	}
 }

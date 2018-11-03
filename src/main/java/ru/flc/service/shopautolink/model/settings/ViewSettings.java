@@ -1,6 +1,7 @@
 package ru.flc.service.shopautolink.model.settings;
 
 import ru.flc.service.shopautolink.SAResourceManager;
+import ru.flc.service.shopautolink.view.Constants;
 
 import java.awt.*;
 import java.util.Locale;
@@ -18,8 +19,14 @@ public class ViewSettings implements Settings
 	{
 		this.mainWindowPreferredSize = mainWindowPreferredSize;
 	}
-
-    @Override
+	
+	@Override
+	public void init() throws Exception
+	{
+		//Nothing
+	}
+	
+	@Override
     public void load() throws Exception
     {
         SettingsManager.loadSettings();
@@ -33,22 +40,22 @@ public class ViewSettings implements Settings
 	@Override
     public void save() throws Exception
     {
-    	SettingsManager.setStringValue(SettingsManager.PARAM_NAME_APP_LANGUAGE, appLocale.getLanguage());
+    	SettingsManager.setStringValue(Constants.KEY_PARAM_APP_LANGUAGE, appLocale.getLanguage());
 
-    	SettingsManager.setStringValue(SettingsManager.PARAM_NAME_MAIN_WIN_MAXIMIZED, String.valueOf(mainWindowMaximized));
+    	SettingsManager.setStringValue(Constants.KEY_PARAM_MAIN_WIN_MAXIMIZED, String.valueOf(mainWindowMaximized));
 
-    	SettingsManager.setIntValue(SettingsManager.PARAM_NAME_MAIN_WIN_X, mainWindowPosition.x);
-    	SettingsManager.setIntValue(SettingsManager.PARAM_NAME_MAIN_WIN_Y, mainWindowPosition.y);
+    	SettingsManager.setIntValue(Constants.KEY_PARAM_MAIN_WIN_X, mainWindowPosition.x);
+    	SettingsManager.setIntValue(Constants.KEY_PARAM_MAIN_WIN_Y, mainWindowPosition.y);
 
-    	SettingsManager.setIntValue(SettingsManager.PARAM_NAME_MAIN_WIN_WIDTH, mainWindowSize.width);
-    	SettingsManager.setIntValue(SettingsManager.PARAM_NAME_MAIN_WIN_HEIGHT, mainWindowSize.height);
+    	SettingsManager.setIntValue(Constants.KEY_PARAM_MAIN_WIN_WIDTH, mainWindowSize.width);
+    	SettingsManager.setIntValue(Constants.KEY_PARAM_MAIN_WIN_HEIGHT, mainWindowSize.height);
 
     	SettingsManager.saveSettings();
     }
 		
 	private void loadLocale()
 	{
-		String localeString = SettingsManager.getStringValue(SettingsManager.PARAM_NAME_APP_LANGUAGE);
+		String localeString = SettingsManager.getStringValue(Constants.KEY_PARAM_APP_LANGUAGE);
 		
 		if ("RU".equalsIgnoreCase(localeString))
 			appLocale = SAResourceManager.RUS_LOCALE;
@@ -58,7 +65,7 @@ public class ViewSettings implements Settings
 	
 	private void loadMainWindowMaximized()
 	{
-		String maximizedString = SettingsManager.getStringValue(SettingsManager.PARAM_NAME_MAIN_WIN_MAXIMIZED);
+		String maximizedString = SettingsManager.getStringValue(Constants.KEY_PARAM_MAIN_WIN_MAXIMIZED);
 		
 		if ("TRUE".equalsIgnoreCase(maximizedString))
 			mainWindowMaximized = true;
@@ -69,12 +76,12 @@ public class ViewSettings implements Settings
 	private void loadMainWindowPosition()
 	{
 		int x = 0;
-		if (SettingsManager.hasValue(SettingsManager.PARAM_NAME_MAIN_WIN_X))
-			x = SettingsManager.getIntValue(SettingsManager.PARAM_NAME_MAIN_WIN_X);
+		if (SettingsManager.hasValue(Constants.KEY_PARAM_MAIN_WIN_X))
+			x = SettingsManager.getIntValue(Constants.KEY_PARAM_MAIN_WIN_X);
 		
 		int y = 0;
-		if (SettingsManager.hasValue(SettingsManager.PARAM_NAME_MAIN_WIN_Y))
-			y = SettingsManager.getIntValue(SettingsManager.PARAM_NAME_MAIN_WIN_Y);
+		if (SettingsManager.hasValue(Constants.KEY_PARAM_MAIN_WIN_Y))
+			y = SettingsManager.getIntValue(Constants.KEY_PARAM_MAIN_WIN_Y);
 		
 		mainWindowPosition = new Point(x, y);
 	}
@@ -82,12 +89,12 @@ public class ViewSettings implements Settings
 	private void loadMainWindowSize()
 	{
 		int width = 0;
-		if (SettingsManager.hasValue(SettingsManager.PARAM_NAME_MAIN_WIN_WIDTH))
-			width = SettingsManager.getIntValue(SettingsManager.PARAM_NAME_MAIN_WIN_WIDTH);
+		if (SettingsManager.hasValue(Constants.KEY_PARAM_MAIN_WIN_WIDTH))
+			width = SettingsManager.getIntValue(Constants.KEY_PARAM_MAIN_WIN_WIDTH);
 		
 		int height = 0;
-		if (SettingsManager.hasValue(SettingsManager.PARAM_NAME_MAIN_WIN_HEIGHT))
-			height = SettingsManager.getIntValue(SettingsManager.PARAM_NAME_MAIN_WIN_HEIGHT);
+		if (SettingsManager.hasValue(Constants.KEY_PARAM_MAIN_WIN_HEIGHT))
+			height = SettingsManager.getIntValue(Constants.KEY_PARAM_MAIN_WIN_HEIGHT);
 		
 		if (width > 0 && height > 0)
 			mainWindowSize = new Dimension(width, height);

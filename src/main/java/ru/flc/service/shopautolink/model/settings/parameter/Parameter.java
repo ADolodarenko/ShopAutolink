@@ -1,6 +1,9 @@
-package ru.flc.service.shopautolink.model.settings;
+package ru.flc.service.shopautolink.model.settings.parameter;
 
 import org.dav.service.view.Title;
+import ru.flc.service.shopautolink.model.settings.ValueGetter;
+import ru.flc.service.shopautolink.model.settings.ValueSetter;
+import ru.flc.service.shopautolink.model.settings.ValueType;
 
 /**
  * This is some kind of streak between an 'interface' class, like an AbstractTableModel successor, and a settings storage of any type.

@@ -73,9 +73,9 @@ public class LogEventTableModel extends AbstractTableModel
 		switch (column)
 		{
 			case 0:
-				return Title.getTitleString(resourceManager.getBundle(), LogEvent.DATE_TIME_STRING);
+				return new Title(resourceManager, LogEvent.DATE_TIME_STRING).getText();
 			case 1:
-				return Title.getTitleString(resourceManager.getBundle(), LogEvent.TEXT_STRING);
+				return new Title(resourceManager, LogEvent.TEXT_STRING).getText();
 			default:
 				return null;
 		}
