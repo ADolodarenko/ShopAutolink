@@ -5,6 +5,7 @@ import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
 import ru.flc.service.shopautolink.model.settings.*;
 import ru.flc.service.shopautolink.model.settings.parameter.ParameterAlt;
+import ru.flc.service.shopautolink.view.table.SettingsTable;
 import ru.flc.service.shopautolink.view.table.SettingsTableModel;
 
 import javax.swing.*;
@@ -24,7 +25,7 @@ public class SettingsDialog extends JDialog
     private List<TransmissiveSettings> settingsList;
     
     private SettingsTableModel tableModel;
-    private JTable table;
+    private SettingsTable table;
 
     private JButton okButton;
     private JButton cancelButton;
@@ -61,7 +62,8 @@ public class SettingsDialog extends JDialog
     private JPanel initSettingsPanel()
 	{
 		tableModel = new SettingsTableModel(resourceManager, ParameterAlt.getTitleKeys(), null);
-		table = new JTable(tableModel);
+		
+		table = new SettingsTable(tableModel);
 		
 		JScrollPane tablePane = new JScrollPane(table);
 		

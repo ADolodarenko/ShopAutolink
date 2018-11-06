@@ -210,11 +210,8 @@ public class MainFrame extends JFrame
                 return;
 
             linkLoader = new TitleLinkLoader(fileObject, dataObject, logTableModel);
-            linkLoader.getPropertyChangeSupport().addPropertyChangeListener("state", evt ->
-            {
-                doForWorkerEvent(evt);
-            });
-
+            linkLoader.getPropertyChangeSupport().addPropertyChangeListener("state",
+					evt -> doForWorkerEvent(evt) );
             linkLoader.execute();
         }
     }
@@ -226,10 +223,8 @@ public class MainFrame extends JFrame
             return;
 
         linkProcessor = new TitleLinkProcessor(dataObject, logTableModel);
-        linkProcessor.getPropertyChangeSupport().addPropertyChangeListener("state", evt -> {
-            doForWorkerEvent(evt);
-        });
-
+        linkProcessor.getPropertyChangeSupport().addPropertyChangeListener("state",
+				evt -> doForWorkerEvent(evt) );
         linkProcessor.execute();
     }
     
