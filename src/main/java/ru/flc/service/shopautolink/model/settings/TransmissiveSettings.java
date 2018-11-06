@@ -13,8 +13,6 @@ import java.util.Map;
 
 public abstract class TransmissiveSettings implements Settings
 {
-	private static final String VALUE_TYPE_EXCEPTION_STRING = "Wrong value type.";
-	
 	private ResourceManager resourceManager;
 	protected Map<String, ParameterAlt> paramMap;
 	protected ParameterHeader[] headers;
@@ -77,7 +75,7 @@ public abstract class TransmissiveSettings implements Settings
 			value = "";
 		
 		if (value == null)
-			throw new Exception(VALUE_TYPE_EXCEPTION_STRING);
+			throw new Exception(Constants.EXCPT_VALUE_TYPE_WRONG);
 		
 		return new ParameterAlt(resourceManager, key, value, cl);
 	}
@@ -107,7 +105,7 @@ public abstract class TransmissiveSettings implements Settings
 		}
 		
 		if (value == null)
-			throw new Exception(VALUE_TYPE_EXCEPTION_STRING);
+			throw new Exception(Constants.EXCPT_VALUE_TYPE_WRONG);
 		
 		return new ParameterAlt(resourceManager, key, value, cl);
 	}

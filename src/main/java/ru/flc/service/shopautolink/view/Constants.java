@@ -2,16 +2,18 @@ package ru.flc.service.shopautolink.view;
 
 public final class Constants
 {
-	public static final String KEY_PARAM_TITLE_NAME = "ColumnParamNameTitle";
-	public static final String KEY_PARAM_TITLE_VALUE = "ColumnParamValueTitle";
-	
+    //Exceptions of any kind
 	public static final String EXCPT_RESOURCE_MANAGER_EMPTY = "Resource manager is empty.";
+    public static final String EXCPT_VALUE_TYPE_WRONG = "Wrong value type.";
 	
 	//For ParameterAlt class
 	public static final String EXCPT_PARAM_KEY_EMPTY = "Parameter key is empty.";
 	public static final String EXCPT_PARAM_VALUE_EMPTY = "Parameter value is empty.";
 	public static final String EXCPT_PARAM_VALUE_WRONG = "Parameter value %s is wrong.";
 	public static final String EXCPT_PARAM_TYPE_EMPTY = "Parameter type is empty.";
+
+	public static final String KEY_PARAM_TITLE_NAME = "ColumnParamName";
+	public static final String KEY_PARAM_TITLE_VALUE = "ColumnParamValue";
 	
 	//For Settings hierarchy
 	public static final String KEY_PARAM_APP_LANGUAGE = "Language";
@@ -32,6 +34,11 @@ public final class Constants
 	public static final String KEY_PARAM_CHANNEL = "ChannelId";
 	public static final String KEY_PARAM_PRICE_LIST = "PriceListId";
 	public static final String KEY_PARAM_PACK_SIZE = "PacketSize";
-	
+
+	//For SettingsDialog
+    public static final String KEY_SETTINGS_DIALOG = "SettingsDialog";
+    public static final String KEY_BUTTON_OK = "OkButton";
+    public static final String KEY_BUTTON_CANCEL = "CancelButton";
+
 	private Constants(){}
 }

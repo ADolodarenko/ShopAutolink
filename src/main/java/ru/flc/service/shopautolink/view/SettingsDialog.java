@@ -8,7 +8,6 @@ import ru.flc.service.shopautolink.model.settings.parameter.ParameterAlt;
 import ru.flc.service.shopautolink.view.table.SettingsTableModel;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,12 +46,16 @@ public class SettingsDialog extends JDialog
         settingsList.add(fileSettings);
 
         initComponents();
+
+        setResizable(false);
     }
 
     private void initComponents()
     {
     	add(initSettingsPanel(), BorderLayout.CENTER);
     	add(initCommandPanel(), BorderLayout.SOUTH);
+
+        titleAdjuster.registerComponent(this, new Title(resourceManager, Constants.KEY_SETTINGS_DIALOG));
     }
     
     private JPanel initSettingsPanel()
@@ -63,9 +66,7 @@ public class SettingsDialog extends JDialog
 		JScrollPane tablePane = new JScrollPane(table);
 		
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(),
-				"", TitledBorder.TOP, TitledBorder.CENTER));
-		titleAdjuster.registerComponent(panel, new Title(resourceManager, "SettingsPanelTitle"));
+		panel.setBorder(BorderFactory.createEtchedBorder());
 		panel.add(tablePane, BorderLayout.CENTER);
 		
 		return panel;
@@ -87,12 +88,12 @@ public class SettingsDialog extends JDialog
     private void initButtons()
     {
         okButton = new JButton();
-        titleAdjuster.registerComponent(okButton, new Title(resourceManager, "Ok_Button_Title"));
+        titleAdjuster.registerComponent(okButton, new Title(resourceManager, Constants.KEY_BUTTON_OK));
         okButton.setIcon(resourceManager.getImageIcon("button-ok.png"));
         okButton.addActionListener(event -> saveAndExit());
 
         cancelButton = new JButton();
-        titleAdjuster.registerComponent(cancelButton, new Title(resourceManager, "Cancel_Button_Title"));
+        titleAdjuster.registerComponent(cancelButton, new Title(resourceManager, Constants.KEY_BUTTON_CANCEL));
         cancelButton.setIcon(resourceManager.getImageIcon("button-cancel.png"));
         cancelButton.addActionListener(event -> exit());
     }
@@ -121,11 +122,11 @@ public class SettingsDialog extends JDialog
 			
 			if (!allSettingsList.isEmpty())
 				tableModel.addAllRows(allSettingsList);
+
+			titleAdjuster.resetComponents();
+			pack();
+			setLocationRelativeTo(parent);
 		}
-		
-		pack();
-	
-		setLocationRelativeTo(parent);
 
         super.setVisible(b);
     }
