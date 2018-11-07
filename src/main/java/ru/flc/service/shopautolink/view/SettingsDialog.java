@@ -4,7 +4,7 @@ import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
 import ru.flc.service.shopautolink.model.settings.*;
-import ru.flc.service.shopautolink.model.settings.parameter.ParameterAlt;
+import ru.flc.service.shopautolink.model.settings.parameter.Parameter;
 import ru.flc.service.shopautolink.view.table.SettingsTable;
 import ru.flc.service.shopautolink.view.table.SettingsTableModel;
 
@@ -20,8 +20,8 @@ public class SettingsDialog extends JDialog
     private ResourceManager resourceManager;
     private TitleAdjuster titleAdjuster;
 
-    private DatabaseSettingsAlt dbSettings;
-    private FileSettingsAlt fileSettings;
+    private DatabaseSettings dbSettings;
+    private FileSettings fileSettings;
     private List<TransmissiveSettings> settingsList;
     
     private SettingsTableModel tableModel;
@@ -39,8 +39,8 @@ public class SettingsDialog extends JDialog
         this.resourceManager = resourceManager;
         this.titleAdjuster = new TitleAdjuster();
 
-        dbSettings = new DatabaseSettingsAlt(this.resourceManager);
-        fileSettings = new FileSettingsAlt(this.resourceManager);
+        dbSettings = new DatabaseSettings(this.resourceManager);
+        fileSettings = new FileSettings(this.resourceManager);
 
         settingsList = new LinkedList<>();
         settingsList.add(dbSettings);
@@ -61,7 +61,7 @@ public class SettingsDialog extends JDialog
     
     private JPanel initSettingsPanel()
 	{
-		tableModel = new SettingsTableModel(resourceManager, ParameterAlt.getTitleKeys(), null);
+		tableModel = new SettingsTableModel(resourceManager, Parameter.getTitleKeys(), null);
 		
 		table = new SettingsTable(tableModel);
 		
@@ -105,7 +105,7 @@ public class SettingsDialog extends JDialog
     {
         if (b)
 		{
-			List<ParameterAlt> allSettingsList = new LinkedList<>();
+			List<Parameter> allSettingsList = new LinkedList<>();
 			tableModel.clear();
 			
 			for (TransmissiveSettings settings : settingsList)

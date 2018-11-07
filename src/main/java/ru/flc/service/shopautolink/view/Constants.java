@@ -6,7 +6,7 @@ public final class Constants
 	public static final String EXCPT_RESOURCE_MANAGER_EMPTY = "Resource manager is empty.";
     public static final String EXCPT_VALUE_TYPE_WRONG = "Wrong value type.";
 	
-	//For ParameterAlt class
+	//For Parameter class
 	public static final String EXCPT_PARAM_KEY_EMPTY = "Parameter key is empty.";
 	public static final String EXCPT_PARAM_VALUE_EMPTY = "Parameter value is empty.";
 	public static final String EXCPT_PARAM_VALUE_WRONG = "Parameter value %s is wrong.";

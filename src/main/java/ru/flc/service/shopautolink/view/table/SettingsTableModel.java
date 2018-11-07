@@ -2,7 +2,7 @@ package ru.flc.service.shopautolink.view.table;
 
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
-import ru.flc.service.shopautolink.model.settings.parameter.ParameterAlt;
+import ru.flc.service.shopautolink.model.settings.parameter.Parameter;
 import ru.flc.service.shopautolink.view.Constants;
 
 import javax.swing.table.AbstractTableModel;
@@ -12,10 +12,10 @@ import java.util.List;
 public class SettingsTableModel extends AbstractTableModel
 {
 	private ResourceManager resourceManager;
-	private List<ParameterAlt> data;
+	private List<Parameter> data;
 	private Title[] titles;
 	
-	public SettingsTableModel(ResourceManager resourceManager, String[] titleKeys, List<ParameterAlt> data)
+	public SettingsTableModel(ResourceManager resourceManager, String[] titleKeys, List<Parameter> data)
 	{
 		if (resourceManager == null)
 			throw new IllegalArgumentException(Constants.EXCPT_RESOURCE_MANAGER_EMPTY);
@@ -65,7 +65,7 @@ public class SettingsTableModel extends AbstractTableModel
 	
 		if (rowIndex < getRowCount())
 		{
-			ParameterAlt row = data.get(rowIndex);
+			Parameter row = data.get(rowIndex);
 		
 			if (row != null)
 				switch (columnIndex)
@@ -95,7 +95,7 @@ public class SettingsTableModel extends AbstractTableModel
 		{
 			if (rowIndex < getRowCount())
 			{
-				ParameterAlt row = data.get(rowIndex);
+				Parameter row = data.get(rowIndex);
 				
 				try
 				{
@@ -116,14 +116,14 @@ public class SettingsTableModel extends AbstractTableModel
 			return "";
 	}
 	
-	public void addRow(ParameterAlt row)
+	public void addRow(Parameter row)
 	{
 		int index = data.size();
 		data.add(row);
 		fireTableRowsInserted(index, index);
 	}
 	
-	public void addAllRows(List<ParameterAlt> rowList)
+	public void addAllRows(List<Parameter> rowList)
 	{
 		if (rowList != null && !rowList.isEmpty())
 		{
@@ -136,12 +136,12 @@ public class SettingsTableModel extends AbstractTableModel
 		}
 	}
 	
-	public ParameterAlt getRow(int rowIndex)
+	public Parameter getRow(int rowIndex)
 	{
 		return data.get(rowIndex);
 	}
 	
-	public void removeRow(ParameterAlt row)
+	public void removeRow(Parameter row)
 	{
 		int index = data.indexOf(row);
 		

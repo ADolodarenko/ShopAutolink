@@ -49,7 +49,7 @@ public class AccessObjectFactory
 
         try
         {
-            source.tune(new DatabaseSettings());
+            source.tune(settings);
             object = new TitleLinkDao(source);
         }
         catch (Exception e)

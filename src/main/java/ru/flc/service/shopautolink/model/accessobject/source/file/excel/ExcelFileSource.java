@@ -108,8 +108,6 @@ public abstract class ExcelFileSource implements FileSource
 			return null;
 	}
 
-	
-
 	protected boolean hasNextRow()
 	{
 		return (workbook != null && sheet != null &&

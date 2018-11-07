@@ -5,15 +5,13 @@ import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
 import ru.flc.service.shopautolink.SAResourceManager;
 import ru.flc.service.shopautolink.model.LogEvent;
+import ru.flc.service.shopautolink.model.settings.*;
 import ru.flc.service.shopautolink.view.table.LogEventTableModel;
 import ru.flc.service.shopautolink.model.accessobject.AccessObjectFactory;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkDao;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkFao;
 import ru.flc.service.shopautolink.model.logic.TitleLinkLoader;
 import ru.flc.service.shopautolink.model.logic.TitleLinkProcessor;
-import ru.flc.service.shopautolink.model.settings.DatabaseSettings;
-import ru.flc.service.shopautolink.model.settings.FileSettings;
-import ru.flc.service.shopautolink.model.settings.ViewSettings;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -53,22 +51,58 @@ public class MainFrame extends JFrame
 
     public MainFrame()
     {
-        loadSettings();
+		resourceManager = SAResourceManager.getInstance();
+
+		loadAllSettings();
         initComponents();
         initFrame();
     }
 
-
-    private void loadSettings()
+    private void loadAllSettings()
     {
-        viewSettings = new ViewSettings(WIN_PREF_SIZE);
-        dbSettings = new DatabaseSettings();
-        fileSettings = new FileSettings();
+        loadViewSettings();
+        loadDatabaseSettings();
+        loadFileSettings();
     }
+
+    private void loadViewSettings()
+	{
+		try
+		{
+			viewSettings = new ViewSettings(WIN_PREF_SIZE);
+		}
+		catch (Exception e)
+		{
+			log(e);
+		}
+	}
+
+	private void loadDatabaseSettings()
+	{
+		try
+		{
+			dbSettings = new DatabaseSettings(resourceManager);
+		}
+		catch (Exception e)
+		{
+			log(e);
+		}
+	}
+
+	private void loadFileSettings()
+	{
+		try
+		{
+			fileSettings = new FileSettings(resourceManager);
+		}
+		catch (Exception e)
+		{
+			log(e);
+		}
+	}
 
     private void initComponents()
     {
-        resourceManager = SAResourceManager.getInstance();
         titleAdjuster = new TitleAdjuster();
         buttonsManager = new MainFrameButtonsManager(COMMAND_PANEL_PREF_SIZE, BUTTON_MAX_SIZE,
                 resourceManager, titleAdjuster);

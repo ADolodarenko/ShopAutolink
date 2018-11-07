@@ -1,41 +1,40 @@
 package ru.flc.service.shopautolink.model.settings;
 
+import org.dav.service.util.ResourceManager;
+import ru.flc.service.shopautolink.model.settings.parameter.ParameterHeader;
 import ru.flc.service.shopautolink.view.Constants;
 
 import java.io.File;
 
-public class FileSettings implements Settings
+public class FileSettings extends TransmissiveSettings
 {
+	private static final int PARAM_COUNT = 1;
+	
 	private File file;
-	private int packSize;
 	
-	@Override
-	public void init() throws Exception
+	public FileSettings(ResourceManager resourceManager) throws Exception
 	{
-		//Nothing
-	}
-	
-	@Override
-	public void load() throws Exception
-	{
-		SettingsManager.loadSettings();
+		super(resourceManager);
 		
-		packSize = SettingsManager.getIntValue(Constants.KEY_PARAM_PACK_SIZE);
+		headers = new ParameterHeader[PARAM_COUNT];
+		headers[0] = new ParameterHeader(Constants.KEY_PARAM_PACK_SIZE, Integer.class);
+		
+		init();
 	}
-
+	
 	@Override
 	public void save() throws Exception
 	{
-		SettingsManager.setIntValue(Constants.KEY_PARAM_PACK_SIZE, packSize);
-
+		SettingsManager.setIntValue(headers[0].getKeyString(), getPackSize());
+		
 		SettingsManager.saveSettings();
 	}
-
+	
 	public File getFile()
 	{
 		return file;
 	}
-
+	
 	public void setFile(File file)
 	{
 		this.file = file;
@@ -43,6 +42,6 @@ public class FileSettings implements Settings
 	
 	public int getPackSize()
 	{
-		return packSize;
+		return ((Integer) paramMap.get(headers[0].getKeyString()).getValue());
 	}
 }

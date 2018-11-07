@@ -1,45 +1,38 @@
 package ru.flc.service.shopautolink.model.settings.parameter;
 
+import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
-import ru.flc.service.shopautolink.model.settings.ValueGetter;
-import ru.flc.service.shopautolink.model.settings.ValueSetter;
-import ru.flc.service.shopautolink.model.settings.ValueType;
+import ru.flc.service.shopautolink.view.Constants;
 
-/**
- * This is some kind of streak between an 'interface' class, like an AbstractTableModel successor, and a settings storage of any type.
- * The settings storage has to implement either ValueGetter interface or ValueSetter or both of them.
- * The idea of the Parameter class is that the 'interface' class mustn't know anything about the source of parameter.
- */
 public class Parameter
 {
-    private static final String PARAM_KEY_EXCEPTION_STRING = "Parameter key is empty.";
-    private static final String PARAM_TYPE_EXCEPTION_STRING = "Parameter type is empty.";
-    private static final String PARAM_GETTER_EXCEPTION_STRING = "Parameter getter is empty.";
-    private static final String PARAM_SETTER_EXCEPTION_STRING = "Parameter setter is empty.";
-
+	public static String[] getTitleKeys()
+	{
+		return new String[] { Constants.KEY_PARAM_TITLE_NAME, Constants.KEY_PARAM_TITLE_VALUE };
+	}
+	
+    private ResourceManager resourceManager;
     private Title key;
-    private ValueType type;
-    private ValueGetter getter;
-    private ValueSetter setter;
+    private Object value;
+    private Class<?> type;
 
-    public Parameter(Title key, ValueType type, ValueGetter getter, ValueSetter setter)
+    public Parameter(ResourceManager resourceManager, Title key, Object value, Class<?> type)
     {
+    	if (resourceManager == null)
+    		throw new IllegalArgumentException(Constants.EXCPT_RESOURCE_MANAGER_EMPTY);
+    	
         if (key == null)
-            throw new IllegalArgumentException(PARAM_KEY_EXCEPTION_STRING);
+            throw new IllegalArgumentException(Constants.EXCPT_PARAM_KEY_EMPTY);
+
+        if (value == null)
+            throw new IllegalArgumentException(Constants.EXCPT_PARAM_VALUE_EMPTY);
 
         if (type == null)
-            throw new IllegalArgumentException(PARAM_TYPE_EXCEPTION_STRING);
-
-        if (getter == null)
-            throw new IllegalArgumentException(PARAM_GETTER_EXCEPTION_STRING);
-
-        if (setter == null)
-            throw new IllegalArgumentException(PARAM_SETTER_EXCEPTION_STRING);
+            throw new IllegalArgumentException(Constants.EXCPT_PARAM_TYPE_EMPTY);
 
         this.key = key;
+        this.value = value;
         this.type = type;
-        this.getter = getter;
-        this.setter = setter;
     }
 
     public String getDisplayName()
@@ -47,58 +40,48 @@ public class Parameter
         return key.getText();
     }
 
-    public ValueType getType()
+    public Object getValue()
+    {
+        return value;
+    }
+
+    public void setValue(Object value) throws IllegalArgumentException
+    {
+    	if (value == null)
+    		throw new IllegalArgumentException(Constants.EXCPT_PARAM_VALUE_EMPTY);
+    	
+    	String thisClassName = getType().getSimpleName();
+    	String thatClassName = value.getClass().getSimpleName();
+    	
+    	if (thisClassName.equals(thatClassName))
+        	this.value = value;
+    	else if ("String".equals(thisClassName))
+    		this.value = value.toString();
+    	else if ("String".equals(thatClassName))
+		{
+			String stringValue = (String) value;
+			
+			switch (thisClassName)
+			{
+				case "Boolean":
+					this.value = Boolean.valueOf(stringValue);
+					break;
+				case "Integer":
+					this.value = Integer.parseInt(stringValue);
+					break;
+				case "Double":
+					this.value = Double.parseDouble(stringValue);
+					break;
+				default:
+					throw new IllegalArgumentException(String.format(Constants.EXCPT_PARAM_VALUE_WRONG, stringValue));
+			}
+		}
+    	else
+    		throw new IllegalArgumentException(String.format(Constants.EXCPT_PARAM_VALUE_WRONG, value.toString()));
+    }
+
+    public Class<?> getType()
     {
         return type;
-    }
-
-    public boolean getBooleanValue()
-    {
-        return getter.getBooleanValue(key);
-    }
-
-    public int getIntValue()
-    {
-        return getter.getIntValue(key);
-    }
-
-    public double getDoubleValue()
-    {
-        return getter.getDoubleValue(key);
-    }
-
-    public String getStringValue()
-    {
-        return getter.getStringValue(key);
-    }
-
-    public Object getObjectValue()
-    {
-        return getter.getObjectValue(key);
-    }
-
-    public void setBooleanValue(boolean value)
-    {
-        setter.setBooleanValue(key, value);
-    }
-
-    public void setIntValue(int value)
-    {
-        setter.setIntValue(key, value);
-    }
-
-    public void setDoubleValue(double value)
-    {
-        setter.setDoubleValue(key, value);
-    }
-
-    public void setStringValue(String value)
-    {
-        setter.setStringValue(key, value);
-    }
-
-    public void setObjectValue(Object value)
-    {
-        setter.setObjectValue(key, value);
     }
 }

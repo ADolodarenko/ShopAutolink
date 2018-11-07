@@ -2,7 +2,7 @@ package ru.flc.service.shopautolink.model.settings;
 
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
-import ru.flc.service.shopautolink.model.settings.parameter.ParameterAlt;
+import ru.flc.service.shopautolink.model.settings.parameter.Parameter;
 import ru.flc.service.shopautolink.model.settings.parameter.ParameterHeader;
 import ru.flc.service.shopautolink.view.Constants;
 
@@ -14,7 +14,7 @@ import java.util.Map;
 public abstract class TransmissiveSettings implements Settings
 {
 	private ResourceManager resourceManager;
-	protected Map<String, ParameterAlt> paramMap;
+	protected Map<String, Parameter> paramMap;
 	protected ParameterHeader[] headers;
 	
 	protected TransmissiveSettings(ResourceManager resourceManager)
@@ -55,7 +55,7 @@ public abstract class TransmissiveSettings implements Settings
 			paramMap.put(header.getKeyString(), initParameter(header));
 	}
 	
-	private ParameterAlt initParameter(ParameterHeader header) throws Exception
+	private Parameter initParameter(ParameterHeader header) throws Exception
 	{
 		String keyString = header.getKeyString();
 		Class<?> cl = header.getType();
@@ -77,10 +77,10 @@ public abstract class TransmissiveSettings implements Settings
 		if (value == null)
 			throw new Exception(Constants.EXCPT_VALUE_TYPE_WRONG);
 		
-		return new ParameterAlt(resourceManager, key, value, cl);
+		return new Parameter(resourceManager, key, value, cl);
 	}
 	
-	private ParameterAlt getParameter(ParameterHeader header) throws Exception
+	private Parameter getParameter(ParameterHeader header) throws Exception
 	{
 		String keyString = header.getKeyString();
 		Class<?> cl = header.getType();
@@ -107,10 +107,10 @@ public abstract class TransmissiveSettings implements Settings
 		if (value == null)
 			throw new Exception(Constants.EXCPT_VALUE_TYPE_WRONG);
 		
-		return new ParameterAlt(resourceManager, key, value, cl);
+		return new Parameter(resourceManager, key, value, cl);
 	}
 	
-	public List<ParameterAlt> getParameterList()
+	public List<Parameter> getParameterList()
 	{
 		return new ArrayList<>(paramMap.values());
 	}
