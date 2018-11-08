@@ -5,60 +5,59 @@ import ru.flc.service.shopautolink.view.table.editor.BooleanCellEditor;
 import ru.flc.service.shopautolink.view.table.editor.DoubleCellEditor;
 import ru.flc.service.shopautolink.view.table.editor.IntegerCellEditor;
 import ru.flc.service.shopautolink.view.table.editor.StringCellEditor;
+import ru.flc.service.shopautolink.view.table.renderer.ParameterNameCellRenderer;
 
 import javax.swing.*;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.table.*;
+import java.util.Enumeration;
 
 public class SettingsTable extends JTable
 {
+	private TableCellRenderer baseHeaderRenderer;
+
 	public SettingsTable(TableModel model)
 	{
 		super(model);
 
+		setHeaderAppearance();
+		setColumnAppearance();
+		setSelectionStrategy();
+
+		setRowHeight((int) (getRowHeight() * 1.3));
+	}
+
+	private void setHeaderAppearance()
+	{
+		JTableHeader header = getTableHeader();
+		baseHeaderRenderer = header.getDefaultRenderer();
+		header.setDefaultRenderer(new TableHeaderRenderer());
+		header.setReorderingAllowed(false);
+	}
+
+	private void setColumnAppearance()
+	{
+		Enumeration<TableColumn> columns = getColumnModel().getColumns();
+
+		while (columns.hasMoreElements())
+		{
+			TableColumn column = columns.nextElement();
+
+			if (column.getModelIndex() == 0)
+			{
+				column.setCellRenderer(baseHeaderRenderer);
+
+				break;
+			}
+		}
+	}
+
+	private void setSelectionStrategy()
+	{
 		setCellSelectionEnabled(true);
 		getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		JTableHeader header = getTableHeader();
-		header.setReorderingAllowed(false);
-		header.setDefaultRenderer(new TableHeaderRenderer());
-		
-		setRowHeight((int) (getRowHeight() * 1.3));
-		
-		setChangeSelection();
 	}
-	
-	private void setChangeSelection()
-	{
-		addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				if (getColumnCount() > 1)
-				{
-					Point clickedPoint = e.getPoint();
-					
-					int columnIndex = columnAtPoint(clickedPoint);
-					
-					if (columnIndex == 0)
-					{
-						int rowIndex = rowAtPoint(clickedPoint);
-						
-						changeSelection(rowIndex, columnIndex + 1, false, false);
-						requestFocus();
-					}
-				}
-			}
-		});
-	}
-	
+
 	@Override
 	public TableCellRenderer getCellRenderer(int row, int column)
 	{

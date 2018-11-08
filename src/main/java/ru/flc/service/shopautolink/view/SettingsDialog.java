@@ -15,6 +15,8 @@ import java.util.List;
 
 public class SettingsDialog extends JDialog
 {
+	private static final Dimension BUTTON_MAX_SIZE = new Dimension(100, 30);
+
     private MainFrame parent;
 
     private ResourceManager resourceManager;
@@ -91,12 +93,16 @@ public class SettingsDialog extends JDialog
     {
         okButton = new JButton();
         titleAdjuster.registerComponent(okButton, new Title(resourceManager, Constants.KEY_BUTTON_OK));
-        okButton.setIcon(resourceManager.getImageIcon("button-ok.png"));
+        okButton.setPreferredSize(BUTTON_MAX_SIZE);
+        okButton.setMaximumSize(BUTTON_MAX_SIZE);
+        okButton.setIcon(resourceManager.getImageIcon("ok-16a.png"));
         okButton.addActionListener(event -> saveAndExit());
 
         cancelButton = new JButton();
         titleAdjuster.registerComponent(cancelButton, new Title(resourceManager, Constants.KEY_BUTTON_CANCEL));
-        cancelButton.setIcon(resourceManager.getImageIcon("button-cancel.png"));
+		cancelButton.setPreferredSize(BUTTON_MAX_SIZE);
+		cancelButton.setMaximumSize(BUTTON_MAX_SIZE);
+        cancelButton.setIcon(resourceManager.getImageIcon("cancel-16.png"));
         cancelButton.addActionListener(event -> exit());
     }
 
