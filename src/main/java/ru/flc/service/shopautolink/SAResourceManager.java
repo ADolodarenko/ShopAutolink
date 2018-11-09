@@ -1,13 +1,16 @@
 package ru.flc.service.shopautolink;
 
 import org.dav.service.util.ResourceManager;
+import org.dav.service.view.Title;
 
 import javax.swing.*;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class SAResourceManager implements ResourceManager
@@ -27,11 +30,16 @@ public class SAResourceManager implements ResourceManager
         return instance;
     }
 
+    private Map<Title, Locale> locales;
     private Locale currentLocale;
     private ResourceBundle bundle;
 
     private SAResourceManager()
     {
+    	locales = new HashMap<>();
+    	locales.put(new Title(this, "EnglishLocale"), ENG_LOCALE);
+    	locales.put(new Title(this, "RussianLocale"), RUS_LOCALE);
+    	
         setCurrentLocale(ENG_LOCALE);
     }
 
