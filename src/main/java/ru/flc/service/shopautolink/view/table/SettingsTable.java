@@ -1,11 +1,10 @@
 package ru.flc.service.shopautolink.view.table;
 
+import org.dav.service.util.ResourceManager;
 import ru.flc.service.shopautolink.model.settings.parameter.Parameter;
-import ru.flc.service.shopautolink.view.table.editor.BooleanCellEditor;
-import ru.flc.service.shopautolink.view.table.editor.DoubleCellEditor;
-import ru.flc.service.shopautolink.view.table.editor.IntegerCellEditor;
-import ru.flc.service.shopautolink.view.table.editor.StringCellEditor;
-import ru.flc.service.shopautolink.view.table.renderer.ParameterNameCellRenderer;
+import ru.flc.service.shopautolink.view.Constants;
+import ru.flc.service.shopautolink.view.table.editor.*;
+import ru.flc.service.shopautolink.view.table.renderer.LocaleValueCellRenderer;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -13,11 +12,18 @@ import java.util.Enumeration;
 
 public class SettingsTable extends JTable
 {
+	private ResourceManager resourceManager;
+	
 	private TableCellRenderer baseHeaderRenderer;
 
-	public SettingsTable(TableModel model)
+	public SettingsTable(TableModel model, ResourceManager resourceManager)
 	{
 		super(model);
+		
+		if (resourceManager == null)
+			throw new IllegalArgumentException(Constants.EXCPT_RESOURCE_MANAGER_EMPTY);
+
+		this.resourceManager = resourceManager;
 
 		setHeaderAppearance();
 		setColumnAppearance();
@@ -128,6 +134,8 @@ public class SettingsTable extends JTable
 				break;
 			case "String":
 				break;
+			case "Locale":
+				return new LocaleValueCellRenderer(resourceManager);
 		}
 		
 		return renderer;
@@ -149,6 +157,8 @@ public class SettingsTable extends JTable
 				return new DoubleCellEditor();
 			case"String":
 				return new StringCellEditor();
+			case "Locale":
+				return new LocaleCellEditor(resourceManager);
 		}
 
 		return editor;

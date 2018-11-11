@@ -22,8 +22,6 @@ public class SettingsDialog extends JDialog
     private ResourceManager resourceManager;
     private TitleAdjuster titleAdjuster;
 
-    private DatabaseSettings dbSettings;
-    private FileSettings fileSettings;
     private List<TransmissiveSettings> settingsList;
     
     private SettingsTableModel tableModel;
@@ -40,13 +38,11 @@ public class SettingsDialog extends JDialog
         
         this.resourceManager = resourceManager;
         this.titleAdjuster = new TitleAdjuster();
-
-        dbSettings = new DatabaseSettings(this.resourceManager);
-        fileSettings = new FileSettings(this.resourceManager);
-
-        settingsList = new LinkedList<>();
-        settingsList.add(dbSettings);
-        settingsList.add(fileSettings);
+	
+		settingsList = new LinkedList<>();
+        settingsList.add(new DatabaseSettings(this.resourceManager));
+        settingsList.add(new FileSettings(this.resourceManager));
+        settingsList.add(new ViewSettings(resourceManager, null));
 
         initComponents();
 
@@ -65,7 +61,7 @@ public class SettingsDialog extends JDialog
 	{
 		tableModel = new SettingsTableModel(resourceManager, Parameter.getTitleKeys(), null);
 		
-		table = new SettingsTable(tableModel);
+		table = new SettingsTable(tableModel, resourceManager);
 		
 		JScrollPane tablePane = new JScrollPane(table);
 		

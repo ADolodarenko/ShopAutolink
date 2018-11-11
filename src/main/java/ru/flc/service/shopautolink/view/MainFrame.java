@@ -69,7 +69,7 @@ public class MainFrame extends JFrame
 	{
 		try
 		{
-			viewSettings = new ViewSettings(WIN_PREF_SIZE);
+			viewSettings = new ViewSettings(resourceManager, WIN_PREF_SIZE);
 		}
 		catch (Exception e)
 		{
@@ -180,7 +180,6 @@ public class MainFrame extends JFrame
 
     private void updateViewSettings()
     {
-        viewSettings.setAppLocale(resourceManager.getCurrentLocale());
         viewSettings.setMainWindowMaximized(getExtendedState() == JFrame.MAXIMIZED_BOTH);
         viewSettings.setMainWindowPosition(getBounds().getLocation());
         viewSettings.setMainWindowSize(getSize());

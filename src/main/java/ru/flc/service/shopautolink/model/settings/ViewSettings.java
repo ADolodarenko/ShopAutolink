@@ -1,37 +1,39 @@
 package ru.flc.service.shopautolink.model.settings;
 
-import ru.flc.service.shopautolink.SAResourceManager;
+import org.dav.service.util.ResourceManager;
+import ru.flc.service.shopautolink.model.settings.parameter.ParameterHeader;
 import ru.flc.service.shopautolink.view.Constants;
 
 import java.awt.*;
 import java.util.Locale;
 
-public class ViewSettings implements Settings
+public class ViewSettings extends TransmissiveSettings
 {
-    private Locale appLocale;
+	private static final int PARAM_COUNT = 1;
+	
     private boolean mainWindowMaximized;
     private Point mainWindowPosition;
     private Dimension mainWindowSize;
     
     private Dimension mainWindowPreferredSize;
     
-    public ViewSettings(Dimension mainWindowPreferredSize)
+    public ViewSettings(ResourceManager resourceManager, Dimension mainWindowPreferredSize) throws Exception
 	{
+		super(resourceManager);
+		
+		headers = new ParameterHeader[PARAM_COUNT];
+		headers[0] = new ParameterHeader(Constants.KEY_PARAM_APP_LOCALE, Locale.class);
+		
 		this.mainWindowPreferredSize = mainWindowPreferredSize;
-	}
-	
-	@Override
-	public void init() throws Exception
-	{
-		//Nothing
+		
+		init();
 	}
 	
 	@Override
     public void load() throws Exception
     {
-        SettingsManager.loadSettings();
-	
-		loadLocale();
+        super.load();
+        
 		loadMainWindowMaximized();
 		loadMainWindowPosition();
 		loadMainWindowSize();
@@ -40,7 +42,7 @@ public class ViewSettings implements Settings
 	@Override
     public void save() throws Exception
     {
-    	SettingsManager.setStringValue(Constants.KEY_PARAM_APP_LANGUAGE, appLocale.getLanguage());
+		SettingsManager.setStringValue(headers[0].getKeyString(), getAppLocale().toString());
 
     	SettingsManager.setStringValue(Constants.KEY_PARAM_MAIN_WIN_MAXIMIZED, String.valueOf(mainWindowMaximized));
 
@@ -53,16 +55,6 @@ public class ViewSettings implements Settings
     	SettingsManager.saveSettings();
     }
 		
-	private void loadLocale()
-	{
-		String localeString = SettingsManager.getStringValue(Constants.KEY_PARAM_APP_LANGUAGE);
-		
-		if ("RU".equalsIgnoreCase(localeString))
-			appLocale = SAResourceManager.RUS_LOCALE;
-		else
-			appLocale = SAResourceManager.ENG_LOCALE;
-	}
-	
 	private void loadMainWindowMaximized()
 	{
 		String maximizedString = SettingsManager.getStringValue(Constants.KEY_PARAM_MAIN_WIN_MAXIMIZED);
@@ -104,7 +96,7 @@ public class ViewSettings implements Settings
 
     public Locale getAppLocale()
     {
-        return appLocale;
+		return ((Locale) paramMap.get(headers[0].getKeyString()).getValue());
     }
     
     public boolean isMainWindowMaximized()
@@ -121,11 +113,6 @@ public class ViewSettings implements Settings
     {
         return mainWindowSize;
     }
-
-	public void setAppLocale(Locale appLocale)
-	{
-		this.appLocale = appLocale;
-	}
 
 	public void setMainWindowMaximized(boolean mainWindowMaximized)
 	{

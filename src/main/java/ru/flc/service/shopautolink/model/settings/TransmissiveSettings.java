@@ -2,14 +2,12 @@ package ru.flc.service.shopautolink.model.settings;
 
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
+import ru.flc.service.shopautolink.SAResourceManager;
 import ru.flc.service.shopautolink.model.settings.parameter.Parameter;
 import ru.flc.service.shopautolink.model.settings.parameter.ParameterHeader;
 import ru.flc.service.shopautolink.view.Constants;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class TransmissiveSettings implements Settings
 {
@@ -71,6 +69,8 @@ public abstract class TransmissiveSettings implements Settings
 			value = Integer.valueOf(0);
 		else if ("Double".equals(className))
 			value = Double.valueOf(0.0);
+		else if ("Locale".equals(className))
+			value = resourceManager.getCurrentLocale();
 		else if ("String".equals(className))
 			value = "";
 		
@@ -103,11 +103,37 @@ public abstract class TransmissiveSettings implements Settings
 			if (value == null)
 				value = "";
 		}
+		else if ("Locale".equals(className))
+		{
+			String localeName = SettingsManager.getStringValue(keyString);
+			
+			value = findLocale(localeName);
+			
+			if (value == null)
+				value = resourceManager.getCurrentLocale();
+		}
 		
 		if (value == null)
 			throw new Exception(Constants.EXCPT_VALUE_TYPE_WRONG);
 		
 		return new Parameter(resourceManager, key, value, cl);
+	}
+	
+	private Locale findLocale(String localeName)
+	{
+		if (localeName == null || localeName.isEmpty())
+			return null;
+		
+		String rmClassName = resourceManager.getClass().getSimpleName();
+		
+		if ("SAResourceManager".equals(rmClassName))
+		{
+			for (Locale locale : ((SAResourceManager) resourceManager).getAvailableLocales())
+				if (locale.toString().equals(localeName))
+					return locale;
+		}
+		
+		return null;
 	}
 	
 	public List<Parameter> getParameterList()

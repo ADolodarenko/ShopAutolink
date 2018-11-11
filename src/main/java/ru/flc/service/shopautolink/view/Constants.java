@@ -16,7 +16,7 @@ public final class Constants
 	public static final String KEY_PARAM_TITLE_VALUE = "ColumnParamValue";
 	
 	//For Settings hierarchy
-	public static final String KEY_PARAM_APP_LANGUAGE = "Language";
+	public static final String KEY_PARAM_APP_LOCALE = "ApplicationLocale";
 	public static final String KEY_PARAM_MAIN_WIN_X = "MainWindowX";
 	public static final String KEY_PARAM_MAIN_WIN_Y = "MainWindowY";
 	public static final String KEY_PARAM_MAIN_WIN_MAXIMIZED = "MainWindowMaximized";
@@ -39,6 +39,14 @@ public final class Constants
     public static final String KEY_SETTINGS_DIALOG = "SettingsDialog";
     public static final String KEY_BUTTON_OK = "OkButton";
     public static final String KEY_BUTTON_CANCEL = "CancelButton";
+    
+    //Locales
+	public static final String KEY_PARAM_VALUE_LOCALE_ENG = "EnglishLocale";
+	public static final String KEY_PARAM_VALUE_LOCALE_RUS = "RussianLocale";
+	
+	//Icons
+	public static final String ICON_NAME_USA = "american_16.png";
+	public static final String ICON_NAME_RUS = "russian_16.png";
 
 	private Constants(){}
 }
