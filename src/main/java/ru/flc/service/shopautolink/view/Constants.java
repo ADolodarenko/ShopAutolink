@@ -6,12 +6,19 @@ public final class Constants
 	public static final String EXCPT_RESOURCE_MANAGER_EMPTY = "Resource manager is empty.";
     public static final String EXCPT_VALUE_TYPE_WRONG = "Wrong value type.";
 	
-	//For Parameter class
+	//Exceptions for Parameter class
 	public static final String EXCPT_PARAM_KEY_EMPTY = "Parameter key is empty.";
 	public static final String EXCPT_PARAM_VALUE_EMPTY = "Parameter value is empty.";
 	public static final String EXCPT_PARAM_VALUE_WRONG = "Parameter value %s is wrong.";
 	public static final String EXCPT_PARAM_TYPE_EMPTY = "Parameter type is empty.";
-
+	
+	//Titles for main frame
+	public static final String KEY_MAIN_FRAME = "MainFrame";
+	public static final String KEY_LOG_PANEL = "LogPanel";
+	public static final String KEY_BUTTON_LOAD = "LoadButton";
+	public static final String KEY_BUTTON_LINK = "LinkButton";
+	public static final String KEY_BUTTON_SETTINGS = "SettingsButton";
+	
 	public static final String KEY_PARAM_TITLE_NAME = "ColumnParamName";
 	public static final String KEY_PARAM_TITLE_VALUE = "ColumnParamValue";
 	
@@ -40,11 +47,12 @@ public final class Constants
     public static final String KEY_BUTTON_OK = "OkButton";
     public static final String KEY_BUTTON_CANCEL = "CancelButton";
     
-    //Locales
-	public static final String KEY_PARAM_VALUE_LOCALE_ENG = "EnglishLocale";
-	public static final String KEY_PARAM_VALUE_LOCALE_RUS = "RussianLocale";
-	
 	//Icons
+	public static final String ICON_NAME_LINKING = "linking32.png";
+	public static final String ICON_NAME_LOADING = "loading_mod_green.gif";
+	public static final String ICON_NAME_UPLOAD = "button-upload.png";
+	public static final String ICON_NAME_LINK = "button-link.png";
+	public static final String ICON_NAME_SETTINGS = "button-settings.png";
 	public static final String ICON_NAME_USA = "american_16.png";
 	public static final String ICON_NAME_RUS = "russian_16.png";
 

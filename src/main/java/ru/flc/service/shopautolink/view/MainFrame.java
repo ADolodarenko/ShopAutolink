@@ -1,5 +1,6 @@
 package ru.flc.service.shopautolink.view;
 
+import com.sybase.jdbc3.jdbc.Const;
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
@@ -115,8 +116,8 @@ public class MainFrame extends JFrame
         add(initCommandPanel(), BorderLayout.WEST);
         add(initLogPanel());
 	
-		setIconImage(resourceManager.getImageIcon("linking32.png").getImage());
-		titleAdjuster.registerComponent(this, new Title(resourceManager, "Main_Frame_Title"));
+		setIconImage(resourceManager.getImageIcon(Constants.ICON_NAME_LINKING).getImage());
+		titleAdjuster.registerComponent(this, new Title(resourceManager, Constants.KEY_MAIN_FRAME));
         
         titleAdjuster.resetComponents();
 
@@ -193,12 +194,12 @@ public class MainFrame extends JFrame
 			{
 				log(e);
 			}
+			
+			resourceManager.setCurrentLocale(viewSettings.getAppLocale());
+			titleAdjuster.resetComponents();
+			
+			validate();
 		}
-
-		resourceManager.setCurrentLocale(viewSettings.getAppLocale());
-		titleAdjuster.resetComponents();
-
-		validate();
 	}
 
     private void updateViewSettings()
@@ -247,7 +248,7 @@ public class MainFrame extends JFrame
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(),
                 "", TitledBorder.TOP, TitledBorder.CENTER));
-        titleAdjuster.registerComponent(panel, new Title(resourceManager, "Log_Panel_Title"));
+        titleAdjuster.registerComponent(panel, new Title(resourceManager, Constants.KEY_LOG_PANEL));
         panel.add(tablePane, BorderLayout.CENTER);
 
         return panel;
@@ -363,7 +364,7 @@ public class MainFrame extends JFrame
     private void doForWorkerStarted()
     {
     	buttonsManager.blockButtons();
-        processLabel.setIcon(resourceManager.getImageIcon("loading_mod_green.gif"));
+        processLabel.setIcon(resourceManager.getImageIcon(Constants.ICON_NAME_LOADING));
     }
 
     private void doForWorkerDone()

@@ -38,8 +38,8 @@ public class MainFrameButtonsManager
             loadPositionsButton.setPreferredSize(maxButtonSize);
             loadPositionsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             loadPositionsButton.setMaximumSize(maxButtonSize);
-            titleAdjuster.registerComponent(loadPositionsButton, new Title(resourceManager, "Load_Button_Title"));
-            loadPositionsButton.setIcon(resourceManager.getImageIcon("button-upload.png"));
+            titleAdjuster.registerComponent(loadPositionsButton, new Title(resourceManager, Constants.KEY_BUTTON_LOAD));
+            loadPositionsButton.setIcon(resourceManager.getImageIcon(Constants.ICON_NAME_UPLOAD));
         }
 
         resetActionListener(loadPositionsButton, listener);
@@ -55,8 +55,8 @@ public class MainFrameButtonsManager
             linkPositionsButton.setPreferredSize(maxButtonSize);
             linkPositionsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             linkPositionsButton.setMaximumSize(maxButtonSize);
-            titleAdjuster.registerComponent(linkPositionsButton, new Title(resourceManager, "Link_Button_Title"));
-            linkPositionsButton.setIcon(resourceManager.getImageIcon("button-link.png"));
+            titleAdjuster.registerComponent(linkPositionsButton, new Title(resourceManager, Constants.KEY_BUTTON_LINK));
+            linkPositionsButton.setIcon(resourceManager.getImageIcon(Constants.ICON_NAME_LINK));
         }
 
         resetActionListener(linkPositionsButton, listener);
@@ -72,8 +72,8 @@ public class MainFrameButtonsManager
             settingsButton.setPreferredSize(maxButtonSize);
             settingsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             settingsButton.setMaximumSize(maxButtonSize);
-            titleAdjuster.registerComponent(settingsButton, new Title(resourceManager, "Settings_Button_Title"));
-            settingsButton.setIcon(resourceManager.getImageIcon("button-settings.png"));
+            titleAdjuster.registerComponent(settingsButton, new Title(resourceManager, Constants.KEY_BUTTON_SETTINGS));
+            settingsButton.setIcon(resourceManager.getImageIcon(Constants.ICON_NAME_SETTINGS));
         }
 
         resetActionListener(settingsButton, listener);
