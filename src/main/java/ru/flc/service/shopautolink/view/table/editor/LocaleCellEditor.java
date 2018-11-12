@@ -1,6 +1,7 @@
 package ru.flc.service.shopautolink.view.table.editor;
 
 import org.dav.service.util.ResourceManager;
+import ru.flc.service.shopautolink.view.table.renderer.LocaleValueComboRenderer;
 
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
@@ -17,11 +18,15 @@ public class LocaleCellEditor extends AbstractCellEditor implements TableCellEdi
 	public LocaleCellEditor(ResourceManager resourceManager)
 	{
 		this.resourceManager = resourceManager;
-		
-		editor = new JComboBox<>();
-		
+
+		DefaultComboBoxModel<Locale> model = new DefaultComboBoxModel<>();
+
 		for (Locale locale : resourceManager.getAvailableLocales())
-			editor.addItem(locale);
+			model.addElement(locale);
+
+		editor = new JComboBox<>(model);
+		editor.setEditable(false);
+		editor.setRenderer(new LocaleValueComboRenderer(this.resourceManager));
 	}
 	
 	@Override

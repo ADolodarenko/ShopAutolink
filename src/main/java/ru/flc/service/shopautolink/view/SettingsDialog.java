@@ -137,7 +137,7 @@ public class SettingsDialog extends JDialog
 
     public void saveAndExit()
     {
-        for (TransmissiveSettings settings : settingsList)
+    	for (TransmissiveSettings settings : settingsList)
         {
             try
             {
@@ -148,6 +148,8 @@ public class SettingsDialog extends JDialog
                 parent.log(e);
             }
         }
+
+        parent.reloadView();
 
         exit();
     }

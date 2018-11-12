@@ -70,6 +70,7 @@ public class MainFrame extends JFrame
 		try
 		{
 			viewSettings = new ViewSettings(resourceManager, WIN_PREF_SIZE);
+			viewSettings.load();
 		}
 		catch (Exception e)
 		{
@@ -103,6 +104,8 @@ public class MainFrame extends JFrame
 
     private void initComponents()
     {
+    	resourceManager.setCurrentLocale(viewSettings.getAppLocale());
+
         titleAdjuster = new TitleAdjuster();
         buttonsManager = new MainFrameButtonsManager(COMMAND_PANEL_PREF_SIZE, BUTTON_MAX_SIZE,
                 resourceManager, titleAdjuster);
@@ -177,6 +180,26 @@ public class MainFrame extends JFrame
             }
         });
     }
+
+    public void reloadView()
+	{
+		if (viewSettings != null)
+		{
+			try
+			{
+				viewSettings.load();
+			}
+			catch (Exception e)
+			{
+				log(e);
+			}
+		}
+
+		resourceManager.setCurrentLocale(viewSettings.getAppLocale());
+		titleAdjuster.resetComponents();
+
+		validate();
+	}
 
     private void updateViewSettings()
     {
