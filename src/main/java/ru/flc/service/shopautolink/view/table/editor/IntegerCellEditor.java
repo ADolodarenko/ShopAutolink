@@ -13,6 +13,7 @@ public class IntegerCellEditor extends AbstractCellEditor implements TableCellEd
 	public IntegerCellEditor()
 	{
 		SpinnerNumberModel model = new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
+
 		editor = new JSpinner(model);
 	}
 

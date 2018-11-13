@@ -13,6 +13,7 @@ public class DoubleCellEditor extends AbstractCellEditor implements TableCellEdi
 	public DoubleCellEditor()
 	{
 		SpinnerNumberModel model = new SpinnerNumberModel(0.0, Double.MIN_VALUE, Double.MAX_VALUE, 0.01);
+
 		editor = new JSpinner(model);
 	}
 	

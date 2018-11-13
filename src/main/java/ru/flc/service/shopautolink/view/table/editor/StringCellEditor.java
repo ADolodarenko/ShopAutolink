@@ -3,6 +3,8 @@ package ru.flc.service.shopautolink.view.table.editor;
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class StringCellEditor extends AbstractCellEditor implements TableCellEditor
 {
@@ -13,6 +15,14 @@ public class StringCellEditor extends AbstractCellEditor implements TableCellEdi
 	public StringCellEditor()
 	{
 		editor = new JTextField();
+
+		editor.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				editor.selectAll();
+			}
+		});
 	}
 	
 	@Override

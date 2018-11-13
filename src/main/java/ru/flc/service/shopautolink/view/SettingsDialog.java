@@ -7,6 +7,8 @@ import ru.flc.service.shopautolink.model.settings.*;
 import ru.flc.service.shopautolink.model.settings.parameter.Parameter;
 import ru.flc.service.shopautolink.view.table.SettingsTable;
 import ru.flc.service.shopautolink.view.table.SettingsTableModel;
+import ru.flc.service.shopautolink.view.table.editor.TableCellEditorFactory;
+import ru.flc.service.shopautolink.view.table.renderer.TableCellRendererFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -61,7 +63,9 @@ public class SettingsDialog extends JDialog
 	{
 		tableModel = new SettingsTableModel(resourceManager, Parameter.getTitleKeys(), null);
 		
-		table = new SettingsTable(tableModel, resourceManager);
+		table = new SettingsTable(tableModel, resourceManager,
+									new TableCellEditorFactory(resourceManager),
+									new TableCellRendererFactory(resourceManager));
 		
 		JScrollPane tablePane = new JScrollPane(table);
 		
@@ -137,6 +141,8 @@ public class SettingsDialog extends JDialog
 
     public void saveAndExit()
     {
+    	stopTableEditing();
+
     	for (TransmissiveSettings settings : settingsList)
         {
             try
@@ -156,7 +162,15 @@ public class SettingsDialog extends JDialog
 
     public void exit()
     {
+    	stopTableEditing();
+
         setVisible(false);
         parent.setFocus();
     }
+
+    private void stopTableEditing()
+	{
+		if (table != null && table.isEditing())
+			table.getCellEditor().stopCellEditing();
+	}
 }

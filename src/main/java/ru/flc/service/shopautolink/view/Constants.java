@@ -4,6 +4,8 @@ public final class Constants
 {
     //Exceptions of any kind
 	public static final String EXCPT_RESOURCE_MANAGER_EMPTY = "Resource manager is empty.";
+	public static final String EXCPT_TABLE_EDITOR_FACTORY_EMPTY = "Table cell editor factory is empty.";
+	public static final String EXCPT_TABLE_RENDERER_FACTORY_EMPTY = "Table cell renderer factory is empty.";
     public static final String EXCPT_VALUE_TYPE_WRONG = "Wrong value type.";
 	
 	//Exceptions for Parameter class

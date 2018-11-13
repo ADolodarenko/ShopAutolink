@@ -1,6 +1,5 @@
 package ru.flc.service.shopautolink.view;
 
-import com.sybase.jdbc3.jdbc.Const;
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
