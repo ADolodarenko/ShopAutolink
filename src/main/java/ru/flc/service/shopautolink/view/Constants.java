@@ -14,6 +14,30 @@ public final class Constants
 	public static final String EXCPT_PARAM_VALUE_WRONG = "Parameter value %s is wrong.";
 	public static final String EXCPT_PARAM_TYPE_EMPTY = "Parameter type is empty.";
 	
+	//Exceptions for the FileSource hierarchy
+	public static final String EXCPT_FILE_SETTINGS_EMPTY = "File settings are empty.";
+	public static final String EXCPT_FILE_SETTINGS_WRONG = "Wrong file settings.";
+	
+	//Exceptions for access objects
+	public static final String EXCPT_FILE_SOURCE_EMPTY = "Empty file source.";
+	public static final String EXCPT_PACK_SIZE_WRONG = "Wrong pack size.";
+	
+	//Exceptions for workers
+	public static final String EXCPT_FILE_OBJECT_EMPTY = "File access object is empty.";
+	public static final String EXCPT_DATA_OBJECT_EMPTY = "Data access object is empty.";
+	
+	//Titles for workers
+	public static final String KEY_LOADER_SUCCESS = "LoaderSuccess";
+	public static final String KEY_LOADER_FAILURE = "LoaderFailure";
+	public static final String KEY_LOADER_CANCELLED = "LoaderCancelled";
+	public static final String KEY_LOADER_PACK_LOADED = "LoaderPackLoaded";
+	public static final String KEY_PROCESSOR_SUCCESS = "ProcessorSuccess";
+	public static final String KEY_PROCESSOR_FAILURE = "ProcessorFailure";
+	public static final String KEY_PROCESSOR_CANCELLED = "ProcessorCancelled";
+	
+	//Messages
+	public static final String MESS_ROWS_AFFECTED = "(%n row(s) affected)";
+	
 	//Titles for main frame
 	public static final String KEY_MAIN_FRAME = "MainFrame";
 	public static final String KEY_LOG_PANEL = "LogPanel";

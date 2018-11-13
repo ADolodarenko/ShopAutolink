@@ -10,5 +10,5 @@ public interface DataSource extends Source
 {
 	void applyUploadedTitleLinks() throws SQLException;
 	void uploadTitleLinkPack(List<TitleLink> pack) throws Exception;
-	void processTitleLinks() throws Exception;
+	List<String> processTitleLinks() throws Exception;
 }

@@ -1,6 +1,7 @@
 package ru.flc.service.shopautolink.model.logic;
 
 import ru.flc.service.shopautolink.model.LogEvent;
+import ru.flc.service.shopautolink.view.Constants;
 import ru.flc.service.shopautolink.view.table.LogEventTableModel;
 import ru.flc.service.shopautolink.model.TitleLink;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkDao;
@@ -12,14 +13,7 @@ import java.util.concurrent.ExecutionException;
 
 public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
 {
-	private static final String FILE_OBJECT_EXCEPTION_STRING = "File access object is empty.";
-	private static final String DATA_OBJECT_EXCEPTION_STRING = "Data access object is empty.";
-	private static final String SUCCESS_STRING = "Loader_Success";
-	private static final String FAILURE_STRING = "Loader_Failure";
-	private static final String CANCELLED_STRING = "Loader_Cancelled";
-	private static final String PACK_LOADED_STRING = "Loader_Pack_Loaded";
-	
-    private TitleLinkFao fileObject;
+	private TitleLinkFao fileObject;
     private TitleLinkDao dataObject;
     private LogEventTableModel logModel;
 
@@ -27,10 +21,10 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
 						   LogEventTableModel logModel)
     {
         if (fileObject == null)
-            throw new IllegalArgumentException(FILE_OBJECT_EXCEPTION_STRING);
+            throw new IllegalArgumentException(Constants.EXCPT_FILE_OBJECT_EMPTY);
 
         if (dataObject == null)
-            throw new IllegalArgumentException(DATA_OBJECT_EXCEPTION_STRING);
+            throw new IllegalArgumentException(Constants.EXCPT_DATA_OBJECT_EMPTY);
 
         this.fileObject = fileObject;
         this.dataObject = dataObject;
@@ -43,9 +37,9 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
         int result = uploadLinks();
 
         if (result > -1)
-            return new LogEvent(SUCCESS_STRING, result);
+            return new LogEvent(Constants.KEY_LOADER_SUCCESS, result);
         else
-            return new LogEvent(FAILURE_STRING);
+            return new LogEvent(Constants.KEY_LOADER_FAILURE);
     }
 
     @Override
@@ -77,7 +71,7 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
 				}
 			}
         	else
-        		logModel.addRow(new LogEvent(CANCELLED_STRING));
+        		logModel.addRow(new LogEvent(Constants.KEY_LOADER_CANCELLED));
     }
 
     private int uploadLinks()
@@ -96,7 +90,7 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
 
                 linksUploaded += pack.size();
 
-                publish(new LogEvent(PACK_LOADED_STRING, linksUploaded));
+                publish(new LogEvent(Constants.KEY_LOADER_PACK_LOADED, linksUploaded));
             }
 
             if (!isCancelled())

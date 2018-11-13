@@ -4,8 +4,10 @@ import com.sybase.jdbcx.SybDriver;
 import ru.flc.service.shopautolink.model.TitleLink;
 import ru.flc.service.shopautolink.model.settings.DatabaseSettings;
 import ru.flc.service.shopautolink.model.settings.Settings;
+import ru.flc.service.shopautolink.view.Constants;
 
 import java.sql.*;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AseDataSource implements DataSource
@@ -112,10 +114,12 @@ public class AseDataSource implements DataSource
 	}
 	
 	@Override
-	public void processTitleLinks() throws Exception
+	public List<String> processTitleLinks() throws Exception
 	{
 		if (supportStoredProcedures)
 		{
+			List<String> resultLines = new LinkedList<>();
+			
 			connection.setAutoCommit(true);
 
 			try (CallableStatement statement = connection.prepareCall("{call " +
@@ -124,14 +128,12 @@ public class AseDataSource implements DataSource
 				statement.setInt(1, priceId);
 				statement.setInt(2, channelId);
 
-				statement.executeUpdate();
-
-				connection.commit();
+				executeStatement(statement, resultLines);
+				
+				return resultLines;
 			}
 			catch (SQLException e)
 			{
-				connection.rollback();
-
 				throw e;
 			}
 			finally
@@ -141,7 +143,81 @@ public class AseDataSource implements DataSource
 		}
 		else
 			throw new Exception(DB_WITHOUT_SP_SUPPORT_EXCEPTION_STRING);
-
+	}
+	
+	private void executeStatement(PreparedStatement statement, List<String> outputLines) throws SQLException
+	{
+		boolean done = false;
+		boolean isResultSet = statement.execute();
+		
+		while (!done)
+		{
+			if (isResultSet)
+				parseResultSet(statement.getResultSet(), outputLines);
+			else
+			{
+				int updateCount = statement.getUpdateCount();
+				
+				if (updateCount >= 0)
+					outputLines.add(String.format(Constants.MESS_ROWS_AFFECTED, updateCount));
+				else
+					done = true;
+			}
+			
+			if (!done)
+				isResultSet = statement.getMoreResults();
+		}
+		
+		SQLWarning warning = statement.getWarnings();
+		
+		while (warning != null)
+		{
+			outputLines.add(warning.getMessage());
+			
+			warning = warning.getNextWarning();
+		}
+	}
+	
+	private void parseResultSet(ResultSet resultSet, List<String> outputLines) throws SQLException
+	{
+		outputLines.add(getResultSetHeaderLine(resultSet));
+		
+		while (resultSet.next())
+			outputLines.add(getResultSetDataLine(resultSet));
+	}
+	
+	private String getResultSetHeaderLine(ResultSet resultSet) throws SQLException
+	{
+		StringBuilder builder = new StringBuilder();
+		
+		ResultSetMetaData metaData = resultSet.getMetaData();
+		
+		for (int i = 1; i <= metaData.getColumnCount(); i++)
+		{
+			if (i > 1)
+				builder.append(';');
+			
+			builder.append(metaData.getColumnLabel(i));
+		}
+		
+		return builder.toString();
+	}
+	
+	private String getResultSetDataLine(ResultSet resultSet) throws SQLException
+	{
+		StringBuilder builder = new StringBuilder();
+		
+		ResultSetMetaData metaData = resultSet.getMetaData();
+		
+		for (int i = 1; i <= metaData.getColumnCount(); i++)
+		{
+			if (i > 1)
+				builder.append(';');
+			
+			builder.append(resultSet.getString(i));
+		}
+		
+		return builder.toString();
 	}
 	
 	private void uploadPackAsBatch(List<TitleLink> pack) throws SQLException

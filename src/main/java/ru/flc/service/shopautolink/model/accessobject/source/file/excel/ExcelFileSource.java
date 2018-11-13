@@ -5,6 +5,7 @@ import ru.flc.service.shopautolink.model.TitleLink;
 import ru.flc.service.shopautolink.model.accessobject.source.file.FileSource;
 import ru.flc.service.shopautolink.model.settings.FileSettings;
 import ru.flc.service.shopautolink.model.settings.Settings;
+import ru.flc.service.shopautolink.view.Constants;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,9 +13,6 @@ import java.util.Iterator;
 
 public abstract class ExcelFileSource implements FileSource
 {
-	private static final String SETTINGS_EMPTY_EXCEPTION_STRING = "File settings are empty.";
-	private static final String SETTINGS_WRONG_EXCEPTION_STRING = "Wrong file settings.";
-	
 	protected File file;
 	protected Workbook workbook;
 	protected Sheet sheet;
@@ -66,10 +64,10 @@ public abstract class ExcelFileSource implements FileSource
 			if ("FileSettings".equals(settingsClassName))
 				resetParameters((FileSettings)settings);
 			else
-				throw new IllegalArgumentException(SETTINGS_WRONG_EXCEPTION_STRING);
+				throw new IllegalArgumentException(Constants.EXCPT_FILE_SETTINGS_WRONG);
 		}
 		else
-			throw new IllegalArgumentException(SETTINGS_EMPTY_EXCEPTION_STRING);
+			throw new IllegalArgumentException(Constants.EXCPT_FILE_SETTINGS_EMPTY);
 	}
 	
 	@Override
@@ -107,7 +105,13 @@ public abstract class ExcelFileSource implements FileSource
 		else
 			return null;
 	}
-
+	
+	@Override
+	public void putResultLine(String line) throws Exception
+	{
+		;
+	}
+	
 	protected boolean hasNextRow()
 	{
 		return (workbook != null && sheet != null &&

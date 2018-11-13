@@ -2,15 +2,13 @@ package ru.flc.service.shopautolink.model.accessobject;
 
 import ru.flc.service.shopautolink.model.TitleLink;
 import ru.flc.service.shopautolink.model.accessobject.source.file.FileSource;
+import ru.flc.service.shopautolink.view.Constants;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class TitleLinkFao implements AccessObject
 {
-	private static final String FILE_SOURCE_EXCEPTION_STRING = "Empty file source.";
-	private static final String PACK_SIZE_EXCEPTION_STRING = "Wrong pack size.";
-
 	private static List<TitleLink> getShallowBufferClone(List<TitleLink> buffer)
 	{
 		if (buffer != null)
@@ -33,10 +31,10 @@ public class TitleLinkFao implements AccessObject
 	public TitleLinkFao(FileSource source, int linkPackSize)
 	{
 		if (source == null)
-			throw new IllegalArgumentException(FILE_SOURCE_EXCEPTION_STRING);
+			throw new IllegalArgumentException(Constants.EXCPT_FILE_SOURCE_EMPTY);
 		
 		if (linkPackSize < 1)
-			throw new IllegalArgumentException(PACK_SIZE_EXCEPTION_STRING);
+			throw new IllegalArgumentException(Constants.EXCPT_PACK_SIZE_WRONG);
 		
 		this.source = source;
 		this.linkPackSize = linkPackSize;
@@ -87,5 +85,11 @@ public class TitleLinkFao implements AccessObject
 		buffer.clear();
 
 		return pack;
+	}
+	
+	public void putResultLines(List<String> lines) throws Exception
+	{
+		for (String line : lines)
+			source.putResultLine(line);
 	}
 }

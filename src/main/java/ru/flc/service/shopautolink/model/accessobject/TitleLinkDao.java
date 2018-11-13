@@ -41,8 +41,8 @@ public class TitleLinkDao implements AccessObject
 		source.applyUploadedTitleLinks();
 	}
 	
-	public void processLinks() throws Exception
+	public List<String> processLinks() throws Exception
 	{
-		source.processTitleLinks();
+		return source.processTitleLinks();
 	}
 }

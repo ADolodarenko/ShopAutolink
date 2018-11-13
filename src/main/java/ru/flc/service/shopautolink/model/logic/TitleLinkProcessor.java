@@ -1,6 +1,8 @@
 package ru.flc.service.shopautolink.model.logic;
 
 import ru.flc.service.shopautolink.model.LogEvent;
+import ru.flc.service.shopautolink.model.accessobject.TitleLinkFao;
+import ru.flc.service.shopautolink.view.Constants;
 import ru.flc.service.shopautolink.view.table.LogEventTableModel;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkDao;
 
@@ -10,20 +12,20 @@ import java.util.concurrent.ExecutionException;
 
 public class TitleLinkProcessor extends SwingWorker<LogEvent, LogEvent>
 {
-    private static final String DATA_OBJECT_EXCEPTION_STRING = "Data access object is empty.";
-    private static final String SUCCESS_STRING = "Processor_Success";
-    private static final String FAILURE_STRING = "Processor_Failure";
-    private static final String CANCELLED_STRING = "Loader_Cancelled";
-
     private TitleLinkDao dataObject;
+    private TitleLinkFao fileObject;
     private LogEventTableModel logModel;
 
-    public TitleLinkProcessor(TitleLinkDao dataObject, LogEventTableModel logModel)
+    public TitleLinkProcessor(TitleLinkDao dataObject, TitleLinkFao fileObject, LogEventTableModel logModel)
     {
         if (dataObject == null)
-            throw new IllegalArgumentException(DATA_OBJECT_EXCEPTION_STRING);
+            throw new IllegalArgumentException(Constants.EXCPT_DATA_OBJECT_EMPTY);
+    
+        if (fileObject == null)
+            throw new IllegalArgumentException(Constants.EXCPT_FILE_OBJECT_EMPTY);
 
         this.dataObject = dataObject;
+        this.fileObject = fileObject;
         this.logModel = logModel;
     }
 
@@ -33,9 +35,9 @@ public class TitleLinkProcessor extends SwingWorker<LogEvent, LogEvent>
         int result = processLinks();
 
         if (result > -1)
-            return new LogEvent(SUCCESS_STRING, result);
+            return new LogEvent(Constants.KEY_PROCESSOR_SUCCESS, result);
         else
-            return new LogEvent(FAILURE_STRING);
+            return new LogEvent(Constants.KEY_PROCESSOR_FAILURE);
     }
 
     @Override
@@ -67,7 +69,7 @@ public class TitleLinkProcessor extends SwingWorker<LogEvent, LogEvent>
                 }
             }
             else
-                logModel.addRow(new LogEvent(CANCELLED_STRING));
+                logModel.addRow(new LogEvent(Constants.KEY_PROCESSOR_CANCELLED));
     }
 
     private int processLinks()
@@ -77,9 +79,11 @@ public class TitleLinkProcessor extends SwingWorker<LogEvent, LogEvent>
         try
         {
             dataObject.open();
-            dataObject.processLinks();
+            List<String> resultLines = dataObject.processLinks();
+            
+            fileObject.putResultLines(resultLines);
 
-            result = 0;
+            result = resultLines.size();
         }
         catch (Exception e)
         {
