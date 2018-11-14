@@ -17,6 +17,10 @@ public final class Constants
 	//Exceptions for the FileSource hierarchy
 	public static final String EXCPT_FILE_SETTINGS_EMPTY = "File settings are empty.";
 	public static final String EXCPT_FILE_SETTINGS_WRONG = "Wrong file settings.";
+
+	//Exceptions for the DataSource hierarchy
+	public static final String EXCPT_DATABASE_SETTINGS_EMPTY = "Database settings are empty.";
+	public static final String EXCPT_DATABASE_SETTINGS_WRONG = "Wrong database settings.";
 	
 	//Exceptions for access objects
 	public static final String EXCPT_FILE_SOURCE_EMPTY = "Empty file source.";
@@ -36,7 +40,7 @@ public final class Constants
 	public static final String KEY_PROCESSOR_CANCELLED = "ProcessorCancelled";
 	
 	//Messages
-	public static final String MESS_ROWS_AFFECTED = "(%n row(s) affected)";
+	public static final String MESS_ROWS_AFFECTED = "(%d row(s) affected)";
 	
 	//Titles for main frame
 	public static final String KEY_MAIN_FRAME = "MainFrame";

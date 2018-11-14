@@ -12,8 +12,6 @@ import java.util.List;
 
 public class AseDataSource implements DataSource
 {
-	private static final String SETTINGS_EMPTY_EXCEPTION_STRING = "Database settings are empty.";
-	private static final String SETTINGS_WRONG_EXCEPTION_STRING = "Wrong database settings.";
 	private static final String DB_WITHOUT_SP_SUPPORT_EXCEPTION_STRING = "This database doesn't support stored procedures.";
 	private static final String TMP_TABLE_NAME = "#tmp_link";
 	private static final String TMP_TABLE_CREATE_COMMAND = "create table " + TMP_TABLE_NAME +
@@ -76,10 +74,10 @@ public class AseDataSource implements DataSource
 			if ("DatabaseSettings".equals(settingsClassName))
 				resetParameters((DatabaseSettings)settings);
 			else
-				throw new IllegalArgumentException(SETTINGS_WRONG_EXCEPTION_STRING);
+				throw new IllegalArgumentException(Constants.EXCPT_DATABASE_SETTINGS_WRONG);
 		}
 		else
-			throw new IllegalArgumentException(SETTINGS_EMPTY_EXCEPTION_STRING);
+			throw new IllegalArgumentException(Constants.EXCPT_DATABASE_SETTINGS_EMPTY);
 	}
 	
 	@Override

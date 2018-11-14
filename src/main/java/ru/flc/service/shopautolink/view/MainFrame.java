@@ -128,7 +128,7 @@ public class MainFrame extends JFrame
         fileChooser = new JFileChooser(".");
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setAcceptAllFileFilterUsed(false);
-        fileChooser.setFileFilter(new FileNameExtensionFilter("XLS(X)", "XLS", "XLSX"));
+        //TODO: get setting file filter back here
     }
 
     private void initFrame()
@@ -255,6 +255,8 @@ public class MainFrame extends JFrame
 
     private void loadTitleLinks()
     {
+		fileChooser.setFileFilter(new FileNameExtensionFilter("XLS(X)", "XLS", "XLSX"));
+
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
             fileObject = getFileObject(fileChooser.getSelectedFile());
@@ -274,14 +276,23 @@ public class MainFrame extends JFrame
 
     private void processTitleLinks()
     {
-        dataObject = getDataObject();
-        if (dataObject == null)
-            return;
+		fileChooser.setFileFilter(new FileNameExtensionFilter("TXT/CSV", "TXT", "CSV"));
 
-        linkProcessor = new TitleLinkProcessor(dataObject, logTableModel);
-        linkProcessor.getPropertyChangeSupport().addPropertyChangeListener("state",
-				evt -> doForWorkerEvent(evt) );
-        linkProcessor.execute();
+		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION)
+		{
+			fileObject = getFileObject(fileChooser.getSelectedFile());
+			if (fileObject == null)
+				return;
+
+			dataObject = getDataObject();
+			if (dataObject == null)
+				return;
+
+			linkProcessor = new TitleLinkProcessor(dataObject, fileObject, logTableModel);
+			linkProcessor.getPropertyChangeSupport().addPropertyChangeListener("state",
+					evt -> doForWorkerEvent(evt));
+			linkProcessor.execute();
+		}
     }
     
     private void showSettings()

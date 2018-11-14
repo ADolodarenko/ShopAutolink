@@ -78,7 +78,8 @@ public class TitleLinkProcessor extends SwingWorker<LogEvent, LogEvent>
 
         try
         {
-            dataObject.open();
+            openAccessObjects();
+
             List<String> resultLines = dataObject.processLinks();
             
             fileObject.putResultLines(resultLines);
@@ -93,12 +94,24 @@ public class TitleLinkProcessor extends SwingWorker<LogEvent, LogEvent>
         {
             try
             {
-                dataObject.close();
+                closeAccessObjects();
             }
             catch (Exception e)
             {}
         }
 
         return result;
+    }
+
+    private void openAccessObjects() throws Exception
+    {
+        fileObject.open();
+        dataObject.open();
+    }
+
+    private void closeAccessObjects() throws Exception
+    {
+        dataObject.close();
+        fileObject.close();
     }
 }

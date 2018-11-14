@@ -9,12 +9,13 @@ import ru.flc.service.shopautolink.view.Constants;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.PrintWriter;
 
 public class PlainTextFileSource implements FileSource
 {
 	private File file;
 	
-	private BufferedOutputStream output;
+	private PrintWriter writer;
 	
 	@Override
 	public TitleLink getNextLink()
@@ -25,21 +26,21 @@ public class PlainTextFileSource implements FileSource
 	@Override
 	public void putResultLine(String line) throws Exception
 	{
-		if (output != null)
-			output.write(line.getBytes());
+		if (writer != null)
+			writer.println(line);
 	}
 	
 	@Override
 	public void open() throws Exception
 	{
-		output = new BufferedOutputStream(new FileOutputStream(file));
+		writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(file))) ;
 	}
 	
 	@Override
 	public void close() throws Exception
 	{
-		if (output != null)
-			output.close();
+		if (writer != null)
+			writer.close();
 	}
 	
 	@Override
