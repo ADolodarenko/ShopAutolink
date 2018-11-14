@@ -1,6 +1,7 @@
 package ru.flc.service.shopautolink.model.accessobject.source.database;
 
 import com.sybase.jdbcx.SybDriver;
+import ru.flc.service.shopautolink.model.Element;
 import ru.flc.service.shopautolink.model.TitleLink;
 import ru.flc.service.shopautolink.model.settings.DatabaseSettings;
 import ru.flc.service.shopautolink.model.settings.Settings;
@@ -112,11 +113,11 @@ public class AseDataSource implements DataSource
 	}
 	
 	@Override
-	public List<String> processTitleLinks() throws Exception
+	public List<List<Element>> processTitleLinks() throws Exception
 	{
 		if (supportStoredProcedures)
 		{
-			List<String> resultLines = new LinkedList<>();
+			List<List<Element>> resultLines = new LinkedList<>();
 			
 			connection.setAutoCommit(true);
 
@@ -143,7 +144,7 @@ public class AseDataSource implements DataSource
 			throw new Exception(DB_WITHOUT_SP_SUPPORT_EXCEPTION_STRING);
 	}
 	
-	private void executeStatement(PreparedStatement statement, List<String> outputLines) throws SQLException
+	private void executeStatement(PreparedStatement statement, List<List<Element>> outputLines) throws SQLException
 	{
 		boolean done = false;
 		boolean isResultSet = statement.execute();
@@ -157,7 +158,8 @@ public class AseDataSource implements DataSource
 				int updateCount = statement.getUpdateCount();
 				
 				if (updateCount >= 0)
-					outputLines.add(String.format(Constants.MESS_ROWS_AFFECTED, updateCount));
+					outputLines.add(getLineWithOneElement(
+							new Element(String.format(Constants.MESS_ROWS_AFFECTED, updateCount), String.class)));
 				else
 					done = true;
 			}
@@ -170,13 +172,14 @@ public class AseDataSource implements DataSource
 		
 		while (warning != null)
 		{
-			outputLines.add(warning.getMessage());
+			outputLines.add(getLineWithOneElement(
+					new Element(warning.getMessage(), String.class)));
 			
 			warning = warning.getNextWarning();
 		}
 	}
 	
-	private void parseResultSet(ResultSet resultSet, List<String> outputLines) throws SQLException
+	private void parseResultSet(ResultSet resultSet, List<List<Element>> outputLines) throws SQLException
 	{
 		outputLines.add(getResultSetHeaderLine(resultSet));
 		
@@ -184,38 +187,44 @@ public class AseDataSource implements DataSource
 			outputLines.add(getResultSetDataLine(resultSet));
 	}
 	
-	private String getResultSetHeaderLine(ResultSet resultSet) throws SQLException
+	private List<Element> getResultSetHeaderLine(ResultSet resultSet) throws SQLException
 	{
-		StringBuilder builder = new StringBuilder();
+		List<Element> line = new LinkedList<>();
 		
 		ResultSetMetaData metaData = resultSet.getMetaData();
 		
 		for (int i = 1; i <= metaData.getColumnCount(); i++)
-		{
-			if (i > 1)
-				builder.append(';');
-			
-			builder.append(metaData.getColumnLabel(i));
-		}
+			line.add(new Element(metaData.getColumnLabel(i), String.class));
 		
-		return builder.toString();
+		return line;
 	}
 	
-	private String getResultSetDataLine(ResultSet resultSet) throws SQLException
+	private List<Element> getResultSetDataLine(ResultSet resultSet) throws SQLException
 	{
-		StringBuilder builder = new StringBuilder();
+		List<Element> line = new LinkedList<>();
 		
 		ResultSetMetaData metaData = resultSet.getMetaData();
 		
 		for (int i = 1; i <= metaData.getColumnCount(); i++)
-		{
-			if (i > 1)
-				builder.append(';');
-			
-			builder.append(resultSet.getString(i));
-		}
+			line.add(getElementByField(metaData, resultSet, i));
 		
-		return builder.toString();
+		return line;
+	}
+	
+	private List<Element> getLineWithOneElement(Element element)
+	{
+		List<Element> line = new LinkedList<>();
+		line.add(element);
+		
+		return line;
+	}
+	
+	private Element getElementByField(ResultSetMetaData metaData, ResultSet resultSet, int fieldNumber)
+			throws SQLException
+	{
+		int fieldTypeName = metaData.getColumnType(fieldNumber);
+		
+		return null;
 	}
 	
 	private void uploadPackAsBatch(List<TitleLink> pack) throws SQLException

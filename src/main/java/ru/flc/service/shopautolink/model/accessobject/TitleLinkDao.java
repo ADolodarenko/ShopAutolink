@@ -1,5 +1,6 @@
 package ru.flc.service.shopautolink.model.accessobject;
 
+import ru.flc.service.shopautolink.model.Element;
 import ru.flc.service.shopautolink.model.TitleLink;
 import ru.flc.service.shopautolink.model.accessobject.source.database.DataSource;
 
@@ -41,7 +42,7 @@ public class TitleLinkDao implements AccessObject
 		source.applyUploadedTitleLinks();
 	}
 	
-	public List<String> processLinks() throws Exception
+	public List<List<Element>> processLinks() throws Exception
 	{
 		return source.processTitleLinks();
 	}
