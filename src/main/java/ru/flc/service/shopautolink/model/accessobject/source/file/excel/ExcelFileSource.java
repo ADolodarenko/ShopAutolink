@@ -1,6 +1,7 @@
 package ru.flc.service.shopautolink.model.accessobject.source.file.excel;
 
 import org.apache.poi.ss.usermodel.*;
+import ru.flc.service.shopautolink.model.Element;
 import ru.flc.service.shopautolink.model.TitleLink;
 import ru.flc.service.shopautolink.model.accessobject.source.file.FileSource;
 import ru.flc.service.shopautolink.model.settings.FileSettings;
@@ -10,6 +11,7 @@ import ru.flc.service.shopautolink.view.Constants;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 public abstract class ExcelFileSource implements FileSource
 {
@@ -107,7 +109,7 @@ public abstract class ExcelFileSource implements FileSource
 	}
 	
 	@Override
-	public void putResultLine(String line) throws Exception
+	public void putResultLine(List<Element> line) throws Exception
 	{
 		;
 	}

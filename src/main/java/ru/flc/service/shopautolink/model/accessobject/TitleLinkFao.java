@@ -1,5 +1,6 @@
 package ru.flc.service.shopautolink.model.accessobject;
 
+import ru.flc.service.shopautolink.model.Element;
 import ru.flc.service.shopautolink.model.TitleLink;
 import ru.flc.service.shopautolink.model.accessobject.source.file.FileSource;
 import ru.flc.service.shopautolink.view.Constants;
@@ -87,9 +88,9 @@ public class TitleLinkFao implements AccessObject
 		return pack;
 	}
 	
-	public void putResultLines(List<String> lines) throws Exception
+	public void putResultLines(List<List<Element>> lines) throws Exception
 	{
-		for (String line : lines)
+		for (List<Element> line : lines)
 			source.putResultLine(line);
 	}
 }

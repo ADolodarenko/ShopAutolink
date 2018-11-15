@@ -1,5 +1,6 @@
 package ru.flc.service.shopautolink.model.logic;
 
+import ru.flc.service.shopautolink.model.Element;
 import ru.flc.service.shopautolink.model.LogEvent;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkFao;
 import ru.flc.service.shopautolink.view.Constants;
@@ -80,7 +81,7 @@ public class TitleLinkProcessor extends SwingWorker<LogEvent, LogEvent>
         {
             openAccessObjects();
 
-            List<String> resultLines = dataObject.processLinks();
+            List<List<Element>> resultLines = dataObject.processLinks();
             
             fileObject.putResultLines(resultLines);
 

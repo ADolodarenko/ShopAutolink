@@ -7,6 +7,8 @@ import ru.flc.service.shopautolink.model.settings.DatabaseSettings;
 import ru.flc.service.shopautolink.model.settings.Settings;
 import ru.flc.service.shopautolink.view.Constants;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +26,107 @@ public class AseDataSource implements DataSource
 	{
 		return SingletonHelper.INSTANCE;
 	}
+
+	private static String buildDatabaseUrl(DatabaseSettings settings)
+	{
+		StringBuilder builder = new StringBuilder(settings.getConnectionPrefix());
+		builder.append(':');
+		builder.append(settings.getHost());
+		builder.append(':');
+		builder.append(settings.getPort());
+		builder.append('/');
+		builder.append(settings.getCatalog());
+
+		return builder.toString();
+	}
+
+	private static void executeStatement(PreparedStatement statement, List<List<Element>> outputLines)
+			throws SQLException
+	{
+		boolean done = false;
+		boolean isResultSet = statement.execute();
+
+		while (!done)
+		{
+			if (isResultSet)
+				parseResultSet(statement.getResultSet(), outputLines);
+			else
+			{
+				int updateCount = statement.getUpdateCount();
+
+				if (updateCount >= 0)
+					outputLines.add(getLineWithOneElement(
+							new Element(String.format(Constants.MESS_ROWS_AFFECTED, updateCount), String.class)));
+				else
+					done = true;
+			}
+
+			if (!done)
+				isResultSet = statement.getMoreResults();
+		}
+
+		SQLWarning warning = statement.getWarnings();
+
+		while (warning != null)
+		{
+			outputLines.add(getLineWithOneElement(
+					new Element(warning.getMessage(), String.class)));
+
+			warning = warning.getNextWarning();
+		}
+	}
+
+	private static void parseResultSet(ResultSet resultSet, List<List<Element>> outputLines)
+			throws SQLException
+	{
+		outputLines.add(getResultSetHeaderLine(resultSet));
+
+		while (resultSet.next())
+			outputLines.add(getResultSetDataLine(resultSet));
+	}
+
+	private static List<Element> getResultSetHeaderLine(ResultSet resultSet) throws SQLException
+	{
+		List<Element> line = new LinkedList<>();
+
+		ResultSetMetaData metaData = resultSet.getMetaData();
+
+		for (int i = 1; i <= metaData.getColumnCount(); i++)
+			line.add(new Element(metaData.getColumnLabel(i), String.class));
+
+		return line;
+	}
+
+	private static List<Element> getResultSetDataLine(ResultSet resultSet)
+			throws SQLException
+	{
+		List<Element> line = new LinkedList<>();
+
+		ResultSetMetaData metaData = resultSet.getMetaData();
+
+		for (int i = 1; i <= metaData.getColumnCount(); i++)
+			line.add(getElementByField(resultSet, i));
+
+		return line;
+	}
+
+	private static List<Element> getLineWithOneElement(Element element)
+	{
+		List<Element> line = new LinkedList<>();
+		line.add(element);
+
+		return line;
+	}
+
+	private static Element getElementByField(ResultSet resultSet, int fieldNumber)
+			throws SQLException
+	{
+		Object value = resultSet.getObject(fieldNumber);
+		Class<?> valueClass = value.getClass();
+
+		return new Element(value, valueClass);
+	}
+
 
 	private String url;
 	private String user;
@@ -144,89 +247,6 @@ public class AseDataSource implements DataSource
 			throw new Exception(DB_WITHOUT_SP_SUPPORT_EXCEPTION_STRING);
 	}
 	
-	private void executeStatement(PreparedStatement statement, List<List<Element>> outputLines) throws SQLException
-	{
-		boolean done = false;
-		boolean isResultSet = statement.execute();
-		
-		while (!done)
-		{
-			if (isResultSet)
-				parseResultSet(statement.getResultSet(), outputLines);
-			else
-			{
-				int updateCount = statement.getUpdateCount();
-				
-				if (updateCount >= 0)
-					outputLines.add(getLineWithOneElement(
-							new Element(String.format(Constants.MESS_ROWS_AFFECTED, updateCount), String.class)));
-				else
-					done = true;
-			}
-			
-			if (!done)
-				isResultSet = statement.getMoreResults();
-		}
-		
-		SQLWarning warning = statement.getWarnings();
-		
-		while (warning != null)
-		{
-			outputLines.add(getLineWithOneElement(
-					new Element(warning.getMessage(), String.class)));
-			
-			warning = warning.getNextWarning();
-		}
-	}
-	
-	private void parseResultSet(ResultSet resultSet, List<List<Element>> outputLines) throws SQLException
-	{
-		outputLines.add(getResultSetHeaderLine(resultSet));
-		
-		while (resultSet.next())
-			outputLines.add(getResultSetDataLine(resultSet));
-	}
-	
-	private List<Element> getResultSetHeaderLine(ResultSet resultSet) throws SQLException
-	{
-		List<Element> line = new LinkedList<>();
-		
-		ResultSetMetaData metaData = resultSet.getMetaData();
-		
-		for (int i = 1; i <= metaData.getColumnCount(); i++)
-			line.add(new Element(metaData.getColumnLabel(i), String.class));
-		
-		return line;
-	}
-	
-	private List<Element> getResultSetDataLine(ResultSet resultSet) throws SQLException
-	{
-		List<Element> line = new LinkedList<>();
-		
-		ResultSetMetaData metaData = resultSet.getMetaData();
-		
-		for (int i = 1; i <= metaData.getColumnCount(); i++)
-			line.add(getElementByField(metaData, resultSet, i));
-		
-		return line;
-	}
-	
-	private List<Element> getLineWithOneElement(Element element)
-	{
-		List<Element> line = new LinkedList<>();
-		line.add(element);
-		
-		return line;
-	}
-	
-	private Element getElementByField(ResultSetMetaData metaData, ResultSet resultSet, int fieldNumber)
-			throws SQLException
-	{
-		int fieldTypeName = metaData.getColumnType(fieldNumber);
-		
-		return null;
-	}
-	
 	private void uploadPackAsBatch(List<TitleLink> pack) throws SQLException
 	{
 		try (PreparedStatement statement = connection.prepareStatement(TMP_TABLE_INSERT_COMMAND))
@@ -288,19 +308,6 @@ public class AseDataSource implements DataSource
 		storedProcedureName = settings.getStoredProcedureName();
 		channelId = settings.getChannelId();
 		priceId = settings.getPriceId();
-	}
-	
-	private String buildDatabaseUrl(DatabaseSettings settings)
-	{
-		StringBuilder builder = new StringBuilder(settings.getConnectionPrefix());
-		builder.append(':');
-		builder.append(settings.getHost());
-		builder.append(':');
-		builder.append(settings.getPort());
-		builder.append('/');
-		builder.append(settings.getCatalog());
-		
-		return builder.toString();
 	}
 	
 	private void prepareTemporaryTable() throws SQLException
