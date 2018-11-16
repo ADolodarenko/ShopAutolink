@@ -1,5 +1,6 @@
 package ru.flc.service.shopautolink.view;
 
+import org.apache.commons.io.FilenameUtils;
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
@@ -15,6 +16,7 @@ import ru.flc.service.shopautolink.model.logic.TitleLinkProcessor;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
@@ -128,7 +130,6 @@ public class MainFrame extends JFrame
         fileChooser = new JFileChooser(".");
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setAcceptAllFileFilterUsed(false);
-        //TODO: get setting file filter back here
     }
 
     private void initFrame()
@@ -255,11 +256,13 @@ public class MainFrame extends JFrame
 
     private void loadTitleLinks()
     {
-		fileChooser.setFileFilter(new FileNameExtensionFilter("XLS(X)", "XLS", "XLSX"));
+    	fileChooser.resetChoosableFileFilters();
+
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("XLS(X)", "XLS", "XLSX"));
 
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
-            fileObject = getFileObject(fileChooser.getSelectedFile());
+            fileObject = getFileObject(getSelectedFileWithExtension(fileChooser));
             if (fileObject == null)
                 return;
 
@@ -276,11 +279,16 @@ public class MainFrame extends JFrame
 
     private void processTitleLinks()
     {
-		fileChooser.setFileFilter(new FileNameExtensionFilter("TXT/CSV", "TXT", "CSV"));
+		fileChooser.resetChoosableFileFilters();
+
+    	fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("TXT", "TXT"));
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV", "CSV"));
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("XLS", "XLS"));
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("XLSX", "XLSX"));
 
 		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION)
 		{
-			fileObject = getFileObject(fileChooser.getSelectedFile());
+			fileObject = getFileObject(getSelectedFileWithExtension(fileChooser));
 			if (fileObject == null)
 				return;
 
@@ -294,7 +302,31 @@ public class MainFrame extends JFrame
 			linkProcessor.execute();
 		}
     }
-    
+
+    private File getSelectedFileWithExtension(JFileChooser chooser)
+	{
+		File file = chooser.getSelectedFile();
+		String fileName = file.getAbsolutePath();
+		String oldExtension = FilenameUtils.getExtension(fileName);
+
+		FileFilter fileFilter = chooser.getFileFilter();
+		if ("FileNameExtensionFilter".equals(fileFilter.getClass().getSimpleName()))
+		{
+			String newExtension = ((FileNameExtensionFilter) fileFilter).getExtensions()[0];
+
+			boolean mustAddExtension = (newExtension != null && !newExtension.isEmpty());
+			mustAddExtension = mustAddExtension && (oldExtension == null || oldExtension.isEmpty()
+								|| !oldExtension.equalsIgnoreCase(newExtension));
+
+			if (mustAddExtension)
+				file = new File(fileName + "." + newExtension.toLowerCase());
+		}
+
+		return file;
+	}
+
+
+
     private void showSettings()
 	{
 		if (settingsDialog == null)
