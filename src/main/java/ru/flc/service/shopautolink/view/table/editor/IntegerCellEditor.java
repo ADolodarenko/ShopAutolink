@@ -1,13 +1,13 @@
 package ru.flc.service.shopautolink.view.table.editor;
 
+import ru.flc.service.shopautolink.view.Constants;
+
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
 
 public class IntegerCellEditor extends AbstractCellEditor implements TableCellEditor
 {
-	private static final String INTEGER_CLASS_NAME = "Integer";
-
 	private JSpinner editor;
 
 	public IntegerCellEditor()
@@ -26,7 +26,7 @@ public class IntegerCellEditor extends AbstractCellEditor implements TableCellEd
 		{
 			String valueClassName = value.getClass().getSimpleName();
 
-			if (INTEGER_CLASS_NAME.equals(valueClassName))
+			if (Constants.CLASS_NAME_INTEGER.equals(valueClassName))
 				editor.setValue(value);
 		}
 

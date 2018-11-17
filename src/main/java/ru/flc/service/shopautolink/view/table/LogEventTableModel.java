@@ -3,6 +3,7 @@ package ru.flc.service.shopautolink.view.table;
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import ru.flc.service.shopautolink.model.LogEvent;
+import ru.flc.service.shopautolink.view.Constants;
 
 import javax.swing.table.AbstractTableModel;
 import java.time.LocalDateTime;
@@ -11,15 +12,13 @@ import java.util.List;
 
 public class LogEventTableModel extends AbstractTableModel
 {
-	private static final String RESOURCE_MANAGER_EXCEPTION_STRING = "Resource manager is empty.";
-	
-    private List<LogEvent> data;
+	private List<LogEvent> data;
     private ResourceManager resourceManager;
     
     public LogEventTableModel(ResourceManager resourceManager, List<LogEvent> data)
     {
 		if (resourceManager == null)
-			throw new IllegalArgumentException(RESOURCE_MANAGER_EXCEPTION_STRING);
+			throw new IllegalArgumentException(Constants.EXCPT_RESOURCE_MANAGER_EMPTY);
 		
 		this.resourceManager = resourceManager;
   
@@ -73,9 +72,9 @@ public class LogEventTableModel extends AbstractTableModel
 		switch (column)
 		{
 			case 0:
-				return new Title(resourceManager, LogEvent.DATE_TIME_STRING).getText();
+				return new Title(resourceManager, Constants.KEY_COLUMN_DATETIME).getText();
 			case 1:
-				return new Title(resourceManager, LogEvent.TEXT_STRING).getText();
+				return new Title(resourceManager, Constants.KEY_COLUMN_TEXT).getText();
 			default:
 				return null;
 		}

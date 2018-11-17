@@ -1,6 +1,7 @@
 package ru.flc.service.shopautolink.view.table.editor;
 
 import org.dav.service.util.ResourceManager;
+import ru.flc.service.shopautolink.view.Constants;
 
 import javax.swing.table.TableCellEditor;
 import java.util.HashMap;
@@ -38,19 +39,19 @@ public class TableCellEditorFactory
 
 		switch (forClassName)
 		{
-			case "Boolean":
+			case Constants.CLASS_NAME_BOOLEAN:
 				editor = new BooleanCellEditor();
 				break;
-			case "Integer":
+			case Constants.CLASS_NAME_INTEGER:
 				editor = new IntegerCellEditor();
 				break;
-			case "Double":
+			case Constants.CLASS_NAME_DOUBLE:
 				editor = new DoubleCellEditor();
 				break;
-			case "String":
+			case Constants.CLASS_NAME_STRING:
 				editor = new StringCellEditor();
 				break;
-			case "Locale":
+			case Constants.CLASS_NAME_LOCALE:
 				editor = new LocaleCellEditor(resourceManager);
 		}
 

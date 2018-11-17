@@ -1,6 +1,5 @@
 package ru.flc.service.shopautolink.model.settings.parameter;
 
-import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import ru.flc.service.shopautolink.view.Constants;
 
@@ -8,20 +7,16 @@ public class Parameter
 {
 	public static String[] getTitleKeys()
 	{
-		return new String[] { Constants.KEY_PARAM_TITLE_NAME, Constants.KEY_PARAM_TITLE_VALUE };
+		return new String[] { Constants.KEY_COLUMN_PARAM_NAME, Constants.KEY_COLUMN_PARAM_VALUE};
 	}
 	
-    private ResourceManager resourceManager;
     private Title key;
     private Object value;
     private Class<?> type;
 
-    public Parameter(ResourceManager resourceManager, Title key, Object value, Class<?> type)
+    public Parameter(Title key, Object value, Class<?> type)
     {
-    	if (resourceManager == null)
-    		throw new IllegalArgumentException(Constants.EXCPT_RESOURCE_MANAGER_EMPTY);
-    	
-        if (key == null)
+    	if (key == null)
             throw new IllegalArgumentException(Constants.EXCPT_PARAM_KEY_EMPTY);
 
         if (value == null)
@@ -55,21 +50,21 @@ public class Parameter
     	
     	if (thisClassName.equals(thatClassName))
         	this.value = value;
-    	else if ("String".equals(thisClassName))
+    	else if (Constants.CLASS_NAME_STRING.equals(thisClassName))
     		this.value = value.toString();
-    	else if ("String".equals(thatClassName))
+    	else if (Constants.CLASS_NAME_STRING.equals(thatClassName))
 		{
 			String stringValue = (String) value;
 			
 			switch (thisClassName)
 			{
-				case "Boolean":
+				case Constants.CLASS_NAME_BOOLEAN:
 					this.value = Boolean.valueOf(stringValue);
 					break;
-				case "Integer":
+				case Constants.CLASS_NAME_INTEGER:
 					this.value = Integer.parseInt(stringValue);
 					break;
-				case "Double":
+				case Constants.CLASS_NAME_DOUBLE:
 					this.value = Double.parseDouble(stringValue);
 					break;
 				default:

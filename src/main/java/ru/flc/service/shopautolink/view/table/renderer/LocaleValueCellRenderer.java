@@ -26,7 +26,7 @@ public class LocaleValueCellRenderer extends DefaultTableCellRenderer
 		{
 			String valueClassName = value.getClass().getSimpleName();
 			
-			if ("Locale".equals(valueClassName))
+			if (Constants.CLASS_NAME_LOCALE.equals(valueClassName))
 			{
 				Locale locale = (Locale) value;
 				

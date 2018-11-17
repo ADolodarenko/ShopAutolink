@@ -1,5 +1,7 @@
 package ru.flc.service.shopautolink.model;
 
+import ru.flc.service.shopautolink.view.Constants;
+
 public class TitleLink
 {
 	private int titleId;
@@ -9,10 +11,10 @@ public class TitleLink
 	public TitleLink(int titleId, String productCode, int forSale)
 	{
 		if (titleId < 0)
-			throw new IllegalArgumentException("Illegal titleId = " + titleId + ".");
+			throw new IllegalArgumentException(String.format(Constants.EXCPT_TITLE_ID_WRONG, titleId));
 		
 		if (productCode == null || productCode.isEmpty())
-			throw new IllegalArgumentException("Empty productCode.");
+			throw new IllegalArgumentException(Constants.EXCPT_PRODUCT_CODE_EMPTY);
 		
 		this.titleId = titleId;
 		this.productCode = productCode;

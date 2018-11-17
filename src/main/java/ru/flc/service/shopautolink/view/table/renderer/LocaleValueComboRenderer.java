@@ -23,7 +23,7 @@ public class LocaleValueComboRenderer extends JLabel implements ListCellRenderer
 		{
 			String valueClassName = value.getClass().getSimpleName();
 
-			if ("Locale".equals(valueClassName))
+			if (Constants.CLASS_NAME_LOCALE.equals(valueClassName))
 			{
 				Locale locale = (Locale) value;
 

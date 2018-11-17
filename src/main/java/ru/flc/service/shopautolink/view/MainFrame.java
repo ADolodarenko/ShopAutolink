@@ -310,7 +310,7 @@ public class MainFrame extends JFrame
 		String oldExtension = FilenameUtils.getExtension(fileName);
 
 		FileFilter fileFilter = chooser.getFileFilter();
-		if ("FileNameExtensionFilter".equals(fileFilter.getClass().getSimpleName()))
+		if (Constants.CLASS_NAME_FILENAMEEXTENSIONFILTER.equals(fileFilter.getClass().getSimpleName()))
 		{
 			String newExtension = ((FileNameExtensionFilter) fileFilter).getExtensions()[0];
 

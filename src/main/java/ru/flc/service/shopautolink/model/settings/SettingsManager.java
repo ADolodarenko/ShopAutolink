@@ -2,6 +2,7 @@ package ru.flc.service.shopautolink.model.settings;
 
 import org.dav.service.util.ResourceManager;
 import ru.flc.service.shopautolink.SAResourceManager;
+import ru.flc.service.shopautolink.view.Constants;
 
 import java.io.*;
 import java.util.Properties;
@@ -78,7 +79,7 @@ public class SettingsManager
     {
         try (OutputStream output = new FileOutputStream(resourceManager.getConfig()))
         {
-            properties.store(output, "Shop autolinking properties");
+            properties.store(output, Constants.MESS_SETTINGS_DESCRIPTION);
         }
     }
 }

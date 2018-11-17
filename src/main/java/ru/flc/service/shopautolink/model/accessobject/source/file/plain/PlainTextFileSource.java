@@ -71,7 +71,7 @@ public class PlainTextFileSource implements FileSource
 		{
 			String settingsClassName = settings.getClass().getSimpleName();
 			
-			if ("FileSettings".equals(settingsClassName))
+			if (Constants.CLASS_NAME_FILESETTINGS.equals(settingsClassName))
 				resetParameters((FileSettings)settings);
 			else
 				throw new IllegalArgumentException(Constants.EXCPT_FILE_SETTINGS_WRONG);

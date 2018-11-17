@@ -3,19 +3,18 @@ package ru.flc.service.shopautolink.model.accessobject;
 import ru.flc.service.shopautolink.model.Element;
 import ru.flc.service.shopautolink.model.TitleLink;
 import ru.flc.service.shopautolink.model.accessobject.source.database.DataSource;
+import ru.flc.service.shopautolink.view.Constants;
 
 import java.util.List;
 
 public class TitleLinkDao implements AccessObject
 {
-	private static final String DATA_SOURCE_EXCEPTION_STRING = "Empty data source.";
-
 	private DataSource source;
 	
 	public TitleLinkDao(DataSource source)
 	{
 		if (source == null)
-			throw new IllegalArgumentException(DATA_SOURCE_EXCEPTION_STRING);
+			throw new IllegalArgumentException(Constants.EXCPT_DATA_SOURCE_EMPTY);
 		
 		this.source = source;
 	}

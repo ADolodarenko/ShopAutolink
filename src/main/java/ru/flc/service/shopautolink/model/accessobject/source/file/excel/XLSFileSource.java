@@ -18,7 +18,7 @@ public class XLSFileSource extends ExcelFileSource
 	@Override
 	protected void getWorkbook() throws IOException
 	{
-		workbook = new HSSFWorkbook(new FileInputStream(file));
+		workbook = new HSSFWorkbook(inputStream);
 	}
 
 	private static class SingletonHelper

@@ -7,21 +7,12 @@ import ru.flc.service.shopautolink.model.settings.DatabaseSettings;
 import ru.flc.service.shopautolink.model.settings.Settings;
 import ru.flc.service.shopautolink.view.Constants;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
 public class AseDataSource implements DataSource
 {
-	private static final String DB_WITHOUT_SP_SUPPORT_EXCEPTION_STRING = "This database doesn't support stored procedures.";
-	private static final String TMP_TABLE_NAME = "#tmp_link";
-	private static final String TMP_TABLE_CREATE_COMMAND = "create table " + TMP_TABLE_NAME +
-			" (gr_id numeric(18,0), product_code varchar(7), prizn numeric(18,0))";
-	private static final String TMP_TABLE_INSERT_COMMAND = "insert " + TMP_TABLE_NAME +
-			" (gr_id, product_code, prizn) values (?, ?, ?)";
-	
 	public static AseDataSource getInstance()
 	{
 		return SingletonHelper.INSTANCE;
@@ -175,7 +166,7 @@ public class AseDataSource implements DataSource
 		{
 			String settingsClassName = settings.getClass().getSimpleName();
 
-			if ("DatabaseSettings".equals(settingsClassName))
+			if (Constants.CLASS_NAME_DATABASESETTINGS.equals(settingsClassName))
 				resetParameters((DatabaseSettings)settings);
 			else
 				throw new IllegalArgumentException(Constants.EXCPT_DATABASE_SETTINGS_WRONG);
@@ -188,7 +179,7 @@ public class AseDataSource implements DataSource
 	public void applyUploadedTitleLinks() throws SQLException
 	{
 		String truncateCommand = "truncate table " + tableName;
-		String insertCommand = "insert " + tableName + " select * from " + TMP_TABLE_NAME;
+		String insertCommand = "insert " + tableName + " select * from " + Constants.TMP_TABLE_NAME;
 		
 		try (Statement statement = connection.createStatement())
 		{
@@ -244,12 +235,12 @@ public class AseDataSource implements DataSource
 			}
 		}
 		else
-			throw new Exception(DB_WITHOUT_SP_SUPPORT_EXCEPTION_STRING);
+			throw new Exception(Constants.EXCPT_DATABASE_WITHOUT_SP_SUPPORT);
 	}
 	
 	private void uploadPackAsBatch(List<TitleLink> pack) throws SQLException
 	{
-		try (PreparedStatement statement = connection.prepareStatement(TMP_TABLE_INSERT_COMMAND))
+		try (PreparedStatement statement = connection.prepareStatement(Constants.TMP_TABLE_INSERT_COMMAND))
 		{
 			for (TitleLink titleLink : pack)
 			{
@@ -274,7 +265,7 @@ public class AseDataSource implements DataSource
 	
 	private void uploadPackOneByOne(List<TitleLink> pack) throws Exception
 	{
-		try (PreparedStatement statement = connection.prepareStatement(TMP_TABLE_INSERT_COMMAND))
+		try (PreparedStatement statement = connection.prepareStatement(Constants.TMP_TABLE_INSERT_COMMAND))
 		{
 			for (TitleLink titleLink : pack)
 			{
@@ -283,7 +274,7 @@ public class AseDataSource implements DataSource
 				statement.setInt(3, titleLink.getForSale());
 				
 				if (statement.executeUpdate() < 1)
-					throw new Exception("Can't insert a row in the temporary table.");
+					throw new Exception(Constants.EXCPT_CANT_INSERT_TO_TMP_TABLE);
 			}
 			
 			connection.commit();
@@ -314,7 +305,7 @@ public class AseDataSource implements DataSource
 	{
 		try (Statement statement = connection.createStatement())
 		{
-			statement.executeUpdate(TMP_TABLE_CREATE_COMMAND);
+			statement.executeUpdate(Constants.TMP_TABLE_CREATE_COMMAND);
 			
 			connection.commit();
 		}

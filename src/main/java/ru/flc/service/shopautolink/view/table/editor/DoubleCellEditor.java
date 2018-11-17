@@ -1,13 +1,13 @@
 package ru.flc.service.shopautolink.view.table.editor;
 
+import ru.flc.service.shopautolink.view.Constants;
+
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
 
 public class DoubleCellEditor extends AbstractCellEditor implements TableCellEditor
 {
-	private static final String DOUBLE_CLASS_NAME = "Double";
-	
 	private JSpinner editor;
 	
 	public DoubleCellEditor()
@@ -26,7 +26,7 @@ public class DoubleCellEditor extends AbstractCellEditor implements TableCellEdi
 		{
 			String valueClassName = value.getClass().getSimpleName();
 			
-			if (DOUBLE_CLASS_NAME.equals(valueClassName))
+			if (Constants.CLASS_NAME_DOUBLE.equals(valueClassName))
 				editor.setValue(value);
 		}
 		

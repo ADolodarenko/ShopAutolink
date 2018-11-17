@@ -1,6 +1,7 @@
 package ru.flc.service.shopautolink.view.table.renderer;
 
 import org.dav.service.util.ResourceManager;
+import ru.flc.service.shopautolink.view.Constants;
 
 import javax.swing.table.TableCellRenderer;
 import java.util.HashMap;
@@ -38,15 +39,15 @@ public class TableCellRendererFactory
 
 		switch (forClassName)
 		{
-			case "Boolean":
+			case Constants.CLASS_NAME_BOOLEAN:
 				break;
-			case "Integer":
+			case Constants.CLASS_NAME_INTEGER:
 				break;
-			case "Double":
+			case Constants.CLASS_NAME_DOUBLE:
 				break;
-			case "String":
+			case Constants.CLASS_NAME_STRING:
 				break;
-			case "Locale":
+			case Constants.CLASS_NAME_LOCALE:
 				renderer = new LocaleValueCellRenderer(resourceManager);
 		}
 

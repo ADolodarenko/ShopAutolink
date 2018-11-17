@@ -59,7 +59,7 @@ public class ViewSettings extends TransmissiveSettings
 	{
 		String maximizedString = SettingsManager.getStringValue(Constants.KEY_PARAM_MAIN_WIN_MAXIMIZED);
 		
-		if ("TRUE".equalsIgnoreCase(maximizedString))
+		if (Constants.MESS_TRUE.equalsIgnoreCase(maximizedString))
 			mainWindowMaximized = true;
 		else
 			mainWindowMaximized = false;

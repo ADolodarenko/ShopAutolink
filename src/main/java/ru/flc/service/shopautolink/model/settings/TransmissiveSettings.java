@@ -2,7 +2,6 @@ package ru.flc.service.shopautolink.model.settings;
 
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
-import ru.flc.service.shopautolink.SAResourceManager;
 import ru.flc.service.shopautolink.model.settings.parameter.Parameter;
 import ru.flc.service.shopautolink.model.settings.parameter.ParameterHeader;
 import ru.flc.service.shopautolink.view.Constants;
@@ -63,21 +62,21 @@ public abstract class TransmissiveSettings implements Settings
 		
 		String className = cl.getSimpleName();
 		
-		if ("Boolean".equals(className))
+		if (Constants.CLASS_NAME_BOOLEAN.equals(className))
 			value = Boolean.FALSE;
-		else if ("Integer".equals(className))
+		else if (Constants.CLASS_NAME_INTEGER.equals(className))
 			value = Integer.valueOf(0);
-		else if ("Double".equals(className))
+		else if (Constants.CLASS_NAME_DOUBLE.equals(className))
 			value = Double.valueOf(0.0);
-		else if ("Locale".equals(className))
+		else if (Constants.CLASS_NAME_LOCALE.equals(className))
 			value = resourceManager.getCurrentLocale();
-		else if ("String".equals(className))
+		else if (Constants.CLASS_NAME_STRING.equals(className))
 			value = "";
 		
 		if (value == null)
 			throw new Exception(Constants.EXCPT_VALUE_TYPE_WRONG);
 		
-		return new Parameter(resourceManager, key, value, cl);
+		return new Parameter(key, value, cl);
 	}
 	
 	private Parameter getParameter(ParameterHeader header) throws Exception
@@ -90,20 +89,20 @@ public abstract class TransmissiveSettings implements Settings
 		
 		String className = cl.getSimpleName();
 		
-		if ("Boolean".equals(className))
+		if (Constants.CLASS_NAME_BOOLEAN.equals(className))
 			value = SettingsManager.getBooleanValue(keyString);
-		else if ("Integer".equals(className))
+		else if (Constants.CLASS_NAME_INTEGER.equals(className))
 			value = SettingsManager.getIntValue(keyString);
-		else if ("Double".equals(className))
+		else if (Constants.CLASS_NAME_DOUBLE.equals(className))
 			value = SettingsManager.getDoubleValue(keyString);
-		else if ("String".equals(className))
+		else if (Constants.CLASS_NAME_STRING.equals(className))
 		{
 			value = SettingsManager.getStringValue(keyString);
 			
 			if (value == null)
 				value = "";
 		}
-		else if ("Locale".equals(className))
+		else if (Constants.CLASS_NAME_LOCALE.equals(className))
 		{
 			String localeName = SettingsManager.getStringValue(keyString);
 			
@@ -116,7 +115,7 @@ public abstract class TransmissiveSettings implements Settings
 		if (value == null)
 			throw new Exception(Constants.EXCPT_VALUE_TYPE_WRONG);
 		
-		return new Parameter(resourceManager, key, value, cl);
+		return new Parameter(key, value, cl);
 	}
 	
 	private Locale findLocale(String localeName)
@@ -124,14 +123,10 @@ public abstract class TransmissiveSettings implements Settings
 		if (localeName == null || localeName.isEmpty())
 			return null;
 		
-		String rmClassName = resourceManager.getClass().getSimpleName();
+		for (Locale locale : resourceManager.getAvailableLocales())
+			if (locale.toString().equals(localeName))
+				return locale;
 		
-		if ("SAResourceManager".equals(rmClassName))
-		{
-			for (Locale locale : ((SAResourceManager) resourceManager).getAvailableLocales())
-				if (locale.toString().equals(localeName))
-					return locale;
-		}
 		
 		return null;
 	}

@@ -1,6 +1,7 @@
 package ru.flc.service.shopautolink.view.table.editor;
 
 import org.dav.service.util.ResourceManager;
+import ru.flc.service.shopautolink.view.Constants;
 import ru.flc.service.shopautolink.view.table.renderer.LocaleValueComboRenderer;
 
 import javax.swing.*;
@@ -10,8 +11,6 @@ import java.util.Locale;
 
 public class LocaleCellEditor extends AbstractCellEditor implements TableCellEditor
 {
-	private static final String LOCALE_CLASS_NAME = "Locale";
-	
 	private ResourceManager resourceManager;
 	private JComboBox<Locale> editor;
 	
@@ -38,7 +37,7 @@ public class LocaleCellEditor extends AbstractCellEditor implements TableCellEdi
 		{
 			String valueClassName = value.getClass().getSimpleName();
 			
-			if (LOCALE_CLASS_NAME.equals(valueClassName))
+			if (Constants.CLASS_NAME_LOCALE.equals(valueClassName))
 				editor.setSelectedItem(value);
 		}
 		

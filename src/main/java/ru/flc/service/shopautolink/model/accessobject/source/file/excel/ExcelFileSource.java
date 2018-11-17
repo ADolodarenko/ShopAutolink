@@ -9,16 +9,25 @@ import ru.flc.service.shopautolink.model.settings.Settings;
 import ru.flc.service.shopautolink.view.Constants;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 public abstract class ExcelFileSource implements FileSource
 {
-	protected File file;
+	private File file;
+	
+	private CellStyle dateCellStyle;
+	
+	protected FileInputStream inputStream;
 	protected Workbook workbook;
 	protected Sheet sheet;
 	protected Iterator<Row> rowIterator;
+	
+	private boolean writable;
 
 	static int getCellIntValue(Cell cell)
 	{
@@ -39,16 +48,27 @@ public abstract class ExcelFileSource implements FileSource
 	@Override
 	public void open() throws Exception
 	{
+		inputStream = new FileInputStream(file);
 		getWorkbook();
-		sheet = workbook.getSheetAt(0);
-		rowIterator = sheet.iterator();
 	}
 	
 	@Override
 	public void close() throws Exception
 	{
+		if (inputStream != null)
+			inputStream.close();
+		
 		if (workbook != null)
+		{
+			if (writable)
+			{
+				FileOutputStream outputStream = new FileOutputStream(file);
+				workbook.write(outputStream);
+				outputStream.close();
+			}
+			
 			workbook.close();
+		}
 		
 		sheet = null;
 		workbook = null;
@@ -63,7 +83,7 @@ public abstract class ExcelFileSource implements FileSource
 		{
 			String settingsClassName = settings.getClass().getSimpleName();
 			
-			if ("FileSettings".equals(settingsClassName))
+			if (Constants.CLASS_NAME_FILESETTINGS.equals(settingsClassName))
 				resetParameters((FileSettings)settings);
 			else
 				throw new IllegalArgumentException(Constants.EXCPT_FILE_SETTINGS_WRONG);
@@ -75,6 +95,14 @@ public abstract class ExcelFileSource implements FileSource
 	@Override
 	public TitleLink getNextLink()
 	{
+		if (sheet == null)
+		{
+			if (writable)
+				writable = false;
+			
+			prepareSheet();
+		}
+		
 		if (hasNextRow())
 		{
 			Row row = rowIterator.next();
@@ -111,7 +139,57 @@ public abstract class ExcelFileSource implements FileSource
 	@Override
 	public void putResultLine(List<Element> line) throws Exception
 	{
-		;
+		if (!writable)
+		{
+			writable = true;
+			
+			prepareSheet();
+		}
+		
+		int rowNum = sheet.getLastRowNum();
+		Row newRow = sheet.createRow(rowNum++);
+		
+		for (int i = 0; i < line.size(); i++)
+		{
+			Cell cell = newRow.createCell(i);
+			Element currentElement = line.get(i);
+			
+			String valueClassName = currentElement.getType().getSimpleName();
+			
+			switch (valueClassName)
+			{
+				case Constants.CLASS_NAME_DOUBLE:
+					cell.setCellValue((Double) currentElement.getValue());
+					break;
+				case Constants.CLASS_NAME_BOOLEAN:
+					cell.setCellValue((Boolean) currentElement.getValue());
+					break;
+				case Constants.CLASS_NAME_DATE:
+					cell.setCellStyle(dateCellStyle);
+					cell.setCellValue((Date) currentElement.getValue());
+					sheet.autoSizeColumn(i);
+					break;
+				default:
+					cell.setCellValue(currentElement.getValue().toString());
+			}
+		}
+	}
+	
+	private void prepareSheet()
+	{
+		if (writable)
+		{
+			sheet = workbook.createSheet();
+			
+			DataFormat format = workbook.createDataFormat();
+			dateCellStyle = workbook.createCellStyle();
+			dateCellStyle.setDataFormat(format.getFormat("dd.MM.yyyy HH:mm:ss"));
+		}
+		else
+		{
+			sheet = workbook.getSheetAt(0);
+			rowIterator = sheet.iterator();
+		}
 	}
 	
 	protected boolean hasNextRow()

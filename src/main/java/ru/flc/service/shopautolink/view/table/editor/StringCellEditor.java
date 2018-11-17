@@ -1,5 +1,7 @@
 package ru.flc.service.shopautolink.view.table.editor;
 
+import ru.flc.service.shopautolink.view.Constants;
+
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
@@ -8,8 +10,6 @@ import java.awt.event.FocusEvent;
 
 public class StringCellEditor extends AbstractCellEditor implements TableCellEditor
 {
-	private static final String STRING_CLASS_NAME = "String";
-	
 	private JTextField editor;
 	
 	public StringCellEditor()
@@ -34,7 +34,7 @@ public class StringCellEditor extends AbstractCellEditor implements TableCellEdi
 		{
 			String valueClassName = value.getClass().getSimpleName();
 			
-			if (STRING_CLASS_NAME.equals(valueClassName))
+			if (Constants.CLASS_NAME_STRING.equals(valueClassName))
 				editor.setText(value.toString());
 		}
 		

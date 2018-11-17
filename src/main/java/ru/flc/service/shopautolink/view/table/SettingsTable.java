@@ -119,7 +119,7 @@ public class SettingsTable extends JTable
 			TableModel model = getModel();
 			String modelClassName = model.getClass().getSimpleName();
 
-			if ("SettingsTableModel".equals(modelClassName))
+			if (Constants.CLASS_NAME_SETTINGSTABLEMODEL.equals(modelClassName))
 			{
 				SettingsTableModel thisModel = (SettingsTableModel) model;
 
