@@ -63,7 +63,7 @@ public class SettingsDialog extends JDialog
 	{
 		tableModel = new SettingsTableModel(resourceManager, Parameter.getTitleKeys(), null);
 		
-		table = new SettingsTable(tableModel, resourceManager,
+		table = new SettingsTable(tableModel,
 									new TableCellEditorFactory(resourceManager),
 									new TableCellRendererFactory(resourceManager));
 		

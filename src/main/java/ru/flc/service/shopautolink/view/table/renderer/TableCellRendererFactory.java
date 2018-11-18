@@ -46,6 +46,7 @@ public class TableCellRendererFactory
 			case Constants.CLASS_NAME_DOUBLE:
 				break;
 			case Constants.CLASS_NAME_STRING:
+				renderer = new StringLinkCellRenderer(resourceManager);
 				break;
 			case Constants.CLASS_NAME_LOCALE:
 				renderer = new LocaleValueCellRenderer(resourceManager);

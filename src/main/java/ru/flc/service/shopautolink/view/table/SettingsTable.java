@@ -1,10 +1,8 @@
 package ru.flc.service.shopautolink.view.table;
 
-import org.dav.service.util.ResourceManager;
 import ru.flc.service.shopautolink.model.settings.parameter.Parameter;
 import ru.flc.service.shopautolink.view.Constants;
 import ru.flc.service.shopautolink.view.table.editor.*;
-import ru.flc.service.shopautolink.view.table.renderer.LocaleValueCellRenderer;
 import ru.flc.service.shopautolink.view.table.renderer.TableCellRendererFactory;
 
 import javax.swing.*;
@@ -13,28 +11,23 @@ import java.util.Enumeration;
 
 public class SettingsTable extends JTable
 {
-	private ResourceManager resourceManager;
 	private TableCellEditorFactory editorFactory;
 	private TableCellRendererFactory rendererFactory;
 	
 	private TableCellRenderer baseHeaderRenderer;
 
-	public SettingsTable(TableModel model, ResourceManager resourceManager,
+	public SettingsTable(TableModel model,
 						 TableCellEditorFactory editorFactory,
 						 TableCellRendererFactory rendererFactory)
 	{
 		super(model);
 		
-		if (resourceManager == null)
-			throw new IllegalArgumentException(Constants.EXCPT_RESOURCE_MANAGER_EMPTY);
-
 		if (editorFactory == null)
 			throw new IllegalArgumentException(Constants.EXCPT_TABLE_EDITOR_FACTORY_EMPTY);
 
 		if (rendererFactory == null)
 			throw new IllegalArgumentException(Constants.EXCPT_TABLE_RENDERER_FACTORY_EMPTY);
 
-		this.resourceManager = resourceManager;
 		this.editorFactory = editorFactory;
 		this.rendererFactory = rendererFactory;
 

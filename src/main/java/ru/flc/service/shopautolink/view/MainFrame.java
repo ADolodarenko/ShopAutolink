@@ -7,12 +7,14 @@ import org.dav.service.view.TitleAdjuster;
 import ru.flc.service.shopautolink.SAResourceManager;
 import ru.flc.service.shopautolink.model.LogEvent;
 import ru.flc.service.shopautolink.model.settings.*;
+import ru.flc.service.shopautolink.view.table.LogEventTable;
 import ru.flc.service.shopautolink.view.table.LogEventTableModel;
 import ru.flc.service.shopautolink.model.accessobject.AccessObjectFactory;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkDao;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkFao;
 import ru.flc.service.shopautolink.model.logic.TitleLinkLoader;
 import ru.flc.service.shopautolink.model.logic.TitleLinkProcessor;
+import ru.flc.service.shopautolink.view.table.renderer.TableCellRendererFactory;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -241,7 +243,7 @@ public class MainFrame extends JFrame
     private JPanel initLogPanel()
     {
         logTableModel = new LogEventTableModel(resourceManager, null);
-        logTable = new JTable(logTableModel);
+        logTable = new LogEventTable(logTableModel, new TableCellRendererFactory(resourceManager));
 
         JScrollPane tablePane = new JScrollPane(logTable);
 

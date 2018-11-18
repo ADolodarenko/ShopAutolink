@@ -34,6 +34,7 @@ public final class Constants
 	//Exceptions for workers
 	public static final String EXCPT_FILE_OBJECT_EMPTY = "File access object is empty.";
 	public static final String EXCPT_DATA_OBJECT_EMPTY = "Data access object is empty.";
+	public static final String EXCPT_URI_EMPTY = "The link to a file is empty.";
 	
 	public static final String EXCPT_TEXT_PATTERN_EMPTY = "Text pattern is empty.";
 	
@@ -50,7 +51,9 @@ public final class Constants
 	public static final String CLASS_NAME_FILESETTINGS = "FileSettings";
 	public static final String CLASS_NAME_DATABASESETTINGS = "DatabaseSettings";
 	public static final String CLASS_NAME_SETTINGSTABLEMODEL = "SettingsTableModel";
+	public static final String CLASS_NAME_LOGEVENTTABLEMODEL = "LogEventTableModel";
 	public static final String CLASS_NAME_FILENAMEEXTENSIONFILTER = "FileNameExtensionFilter";
+	public static final String CLASS_NAME_JLABEL = "JLabel";
 	
 	//Constants for a data source
 	public static final String TMP_TABLE_NAME = "#tmp_link";
@@ -72,6 +75,7 @@ public final class Constants
 	public static final String MESS_ROWS_AFFECTED = "(%d row(s) affected)";
 	public static final String MESS_SETTINGS_DESCRIPTION = "Shop autolinking properties";
 	public static final String MESS_TRUE = "TRUE";
+	public static final String MESS_AHREF_BEGINNING = "<a href=\"";
 	
 	//Titles for main frame
 	public static final String KEY_MAIN_FRAME = "MainFrame";
@@ -84,6 +88,10 @@ public final class Constants
 	
 	public static final String KEY_COLUMN_PARAM_NAME = "ColumnParamName";
 	public static final String KEY_COLUMN_PARAM_VALUE = "ColumnParamValue";
+	
+	//
+	public static final String KEY_LINK_TROUBLE_TITLE = "LinkTroubleTitle";
+	public static final String KEY_LINK_TROUBLE_TEXT = "LinkTroubleText";
 	
 	//For Settings hierarchy
 	public static final String KEY_PARAM_APP_LOCALE = "ApplicationLocale";
