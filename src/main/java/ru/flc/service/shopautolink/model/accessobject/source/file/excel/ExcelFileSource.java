@@ -26,8 +26,7 @@ public abstract class ExcelFileSource implements FileSource
 	protected Workbook workbook;
 	protected Sheet sheet;
 	protected Iterator<Row> rowIterator;
-	
-	private boolean writable;
+	protected boolean forWriting;
 
 	static int getCellIntValue(Cell cell)
 	{
@@ -45,11 +44,19 @@ public abstract class ExcelFileSource implements FileSource
 			return null;
 	}
 	
+	protected ExcelFileSource(boolean forWriting)
+	{
+		this.forWriting = forWriting;
+	}
+	
 	@Override
 	public void open() throws Exception
 	{
-		inputStream = new FileInputStream(file);
+		if (!forWriting)
+			inputStream = new FileInputStream(file);
+		
 		getWorkbook();
+		prepareSheet();
 	}
 	
 	@Override
@@ -60,7 +67,7 @@ public abstract class ExcelFileSource implements FileSource
 		
 		if (workbook != null)
 		{
-			if (writable)
+			if (forWriting)
 			{
 				FileOutputStream outputStream = new FileOutputStream(file);
 				workbook.write(outputStream);
@@ -93,15 +100,10 @@ public abstract class ExcelFileSource implements FileSource
 	}
 	
 	@Override
-	public TitleLink getNextLink()
+	public TitleLink getNextLink() throws IllegalStateException
 	{
-		if (sheet == null)
-		{
-			if (writable)
-				writable = false;
-			
-			prepareSheet();
-		}
+		if (forWriting)
+			throw new IllegalStateException(Constants.EXCPT_FILE_SOURCE_WRITES);
 		
 		if (hasNextRow())
 		{
@@ -139,12 +141,8 @@ public abstract class ExcelFileSource implements FileSource
 	@Override
 	public void putResultLine(List<Element> line) throws Exception
 	{
-		if (!writable)
-		{
-			writable = true;
-			
-			prepareSheet();
-		}
+		if (!forWriting)
+			throw new IllegalStateException(Constants.EXCPT_FILE_SOURCE_READS);
 		
 		int rowNum = sheet.getLastRowNum();
 		Row newRow = sheet.createRow(rowNum++);
@@ -177,7 +175,7 @@ public abstract class ExcelFileSource implements FileSource
 	
 	private void prepareSheet()
 	{
-		if (writable)
+		if (forWriting)
 		{
 			sheet = workbook.createSheet();
 			

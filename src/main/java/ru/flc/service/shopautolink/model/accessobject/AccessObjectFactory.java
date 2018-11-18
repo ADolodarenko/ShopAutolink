@@ -20,7 +20,7 @@ public class AccessObjectFactory
         File sourceFile = settings.getFile();
         String fileNameExtension = FilenameUtils.getExtension(sourceFile.getAbsolutePath());
 
-        FileSource source = FileSourceFactory.getSource(fileNameExtension);
+        FileSource source = FileSourceFactory.getSource(fileNameExtension, settings.isFileWritable());
 
         if (source == null)
             return null;

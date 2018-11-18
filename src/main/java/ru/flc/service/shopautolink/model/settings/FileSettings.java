@@ -11,6 +11,7 @@ public class FileSettings extends TransmissiveSettings
 	private static final int PARAM_COUNT = 1;
 	
 	private File file;
+	private boolean fileWritable;
 	
 	public FileSettings(ResourceManager resourceManager) throws Exception
 	{
@@ -33,6 +34,16 @@ public class FileSettings extends TransmissiveSettings
 	public File getFile()
 	{
 		return file;
+	}
+	
+	public boolean isFileWritable()
+	{
+		return fileWritable;
+	}
+	
+	public void setFileWritable(boolean fileWritable)
+	{
+		this.fileWritable = fileWritable;
 	}
 	
 	public void setFile(File file)

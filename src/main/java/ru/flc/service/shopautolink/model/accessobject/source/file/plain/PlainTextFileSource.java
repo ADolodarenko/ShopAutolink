@@ -37,9 +37,9 @@ public class PlainTextFileSource implements FileSource
 	private PrintWriter writer;
 	
 	@Override
-	public TitleLink getNextLink()
+	public TitleLink getNextLink() throws IllegalStateException
 	{
-		return null;
+		throw new IllegalStateException(Constants.EXCPT_FILE_SOURCE_WRITES);
 	}
 	
 	@Override

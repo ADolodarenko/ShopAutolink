@@ -262,7 +262,7 @@ public class MainFrame extends JFrame
 
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
-            fileObject = getFileObject(getSelectedFileWithExtension(fileChooser));
+            fileObject = getFileObject(getSelectedFileWithExtension(fileChooser), false);
             if (fileObject == null)
                 return;
 
@@ -288,7 +288,7 @@ public class MainFrame extends JFrame
 
 		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION)
 		{
-			fileObject = getFileObject(getSelectedFileWithExtension(fileChooser));
+			fileObject = getFileObject(getSelectedFileWithExtension(fileChooser), true);
 			if (fileObject == null)
 				return;
 
@@ -325,8 +325,6 @@ public class MainFrame extends JFrame
 		return file;
 	}
 
-
-
     private void showSettings()
 	{
 		if (settingsDialog == null)
@@ -346,7 +344,7 @@ public class MainFrame extends JFrame
 			settingsDialog.setVisible(true);
 	}
     
-    private TitleLinkFao getFileObject(File selectedFile)
+    private TitleLinkFao getFileObject(File selectedFile, boolean fileWritable)
     {
         TitleLinkFao object = null;
     
@@ -354,6 +352,7 @@ public class MainFrame extends JFrame
         {
             fileSettings.load();
             fileSettings.setFile(selectedFile);
+            fileSettings.setFileWritable(fileWritable);
             object = AccessObjectFactory.getFileAccessObject(fileSettings);
         }
         catch (Exception e)

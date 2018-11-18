@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface FileSource extends Source
 {
-	TitleLink getNextLink();
+	TitleLink getNextLink() throws IllegalStateException;
 	void putResultLine(List<Element> line) throws Exception;
 }

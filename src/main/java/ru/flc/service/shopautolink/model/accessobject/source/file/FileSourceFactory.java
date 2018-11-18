@@ -6,7 +6,7 @@ import ru.flc.service.shopautolink.model.accessobject.source.file.plain.PlainTex
 
 public class FileSourceFactory
 {
-    public static FileSource getSource(String fileNameExtension)
+    public static FileSource getSource(String fileNameExtension, boolean forWriting)
     {
         if (fileNameExtension == null)
             return null;
@@ -14,10 +14,10 @@ public class FileSourceFactory
         String extension = fileNameExtension.toLowerCase();
         
         if ("xls".equals(extension))
-            return XLSFileSource.getInstance();
+            return new XLSFileSource(forWriting);
 
         if ("xlsx".equals(extension))
-            return XLSXFileSource.getInstance();
+            return new XLSXFileSource(forWriting);
         
         if ("txt".equals(extension) || "csv".equals(extension))
             return new PlainTextFileSource();

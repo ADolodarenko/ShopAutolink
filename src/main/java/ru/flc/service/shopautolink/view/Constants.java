@@ -17,6 +17,8 @@ public final class Constants
 	//Exceptions for the FileSource hierarchy
 	public static final String EXCPT_FILE_SETTINGS_EMPTY = "File settings are empty.";
 	public static final String EXCPT_FILE_SETTINGS_WRONG = "Wrong file settings.";
+	public static final String EXCPT_FILE_SOURCE_WRITES = "This file source is for writing only.";
+	public static final String EXCPT_FILE_SOURCE_READS = "This file source is for reading only.";
 
 	//Exceptions for the DataSource hierarchy
 	public static final String EXCPT_DATABASE_SETTINGS_EMPTY = "Database settings are empty.";

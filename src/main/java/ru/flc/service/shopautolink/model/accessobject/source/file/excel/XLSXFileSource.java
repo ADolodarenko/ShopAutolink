@@ -7,22 +7,17 @@ import java.io.IOException;
 
 public class XLSXFileSource extends ExcelFileSource
 {
-    public static XLSXFileSource getInstance()
+    public XLSXFileSource(boolean forWriting)
     {
-        return SingletonHelper.INSTANCE;
+    	super(forWriting);
     }
-
-    private XLSXFileSource()
-    {}
 
     @Override
     protected void getWorkbook() throws IOException
     {
-        workbook = new XSSFWorkbook(inputStream);
-    }
-
-    private static class SingletonHelper
-    {
-        private static final XLSXFileSource INSTANCE = new XLSXFileSource();
+    	if (forWriting)
+    		workbook = new XSSFWorkbook();
+    	else
+        	workbook = new XSSFWorkbook(inputStream);
     }
 }
