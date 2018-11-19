@@ -172,7 +172,16 @@ public abstract class ExcelFileSource implements FileSource
 			}
 		}
 	}
-	
+
+	@Override
+	public String getAbsolutePath()
+	{
+		if (file != null)
+			return file.getAbsolutePath();
+		else
+			return null;
+	}
+
 	private void prepareSheet()
 	{
 		if (forWriting)

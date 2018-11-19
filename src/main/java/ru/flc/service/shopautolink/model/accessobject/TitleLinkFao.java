@@ -87,6 +87,11 @@ public class TitleLinkFao implements AccessObject
 
 		return pack;
 	}
+
+	public String getAbsolutePath()
+	{
+		return source.getAbsolutePath();
+	}
 	
 	public void putResultLines(List<List<Element>> lines) throws Exception
 	{

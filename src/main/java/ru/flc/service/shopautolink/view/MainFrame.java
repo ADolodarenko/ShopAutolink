@@ -14,6 +14,7 @@ import ru.flc.service.shopautolink.model.accessobject.TitleLinkDao;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkFao;
 import ru.flc.service.shopautolink.model.logic.TitleLinkLoader;
 import ru.flc.service.shopautolink.model.logic.TitleLinkProcessor;
+import ru.flc.service.shopautolink.view.table.editor.TableCellEditorFactory;
 import ru.flc.service.shopautolink.view.table.renderer.TableCellRendererFactory;
 
 import javax.swing.*;
@@ -51,7 +52,7 @@ public class MainFrame extends JFrame
 
     private JLabel processLabel;
     private LogEventTableModel logTableModel;
-    private JTable logTable;
+    private LogEventTable logTable;
 
     public MainFrame()
     {
@@ -242,8 +243,10 @@ public class MainFrame extends JFrame
 
     private JPanel initLogPanel()
     {
+    	LogEvent.setResourceManager(resourceManager);
+
         logTableModel = new LogEventTableModel(resourceManager, null);
-        logTable = new LogEventTable(logTableModel, new TableCellRendererFactory(resourceManager));
+        logTable = new LogEventTable(logTableModel, new TableCellEditorFactory(resourceManager));
 
         JScrollPane tablePane = new JScrollPane(logTable);
 
@@ -264,7 +267,7 @@ public class MainFrame extends JFrame
 
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
-            fileObject = getFileObject(getSelectedFileWithExtension(fileChooser), false);
+            fileObject = getFileObject(fileChooser.getSelectedFile(), false);
             if (fileObject == null)
                 return;
 

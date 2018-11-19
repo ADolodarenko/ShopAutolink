@@ -1,6 +1,5 @@
 package ru.flc.service.shopautolink.view.table.renderer;
 
-import com.sybase.jdbc3.jdbc.Const;
 import org.dav.service.util.ResourceManager;
 import ru.flc.service.shopautolink.view.Constants;
 import ru.flc.service.shopautolink.view.table.listener.LinkMouseListener;

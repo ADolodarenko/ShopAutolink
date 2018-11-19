@@ -48,7 +48,16 @@ public class PlainTextFileSource implements FileSource
 		if (writer != null)
 			writer.println(buildStringFromElements(line, elementSeparator));
 	}
-	
+
+	@Override
+	public String getAbsolutePath()
+	{
+		if (file != null)
+			return file.getAbsolutePath();
+		else
+			return null;
+	}
+
 	@Override
 	public void open() throws Exception
 	{

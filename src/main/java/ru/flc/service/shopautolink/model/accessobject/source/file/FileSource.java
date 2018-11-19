@@ -10,4 +10,5 @@ public interface FileSource extends Source
 {
 	TitleLink getNextLink() throws IllegalStateException;
 	void putResultLine(List<Element> line) throws Exception;
+	String getAbsolutePath();
 }

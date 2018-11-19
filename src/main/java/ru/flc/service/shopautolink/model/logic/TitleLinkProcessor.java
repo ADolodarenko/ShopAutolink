@@ -36,7 +36,7 @@ public class TitleLinkProcessor extends SwingWorker<LogEvent, LogEvent>
         int result = processLinks();
 
         if (result > -1)
-            return new LogEvent(Constants.KEY_PROCESSOR_SUCCESS, result);
+            return new LogEvent(Constants.KEY_PROCESSOR_SUCCESS, result, fileObject.getAbsolutePath());
         else
             return new LogEvent(Constants.KEY_PROCESSOR_FAILURE);
     }

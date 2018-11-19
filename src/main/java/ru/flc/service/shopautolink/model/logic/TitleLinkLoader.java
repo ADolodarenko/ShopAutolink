@@ -20,7 +20,7 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
     public TitleLinkLoader(TitleLinkFao fileObject, TitleLinkDao dataObject,
 						   LogEventTableModel logModel)
     {
-        if (fileObject == null)
+		if (fileObject == null)
             throw new IllegalArgumentException(Constants.EXCPT_FILE_OBJECT_EMPTY);
 
         if (dataObject == null)

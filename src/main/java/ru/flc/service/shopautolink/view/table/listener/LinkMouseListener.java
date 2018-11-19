@@ -24,10 +24,10 @@ public class LinkMouseListener extends MouseAdapter
 	{
 		Object source = e.getSource();
 		
-		if (Constants.CLASS_NAME_JLABEL.equals(source.getClass().getSimpleName()))
+		if (Constants.CLASS_NAME_JTEXTFIELD.equals(source.getClass().getSimpleName()))
 		{
-			JLabel label = (JLabel) source;
-			String linkValue = getLinkValue(label.getText());
+			JTextField textField = (JTextField) source;
+			String linkValue = getLinkValue(textField.getText());
 			
 			if (linkValue != null && !linkValue.isEmpty())
 			{
