@@ -55,6 +55,8 @@ public final class Constants
 	public static final String CLASS_NAME_FILENAMEEXTENSIONFILTER = "FileNameExtensionFilter";
 	public static final String CLASS_NAME_JLABEL = "JLabel";
 	public static final String CLASS_NAME_JTEXTFIELD = "JTextField";
+	public static final String CLASS_NAME_JTEXTPANE = "JTextPane";
+	public static final String CLASS_NAME_LOGEVENTTABLE = "LogEventTable";
 	
 	//Constants for a data source
 	public static final String TMP_TABLE_NAME = "#tmp_link";
@@ -77,6 +79,7 @@ public final class Constants
 	public static final String MESS_SETTINGS_DESCRIPTION = "Shop autolinking properties";
 	public static final String MESS_TRUE = "TRUE";
 	public static final String MESS_AHREF_BEGINNING = "<a href=\"";
+	public static final String MESS_FILE_REF_BEGINNING = "file:/";
 	
 	//Titles for main frame
 	public static final String KEY_MAIN_FRAME = "MainFrame";

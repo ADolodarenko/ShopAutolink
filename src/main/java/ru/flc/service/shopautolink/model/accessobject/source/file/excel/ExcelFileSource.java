@@ -145,7 +145,7 @@ public abstract class ExcelFileSource implements FileSource
 			throw new IllegalStateException(Constants.EXCPT_FILE_SOURCE_READS);
 		
 		int rowNum = sheet.getLastRowNum();
-		Row newRow = sheet.createRow(rowNum++);
+		Row newRow = sheet.createRow(rowNum);
 		
 		for (int i = 0; i < line.size(); i++)
 		{

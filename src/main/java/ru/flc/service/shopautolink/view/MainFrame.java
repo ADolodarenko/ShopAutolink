@@ -15,6 +15,7 @@ import ru.flc.service.shopautolink.model.accessobject.TitleLinkFao;
 import ru.flc.service.shopautolink.model.logic.TitleLinkLoader;
 import ru.flc.service.shopautolink.model.logic.TitleLinkProcessor;
 import ru.flc.service.shopautolink.view.table.editor.TableCellEditorFactory;
+import ru.flc.service.shopautolink.view.table.listener.LinkMouseListener;
 import ru.flc.service.shopautolink.view.table.renderer.TableCellRendererFactory;
 
 import javax.swing.*;
@@ -248,6 +249,10 @@ public class MainFrame extends JFrame
         logTableModel = new LogEventTableModel(resourceManager, null);
         logTable = new LogEventTable(logTableModel, new TableCellEditorFactory(resourceManager));
 
+        if (isDesktopAvailable())
+        	logTable.addMouseListener(new LinkMouseListener(resourceManager));
+
+
         JScrollPane tablePane = new JScrollPane(logTable);
 
         JPanel panel = new JPanel(new BorderLayout());
@@ -258,6 +263,16 @@ public class MainFrame extends JFrame
 
         return panel;
     }
+
+    private boolean isDesktopAvailable()
+	{
+		if (!Desktop.isDesktopSupported())
+			return false;
+
+		Desktop desktop = Desktop.getDesktop();
+
+		return desktop.isSupported(Desktop.Action.BROWSE);
+	}
 
     private void loadTitleLinks()
     {

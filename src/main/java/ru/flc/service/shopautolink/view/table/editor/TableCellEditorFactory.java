@@ -49,7 +49,7 @@ public class TableCellEditorFactory
 				editor = new DoubleCellEditor();
 				break;
 			case Constants.CLASS_NAME_STRING:
-				editor = new StringCellEditor(resourceManager);
+				editor = new StringCellEditor();
 				break;
 			case Constants.CLASS_NAME_LOCALE:
 				editor = new LocaleCellEditor(resourceManager);

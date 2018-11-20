@@ -6,12 +6,10 @@ import ru.flc.service.shopautolink.view.table.editor.TableCellEditorFactory;
 
 import javax.swing.*;
 import javax.swing.table.*;
-import java.util.Enumeration;
 
 public class LogEventTable extends JTable
 {
 	private TableCellEditorFactory editorFactory;
-	private TableCellRenderer baseHeaderRenderer;
 
 	public LogEventTable(TableModel model, TableCellEditorFactory editorFactory)
 	{
@@ -23,7 +21,6 @@ public class LogEventTable extends JTable
 		this.editorFactory = editorFactory;
 
 		setHeaderAppearance();
-		setColumnAppearance();
 		setSelectionStrategy();
 
 		setRowHeight((int) (getRowHeight() * 1.3));
@@ -32,31 +29,12 @@ public class LogEventTable extends JTable
 	private void setHeaderAppearance()
 	{
 		JTableHeader header = getTableHeader();
-		baseHeaderRenderer = header.getDefaultRenderer();
-		header.setDefaultRenderer(new TableHeaderRenderer());
 		header.setReorderingAllowed(false);
-	}
-
-	private void setColumnAppearance()
-	{
-		Enumeration<TableColumn> columns = getColumnModel().getColumns();
-
-		while (columns.hasMoreElements())
-		{
-			TableColumn column = columns.nextElement();
-
-			if (column.getModelIndex() == 0)
-			{
-				column.setCellRenderer(baseHeaderRenderer);
-
-				break;
-			}
-		}
 	}
 
 	private void setSelectionStrategy()
 	{
-		setCellSelectionEnabled(true);
+		setCellSelectionEnabled(false);
 		getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
@@ -64,7 +42,7 @@ public class LogEventTable extends JTable
 	@Override
 	public TableCellEditor getCellEditor(int row, int column)
 	{
-		LogEvent rowData = getLogEvent(row, column);
+		/*LogEvent rowData = getLogEvent(row, column);
 
 		if (rowData != null)
 		{
@@ -72,12 +50,12 @@ public class LogEventTable extends JTable
 
 			if (editor != null)
 				return editor;
-		}
+		}*/
 
 		return super.getCellEditor(row, column);
 	}
 
-	private LogEvent getLogEvent(int row, int column)
+	public LogEvent getLogEvent(int row, int column)
 	{
 		int modelColumnIndex = convertColumnIndexToModel(column);
 

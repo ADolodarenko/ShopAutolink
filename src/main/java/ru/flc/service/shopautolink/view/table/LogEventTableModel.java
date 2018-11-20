@@ -65,7 +65,7 @@ public class LogEventTableModel extends AbstractTableModel
     	
         return value;
     }
-	
+
 	@Override
 	public String getColumnName(int column)
 	{

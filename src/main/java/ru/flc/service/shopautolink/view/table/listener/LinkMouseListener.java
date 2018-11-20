@@ -1,10 +1,12 @@
 package ru.flc.service.shopautolink.view.table.listener;
 
 import org.dav.service.util.ResourceManager;
+import ru.flc.service.shopautolink.model.LogEvent;
 import ru.flc.service.shopautolink.model.logic.LinkRunner;
 import ru.flc.service.shopautolink.view.Constants;
+import ru.flc.service.shopautolink.view.table.LogEventTable;
 
-import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
@@ -24,20 +26,34 @@ public class LinkMouseListener extends MouseAdapter
 	{
 		Object source = e.getSource();
 		
-		if (Constants.CLASS_NAME_JTEXTFIELD.equals(source.getClass().getSimpleName()))
+		if (Constants.CLASS_NAME_LOGEVENTTABLE.equals(source.getClass().getSimpleName()))
 		{
-			JTextField textField = (JTextField) source;
-			String linkValue = getLinkValue(textField.getText());
-			
-			if (linkValue != null && !linkValue.isEmpty())
+			LogEventTable table = (LogEventTable) source;
+			Point point = e.getPoint();
+
+			int row = table.rowAtPoint(point);
+			int col = table.columnAtPoint(point);
+
+			LogEvent logEvent = table.getLogEvent(row, col);
+
+			if (logEvent != null)
 			{
-				try
+				String linkValue = getLinkValue(logEvent.getText());
+
+				if (linkValue != null && !linkValue.isEmpty())
 				{
-					URI uri = new URI(linkValue);
-					(new LinkRunner(resourceManager, uri)).execute();
+					try
+					{
+						if (linkValue != null)
+						{
+							URI uri = new URI(linkValue);
+							(new LinkRunner(resourceManager, uri)).execute();
+						}
+					}
+					catch (URISyntaxException e1)
+					{
+					}
 				}
-				catch (URISyntaxException e1)
-				{}
 			}
 		}
 	}
@@ -58,7 +74,8 @@ public class LinkMouseListener extends MouseAdapter
 			int linkLen = endIndex - nextIndex;
 			
 			if (linkLen > 0)
-				result = text.substring(nextIndex, endIndex);
+				result = Constants.MESS_FILE_REF_BEGINNING +
+						text.substring(nextIndex, endIndex).replace('\\', '/');
 		}
 		
 		return result;
