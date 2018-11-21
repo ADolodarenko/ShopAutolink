@@ -198,10 +198,22 @@ public class MainFrame extends JFrame
 			reloadSpecificSettings(viewSettings);
 			
 			resourceManager.setCurrentLocale(viewSettings.getAppLocale());
-			titleAdjuster.resetComponents();
 			
-			validate();
+			repaintFrame();
 		}
+	}
+	
+	public void repaintFrame()
+	{
+		titleAdjuster.resetComponents();
+		
+		if (logTableModel != null)
+			logTableModel.fireTableStructureChanged();
+			
+		if (logTable != null)
+			logTable.setColumnAppearance();
+		
+		validate();
 	}
 
 	public void reloadFileSettings()
@@ -266,7 +278,7 @@ public class MainFrame extends JFrame
         logTable = new LogEventTable(logTableModel, new TableCellEditorFactory(resourceManager, getFileChooser()));
 
         if (isDesktopAvailable())
-        	logTable.addMouseListener(new LinkMouseListener(resourceManager));
+        	logTable.addMouseListener(new LinkMouseListener(resourceManager, new Cursor(Cursor.HAND_CURSOR)));
 
 
         JScrollPane tablePane = new JScrollPane(logTable);

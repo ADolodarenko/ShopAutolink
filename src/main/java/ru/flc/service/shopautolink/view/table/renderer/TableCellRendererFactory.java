@@ -49,6 +49,9 @@ public class TableCellRendererFactory
 				break;
 			case Constants.CLASS_NAME_LOCALE:
 				renderer = new LocaleValueCellRenderer(resourceManager);
+				break;
+			case Constants.CLASS_NAME_PASSWORD:
+				renderer = new PasswordCellRenderer();
 		}
 
 		if (renderer != null)

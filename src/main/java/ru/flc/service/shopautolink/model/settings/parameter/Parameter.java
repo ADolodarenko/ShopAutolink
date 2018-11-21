@@ -1,6 +1,7 @@
 package ru.flc.service.shopautolink.model.settings.parameter;
 
 import org.dav.service.view.Title;
+import ru.flc.service.shopautolink.model.settings.type.Password;
 import ru.flc.service.shopautolink.view.Constants;
 
 import java.io.File;
@@ -72,6 +73,8 @@ public class Parameter
 				case Constants.CLASS_NAME_FILE:
 					this.value = new File(stringValue);
 					break;
+				case Constants.CLASS_NAME_PASSWORD:
+					this.value = new Password(stringValue);
 				default:
 					throw new IllegalArgumentException(String.format(Constants.EXCPT_PARAM_VALUE_WRONG, stringValue));
 			}

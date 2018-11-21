@@ -4,6 +4,7 @@ import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import ru.flc.service.shopautolink.model.settings.parameter.Parameter;
 import ru.flc.service.shopautolink.model.settings.parameter.ParameterHeader;
+import ru.flc.service.shopautolink.model.settings.type.Password;
 import ru.flc.service.shopautolink.view.Constants;
 
 import java.io.File;
@@ -73,6 +74,8 @@ public abstract class TransmissiveSettings implements Settings
 			value = resourceManager.getCurrentLocale();
 		else if (Constants.CLASS_NAME_FILE.equals(className))
 			value = new File(Constants.MESS_SP_LOG_FILE_DEFAULT_PATTERN);
+		else if (Constants.CLASS_NAME_PASSWORD.equals(className))
+			value = new Password(null);
 		else if (Constants.CLASS_NAME_STRING.equals(className))
 			value = "";
 		
@@ -123,6 +126,8 @@ public abstract class TransmissiveSettings implements Settings
 
 			value = new File(fileName);
 		}
+		else if (Constants.CLASS_NAME_PASSWORD.equals(className))
+			value = new Password(keyString);
 		
 		if (value == null)
 			throw new Exception(Constants.EXCPT_VALUE_TYPE_WRONG);

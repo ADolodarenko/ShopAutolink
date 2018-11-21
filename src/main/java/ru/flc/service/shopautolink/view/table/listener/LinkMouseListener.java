@@ -6,6 +6,7 @@ import ru.flc.service.shopautolink.model.logic.LinkRunner;
 import ru.flc.service.shopautolink.view.Constants;
 import ru.flc.service.shopautolink.view.table.LogEventTable;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -15,10 +16,13 @@ import java.net.URISyntaxException;
 public class LinkMouseListener extends MouseAdapter
 {
 	private ResourceManager resourceManager;
+	private Cursor customCursor;
 	
-	public LinkMouseListener(ResourceManager resourceManager)
+	public LinkMouseListener(ResourceManager resourceManager,
+							 Cursor customCursor)
 	{
 		this.resourceManager = resourceManager;
+		this.customCursor = customCursor;
 	}
 	
 	@Override
@@ -30,32 +34,55 @@ public class LinkMouseListener extends MouseAdapter
 		{
 			LogEventTable table = (LogEventTable) source;
 			Point point = e.getPoint();
-
-			int row = table.rowAtPoint(point);
-			int col = table.columnAtPoint(point);
-
-			LogEvent logEvent = table.getLogEvent(row, col);
-
-			if (logEvent != null)
-			{
-				String linkValue = getLinkValue(logEvent.getText());
-
-				if (linkValue != null && !linkValue.isEmpty())
+			
+			String linkValue = getLinkValueFromTable(table, point);
+			
+			if (linkValue != null && !linkValue.isEmpty())
+				try
 				{
-					try
-					{
-						if (linkValue != null)
-						{
-							URI uri = new URI(linkValue);
-							(new LinkRunner(resourceManager, uri)).execute();
-						}
-					}
-					catch (URISyntaxException e1)
-					{
-					}
+					URI uri = new URI(linkValue);
+					(new LinkRunner(resourceManager, uri)).execute();
 				}
+				catch (URISyntaxException e1)
+				{}
+		}
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e)
+	{
+		if (customCursor != null && !customCursor.equals(Cursor.getDefaultCursor()))
+		{
+			Object source = e.getSource();
+			
+			if (Constants.CLASS_NAME_LOGEVENTTABLE.equals(source.getClass().getSimpleName()))
+			{
+				LogEventTable table = (LogEventTable) source;
+				Point point = e.getPoint();
+				
+				String linkValue = getLinkValueFromTable(table, point);
+				
+				if (linkValue != null && !linkValue.isEmpty())
+					table.setCursor(customCursor);
+				else
+					table.setCursor(Cursor.getDefaultCursor());
 			}
 		}
+	}
+	
+	private String getLinkValueFromTable(LogEventTable table, Point point)
+	{
+		String linkValue = null;
+		
+		int row = table.rowAtPoint(point);
+		int col = table.columnAtPoint(point);
+			
+		LogEvent logEvent = table.getLogEvent(row, col);
+			
+		if (logEvent != null)
+			linkValue = getLinkValue(logEvent.getText());
+		
+		return linkValue;
 	}
 
 	private String getLinkValue(String text)

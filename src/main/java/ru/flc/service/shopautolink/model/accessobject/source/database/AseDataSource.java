@@ -3,6 +3,7 @@ package ru.flc.service.shopautolink.model.accessobject.source.database;
 import com.sybase.jdbcx.SybDriver;
 import ru.flc.service.shopautolink.model.Element;
 import ru.flc.service.shopautolink.model.TitleLink;
+import ru.flc.service.shopautolink.model.Utils;
 import ru.flc.service.shopautolink.model.settings.DatabaseSettings;
 import ru.flc.service.shopautolink.model.settings.Settings;
 import ru.flc.service.shopautolink.view.Constants;
@@ -138,7 +139,7 @@ public class AseDataSource implements DataSource
 	@Override
 	public void open() throws SQLException
 	{
-		//TODO: Decript the password here
+		//TODO: Utils.caesarCipherDecrypt(password, 4);
 		connection = DriverManager.getConnection(url, user, password);
 		connection.setAutoCommit(false);
 		
@@ -294,7 +295,7 @@ public class AseDataSource implements DataSource
 		
 		url = buildDatabaseUrl(settings);
 		user = settings.getUserName();
-		password = settings.getPassword();
+		password = settings.getPassword().getSecret();
 		tableName = settings.getTableName();
 		storedProcedureName = settings.getStoredProcedureName();
 		channelId = settings.getChannelId();

@@ -3,12 +3,18 @@ package ru.flc.service.shopautolink.view.table;
 import ru.flc.service.shopautolink.model.LogEvent;
 import ru.flc.service.shopautolink.view.Constants;
 import ru.flc.service.shopautolink.view.table.editor.TableCellEditorFactory;
+import ru.flc.service.shopautolink.view.table.renderer.FormattedCellRenderer;
 
 import javax.swing.*;
 import javax.swing.table.*;
+import java.text.SimpleDateFormat;
+import java.util.Enumeration;
 
 public class LogEventTable extends JTable
 {
+	private static final TableCellRenderer DATE_TIME_CELL_RENDERER =
+			new FormattedCellRenderer(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss"));
+	
 	private TableCellEditorFactory editorFactory;
 
 	public LogEventTable(TableModel model, TableCellEditorFactory editorFactory)
@@ -21,15 +27,35 @@ public class LogEventTable extends JTable
 		this.editorFactory = editorFactory;
 
 		setHeaderAppearance();
+		setColumnAppearance();
 		setSelectionStrategy();
+		
+		setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 
 		setRowHeight((int) (getRowHeight() * 1.3));
 	}
-
+	
 	private void setHeaderAppearance()
 	{
 		JTableHeader header = getTableHeader();
 		header.setReorderingAllowed(false);
+	}
+	
+	public void setColumnAppearance()
+	{
+		Enumeration<TableColumn> columns = getColumnModel().getColumns();
+		
+		while (columns.hasMoreElements())
+		{
+			TableColumn column = columns.nextElement();
+			
+			if (column.getModelIndex() == 0)
+			{
+				column.setMaxWidth(120);
+				
+				break;
+			}
+		}
 	}
 
 	private void setSelectionStrategy()
@@ -38,23 +64,18 @@ public class LogEventTable extends JTable
 		getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
-
+	
 	@Override
-	public TableCellEditor getCellEditor(int row, int column)
+	public TableCellRenderer getCellRenderer(int row, int column)
 	{
-		/*LogEvent rowData = getLogEvent(row, column);
-
-		if (rowData != null)
-		{
-			TableCellEditor editor = editorFactory.getEditor(rowData.getText().getClass());
-
-			if (editor != null)
-				return editor;
-		}*/
-
-		return super.getCellEditor(row, column);
+		int modelColumnIndex = convertColumnIndexToModel(column);
+		
+		if (modelColumnIndex == 0)
+			return DATE_TIME_CELL_RENDERER;
+		else
+			return super.getCellRenderer(row, column);
 	}
-
+	
 	public LogEvent getLogEvent(int row, int column)
 	{
 		int modelColumnIndex = convertColumnIndexToModel(column);

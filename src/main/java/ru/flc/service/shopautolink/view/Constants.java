@@ -55,6 +55,7 @@ public final class Constants
 	public static final String CLASS_NAME_LOGEVENTTABLEMODEL = "LogEventTableModel";
 	public static final String CLASS_NAME_FILENAMEEXTENSIONFILTER = "FileNameExtensionFilter";
 	public static final String CLASS_NAME_LOGEVENTTABLE = "LogEventTable";
+	public static final String CLASS_NAME_PASSWORD = "Password";
 	
 	//Constants for a data source
 	public static final String TMP_TABLE_NAME = "#tmp_link";

@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 
 public class Utils
 {
@@ -63,5 +64,43 @@ public class Utils
 		}
 
 		return new File(builder.toString());
+	}
+	
+	public static String caesarCipherEncrypt(String plain, int offset)
+	{
+		String b64encoded = Base64.getEncoder().encodeToString(plain.getBytes());
+		
+		String reverse = new StringBuffer(b64encoded).reverse().toString();
+		
+		StringBuilder tmp = new StringBuilder();
+		
+		for (int i = 0; i < reverse.length(); i++)
+			tmp.append((char)(reverse.charAt(i) + offset));
+		
+		return tmp.toString();
+	}
+	
+	public static String caesarCipherDecrypt(String secret, int offset)
+	{
+		StringBuilder tmp = new StringBuilder();
+		
+		for (int i = 0; i < secret.length(); i++)
+			tmp.append((char)(secret.charAt(i) - offset));
+		
+		String reversed = new StringBuffer(tmp.toString()).reverse().toString();
+		
+		return new String(Base64.getDecoder().decode(reversed));
+	}
+	
+	public static String toAsterisks(String line)
+	{
+		if (line == null)
+			return null;
+		
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < line.length(); i++)
+			builder.append('*');
+		
+		return builder.toString();
 	}
 }

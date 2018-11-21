@@ -2,6 +2,7 @@ package ru.flc.service.shopautolink.model.settings;
 
 import org.dav.service.util.ResourceManager;
 import ru.flc.service.shopautolink.model.settings.parameter.ParameterHeader;
+import ru.flc.service.shopautolink.model.settings.type.Password;
 import ru.flc.service.shopautolink.view.Constants;
 
 public class DatabaseSettings extends TransmissiveSettings
@@ -20,7 +21,7 @@ public class DatabaseSettings extends TransmissiveSettings
 		headers[3] = new ParameterHeader(Constants.KEY_PARAM_DB_PORT, Integer.class);
 		headers[4] = new ParameterHeader(Constants.KEY_PARAM_DB_CATALOG, String.class);
 		headers[5] = new ParameterHeader(Constants.KEY_PARAM_DB_USER, String.class);
-		headers[6] = new ParameterHeader(Constants.KEY_PARAM_DB_PASSWORD, String.class);
+		headers[6] = new ParameterHeader(Constants.KEY_PARAM_DB_PASSWORD, Password.class);
 		headers[7] = new ParameterHeader(Constants.KEY_PARAM_DB_TABLE, String.class);
 		headers[8] = new ParameterHeader(Constants.KEY_PARAM_DB_SP, String.class);
 		headers[9] = new ParameterHeader(Constants.KEY_PARAM_CHANNEL, Integer.class);
@@ -38,7 +39,7 @@ public class DatabaseSettings extends TransmissiveSettings
         SettingsManager.setIntValue(headers[3].getKeyString(), getPort());
         SettingsManager.setStringValue(headers[4].getKeyString(), getCatalog());
         SettingsManager.setStringValue(headers[5].getKeyString(), getUserName());
-        SettingsManager.setStringValue(headers[6].getKeyString(), getPassword());
+        SettingsManager.setStringValue(headers[6].getKeyString(), getPassword().getSecret());
         SettingsManager.setStringValue(headers[7].getKeyString(), getTableName());
         SettingsManager.setStringValue(headers[8].getKeyString(), getStoredProcedureName());
         SettingsManager.setIntValue(headers[9].getKeyString(), getChannelId());
@@ -77,9 +78,9 @@ public class DatabaseSettings extends TransmissiveSettings
         return ((String) paramMap.get(headers[5].getKeyString()).getValue());
     }
 
-    public String getPassword()
+    public Password getPassword()
     {
-        return ((String) paramMap.get(headers[6].getKeyString()).getValue());
+        return ((Password) paramMap.get(headers[6].getKeyString()).getValue());
     }
 
     public String getTableName()
