@@ -64,7 +64,7 @@ public class SettingsDialog extends JDialog
 		tableModel = new SettingsTableModel(resourceManager, Parameter.getTitleKeys(), null);
 		
 		table = new SettingsTable(tableModel,
-									new TableCellEditorFactory(resourceManager),
+									new TableCellEditorFactory(resourceManager, parent.getFileChooser()),
 									new TableCellRendererFactory(resourceManager));
 		
 		JScrollPane tablePane = new JScrollPane(table);
@@ -155,7 +155,7 @@ public class SettingsDialog extends JDialog
             }
         }
 
-        parent.reloadView();
+        parent.reloadSettings();
 
         exit();
     }

@@ -3,6 +3,7 @@ package ru.flc.service.shopautolink.view.table.editor;
 import org.dav.service.util.ResourceManager;
 import ru.flc.service.shopautolink.view.Constants;
 
+import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,11 +11,13 @@ import java.util.Map;
 public class TableCellEditorFactory
 {
 	private ResourceManager resourceManager;
+	private JFileChooser fileChooser;
 	private Map<String, TableCellEditor> editors;
 
-	public TableCellEditorFactory(ResourceManager resourceManager)
+	public TableCellEditorFactory(ResourceManager resourceManager, JFileChooser fileChooser)
 	{
 		this.resourceManager = resourceManager;
+		this.fileChooser = fileChooser;
 
 		this.editors = new HashMap<>();
 	}
@@ -53,6 +56,9 @@ public class TableCellEditorFactory
 				break;
 			case Constants.CLASS_NAME_LOCALE:
 				editor = new LocaleCellEditor(resourceManager);
+				break;
+			case Constants.CLASS_NAME_FILE:
+				editor = new FileCellEditor(fileChooser);
 		}
 
 		if (editor != null)

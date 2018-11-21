@@ -8,7 +8,7 @@ import java.io.File;
 
 public class FileSettings extends TransmissiveSettings
 {
-	private static final int PARAM_COUNT = 1;
+	private static final int PARAM_COUNT = 2;
 	
 	private File file;
 	private boolean fileWritable;
@@ -19,6 +19,7 @@ public class FileSettings extends TransmissiveSettings
 		
 		headers = new ParameterHeader[PARAM_COUNT];
 		headers[0] = new ParameterHeader(Constants.KEY_PARAM_PACK_SIZE, Integer.class);
+		headers[1] = new ParameterHeader(Constants.KEY_PARAM_SP_LOG_PATTERN, File.class);
 		
 		init();
 	}
@@ -27,6 +28,7 @@ public class FileSettings extends TransmissiveSettings
 	public void save() throws Exception
 	{
 		SettingsManager.setIntValue(headers[0].getKeyString(), getPackSize());
+		SettingsManager.setStringValue(headers[1].getKeyString(), getStoredProcedureLogNamePattern().getAbsolutePath());
 		
 		SettingsManager.saveSettings();
 	}
@@ -54,5 +56,10 @@ public class FileSettings extends TransmissiveSettings
 	public int getPackSize()
 	{
 		return ((Integer) paramMap.get(headers[0].getKeyString()).getValue());
+	}
+
+	public File getStoredProcedureLogNamePattern()
+	{
+		return (File) paramMap.get(headers[1].getKeyString()).getValue();
 	}
 }

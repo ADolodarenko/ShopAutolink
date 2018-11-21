@@ -47,15 +47,13 @@ public final class Constants
 	public static final String CLASS_NAME_DOUBLE = "Double";
 	public static final String CLASS_NAME_DATE = "Date";
 	public static final String CLASS_NAME_LOCALE = "Locale";
+	public static final String CLASS_NAME_FILE = "File";
 	public static final String CLASS_NAME_STRING = "String";
 	public static final String CLASS_NAME_FILESETTINGS = "FileSettings";
 	public static final String CLASS_NAME_DATABASESETTINGS = "DatabaseSettings";
 	public static final String CLASS_NAME_SETTINGSTABLEMODEL = "SettingsTableModel";
 	public static final String CLASS_NAME_LOGEVENTTABLEMODEL = "LogEventTableModel";
 	public static final String CLASS_NAME_FILENAMEEXTENSIONFILTER = "FileNameExtensionFilter";
-	public static final String CLASS_NAME_JLABEL = "JLabel";
-	public static final String CLASS_NAME_JTEXTFIELD = "JTextField";
-	public static final String CLASS_NAME_JTEXTPANE = "JTextPane";
 	public static final String CLASS_NAME_LOGEVENTTABLE = "LogEventTable";
 	
 	//Constants for a data source
@@ -80,6 +78,7 @@ public final class Constants
 	public static final String MESS_TRUE = "TRUE";
 	public static final String MESS_AHREF_BEGINNING = "<a href=\"";
 	public static final String MESS_FILE_REF_BEGINNING = "file:/";
+	public static final String MESS_SP_LOG_FILE_DEFAULT_PATTERN = "./ShopAutolink.txt";
 	
 	//Titles for main frame
 	public static final String KEY_MAIN_FRAME = "MainFrame";
@@ -116,6 +115,7 @@ public final class Constants
 	public static final String KEY_PARAM_CHANNEL = "ChannelId";
 	public static final String KEY_PARAM_PRICE_LIST = "PriceListId";
 	public static final String KEY_PARAM_PACK_SIZE = "PacketSize";
+	public static final String KEY_PARAM_SP_LOG_PATTERN = "StoredProcedureLogPattern";
 
 	//For SettingsDialog
     public static final String KEY_SETTINGS_DIALOG = "SettingsDialog";

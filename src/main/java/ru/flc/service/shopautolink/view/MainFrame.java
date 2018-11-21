@@ -1,11 +1,11 @@
 package ru.flc.service.shopautolink.view;
 
-import org.apache.commons.io.FilenameUtils;
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
 import ru.flc.service.shopautolink.SAResourceManager;
 import ru.flc.service.shopautolink.model.LogEvent;
+import ru.flc.service.shopautolink.model.Utils;
 import ru.flc.service.shopautolink.model.settings.*;
 import ru.flc.service.shopautolink.view.table.LogEventTable;
 import ru.flc.service.shopautolink.view.table.LogEventTableModel;
@@ -16,11 +16,9 @@ import ru.flc.service.shopautolink.model.logic.TitleLinkLoader;
 import ru.flc.service.shopautolink.model.logic.TitleLinkProcessor;
 import ru.flc.service.shopautolink.view.table.editor.TableCellEditorFactory;
 import ru.flc.service.shopautolink.view.table.listener.LinkMouseListener;
-import ru.flc.service.shopautolink.view.table.renderer.TableCellRendererFactory;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
@@ -101,6 +99,7 @@ public class MainFrame extends JFrame
 		try
 		{
 			fileSettings = new FileSettings(resourceManager);
+			fileSettings.load();
 		}
 		catch (Exception e)
 		{
@@ -186,23 +185,40 @@ public class MainFrame extends JFrame
         });
     }
 
-    public void reloadView()
+    public void reloadSettings()
+	{
+		reloadViewSettings();
+		reloadFileSettings();
+	}
+
+    public void reloadViewSettings()
 	{
 		if (viewSettings != null)
 		{
-			try
-			{
-				viewSettings.load();
-			}
-			catch (Exception e)
-			{
-				log(e);
-			}
+			reloadSpecificSettings(viewSettings);
 			
 			resourceManager.setCurrentLocale(viewSettings.getAppLocale());
 			titleAdjuster.resetComponents();
 			
 			validate();
+		}
+	}
+
+	public void reloadFileSettings()
+	{
+		if (fileSettings != null)
+			reloadSpecificSettings(fileSettings);
+	}
+
+	private void reloadSpecificSettings(Settings settings)
+	{
+		try
+		{
+			settings.load();
+		}
+		catch (Exception e)
+		{
+			log(e);
 		}
 	}
 
@@ -247,7 +263,7 @@ public class MainFrame extends JFrame
     	LogEvent.setResourceManager(resourceManager);
 
         logTableModel = new LogEventTableModel(resourceManager, null);
-        logTable = new LogEventTable(logTableModel, new TableCellEditorFactory(resourceManager));
+        logTable = new LogEventTable(logTableModel, new TableCellEditorFactory(resourceManager, getFileChooser()));
 
         if (isDesktopAvailable())
         	logTable.addMouseListener(new LinkMouseListener(resourceManager));
@@ -299,50 +315,26 @@ public class MainFrame extends JFrame
 
     private void processTitleLinks()
     {
-		fileChooser.resetChoosableFileFilters();
+		File outputFile = fileSettings.getStoredProcedureLogNamePattern();
+		outputFile = Utils.getFileWithCurrentTimeInName(outputFile);
 
-    	fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("TXT", "TXT"));
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV", "CSV"));
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("XLS", "XLS"));
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("XLSX", "XLSX"));
+		fileObject = getFileObject(outputFile, true);
+		if (fileObject == null)
+			return;
 
-		if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION)
-		{
-			fileObject = getFileObject(getSelectedFileWithExtension(fileChooser), true);
-			if (fileObject == null)
-				return;
+		dataObject = getDataObject();
+		if (dataObject == null)
+			return;
 
-			dataObject = getDataObject();
-			if (dataObject == null)
-				return;
-
-			linkProcessor = new TitleLinkProcessor(dataObject, fileObject, logTableModel);
-			linkProcessor.getPropertyChangeSupport().addPropertyChangeListener("state",
-					evt -> doForWorkerEvent(evt));
-			linkProcessor.execute();
-		}
+		linkProcessor = new TitleLinkProcessor(dataObject, fileObject, logTableModel);
+		linkProcessor.getPropertyChangeSupport().addPropertyChangeListener("state",
+				evt -> doForWorkerEvent(evt));
+		linkProcessor.execute();
     }
 
-    private File getSelectedFileWithExtension(JFileChooser chooser)
+    public JFileChooser getFileChooser()
 	{
-		File file = chooser.getSelectedFile();
-		String fileName = file.getAbsolutePath();
-		String oldExtension = FilenameUtils.getExtension(fileName);
-
-		FileFilter fileFilter = chooser.getFileFilter();
-		if (Constants.CLASS_NAME_FILENAMEEXTENSIONFILTER.equals(fileFilter.getClass().getSimpleName()))
-		{
-			String newExtension = ((FileNameExtensionFilter) fileFilter).getExtensions()[0];
-
-			boolean mustAddExtension = (newExtension != null && !newExtension.isEmpty());
-			mustAddExtension = mustAddExtension && (oldExtension == null || oldExtension.isEmpty()
-								|| !oldExtension.equalsIgnoreCase(newExtension));
-
-			if (mustAddExtension)
-				file = new File(fileName + "." + newExtension.toLowerCase());
-		}
-
-		return file;
+		return fileChooser;
 	}
 
     private void showSettings()

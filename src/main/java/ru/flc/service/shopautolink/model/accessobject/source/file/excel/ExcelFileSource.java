@@ -28,6 +28,8 @@ public abstract class ExcelFileSource implements FileSource
 	protected Iterator<Row> rowIterator;
 	protected boolean forWriting;
 
+	private int lastRowNum;
+
 	static int getCellIntValue(Cell cell)
 	{
 		if (cell != null && cell.getCellType() == CellType.NUMERIC)
@@ -47,6 +49,9 @@ public abstract class ExcelFileSource implements FileSource
 	protected ExcelFileSource(boolean forWriting)
 	{
 		this.forWriting = forWriting;
+
+		if (this.forWriting)
+			this.lastRowNum = 0;
 	}
 	
 	@Override
@@ -144,8 +149,7 @@ public abstract class ExcelFileSource implements FileSource
 		if (!forWriting)
 			throw new IllegalStateException(Constants.EXCPT_FILE_SOURCE_READS);
 		
-		int rowNum = sheet.getLastRowNum();
-		Row newRow = sheet.createRow(rowNum);
+		Row newRow = sheet.createRow(lastRowNum++);
 		
 		for (int i = 0; i < line.size(); i++)
 		{

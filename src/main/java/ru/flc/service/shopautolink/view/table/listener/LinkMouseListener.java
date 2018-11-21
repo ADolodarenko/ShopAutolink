@@ -57,7 +57,7 @@ public class LinkMouseListener extends MouseAdapter
 			}
 		}
 	}
-	
+
 	private String getLinkValue(String text)
 	{
 		if (text == null)

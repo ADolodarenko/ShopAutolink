@@ -3,6 +3,8 @@ package ru.flc.service.shopautolink.model.settings.parameter;
 import org.dav.service.view.Title;
 import ru.flc.service.shopautolink.view.Constants;
 
+import java.io.File;
+
 public class Parameter
 {
 	public static String[] getTitleKeys()
@@ -66,6 +68,9 @@ public class Parameter
 					break;
 				case Constants.CLASS_NAME_DOUBLE:
 					this.value = Double.parseDouble(stringValue);
+					break;
+				case Constants.CLASS_NAME_FILE:
+					this.value = new File(stringValue);
 					break;
 				default:
 					throw new IllegalArgumentException(String.format(Constants.EXCPT_PARAM_VALUE_WRONG, stringValue));

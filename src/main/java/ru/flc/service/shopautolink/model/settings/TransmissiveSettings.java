@@ -6,6 +6,7 @@ import ru.flc.service.shopautolink.model.settings.parameter.Parameter;
 import ru.flc.service.shopautolink.model.settings.parameter.ParameterHeader;
 import ru.flc.service.shopautolink.view.Constants;
 
+import java.io.File;
 import java.util.*;
 
 public abstract class TransmissiveSettings implements Settings
@@ -70,6 +71,8 @@ public abstract class TransmissiveSettings implements Settings
 			value = Double.valueOf(0.0);
 		else if (Constants.CLASS_NAME_LOCALE.equals(className))
 			value = resourceManager.getCurrentLocale();
+		else if (Constants.CLASS_NAME_FILE.equals(className))
+			value = new File(Constants.MESS_SP_LOG_FILE_DEFAULT_PATTERN);
 		else if (Constants.CLASS_NAME_STRING.equals(className))
 			value = "";
 		
@@ -110,6 +113,15 @@ public abstract class TransmissiveSettings implements Settings
 			
 			if (value == null)
 				value = resourceManager.getCurrentLocale();
+		}
+		else if (Constants.CLASS_NAME_FILE.equals(className))
+		{
+			String fileName = SettingsManager.getStringValue(keyString);
+
+			if (fileName == null)
+				fileName = Constants.MESS_SP_LOG_FILE_DEFAULT_PATTERN;
+
+			value = new File(fileName);
 		}
 		
 		if (value == null)
