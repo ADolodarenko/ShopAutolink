@@ -131,6 +131,8 @@ public final class Constants
 	public static final String ICON_NAME_SETTINGS = "button-settings.png";
 	public static final String ICON_NAME_USA = "american_16.png";
 	public static final String ICON_NAME_RUS = "russian_16.png";
+	public static final String ICON_NAME_OK = "ok-16a.png";
+	public static final String ICON_NAME_CANCEL = "cancel-16.png";
 
 	private Constants(){}
 }

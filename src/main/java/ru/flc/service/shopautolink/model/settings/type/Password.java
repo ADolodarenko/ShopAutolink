@@ -4,14 +4,20 @@ import ru.flc.service.shopautolink.model.Utils;
 
 public class Password
 {
+	private static final int OFFSET = 4;
 	private String secret;
 	
-	public Password(String key)
+	public Password(char[] key)
 	{
 		if (key == null)
 			secret = null;
 		else
-			secret = Utils.caesarCipherEncrypt(key,4);
+			secret = Utils.caesarCipherEncrypt(new String(key),OFFSET);
+	}
+
+	public Password(String secret)
+	{
+		this.secret = secret;
 	}
 	
 	public String getSecret()
@@ -24,6 +30,6 @@ public class Password
 		if (secret == null)
 			return null;
 		else
-			return Utils.caesarCipherDecrypt(secret, 4).toCharArray();
+			return Utils.caesarCipherDecrypt(secret, OFFSET).toCharArray();
 	}
 }

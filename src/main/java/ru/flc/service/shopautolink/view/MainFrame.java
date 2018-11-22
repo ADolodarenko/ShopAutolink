@@ -29,8 +29,8 @@ public class MainFrame extends JFrame
 {
     private static final Dimension WIN_MIN_SIZE = new Dimension(400, 350);
     private static final Dimension WIN_PREF_SIZE = new Dimension(600, 400);
-    private static final Dimension COMMAND_PANEL_PREF_SIZE = new Dimension(120, 400);
-    private static final Dimension BUTTON_MAX_SIZE = new Dimension(120, 60);
+    private static final Dimension COMMAND_PANEL_PREF_SIZE = new Dimension(130, 400);
+    private static final Dimension BUTTON_MAX_SIZE = new Dimension(130, 60);
 
     private ResourceManager resourceManager;
     private TitleAdjuster titleAdjuster;

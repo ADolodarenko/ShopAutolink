@@ -95,14 +95,14 @@ public class SettingsDialog extends JDialog
         titleAdjuster.registerComponent(okButton, new Title(resourceManager, Constants.KEY_BUTTON_OK));
         okButton.setPreferredSize(BUTTON_MAX_SIZE);
         okButton.setMaximumSize(BUTTON_MAX_SIZE);
-        okButton.setIcon(resourceManager.getImageIcon("ok-16a.png"));
+        okButton.setIcon(resourceManager.getImageIcon(Constants.ICON_NAME_OK));
         okButton.addActionListener(event -> saveAndExit());
 
         cancelButton = new JButton();
         titleAdjuster.registerComponent(cancelButton, new Title(resourceManager, Constants.KEY_BUTTON_CANCEL));
 		cancelButton.setPreferredSize(BUTTON_MAX_SIZE);
 		cancelButton.setMaximumSize(BUTTON_MAX_SIZE);
-        cancelButton.setIcon(resourceManager.getImageIcon("cancel-16.png"));
+        cancelButton.setIcon(resourceManager.getImageIcon(Constants.ICON_NAME_CANCEL));
         cancelButton.addActionListener(event -> exit());
     }
 
@@ -132,6 +132,8 @@ public class SettingsDialog extends JDialog
 				tableModel.addAllRows(allSettingsList);
 
 			titleAdjuster.resetComponents();
+			tableModel.fireTableStructureChanged();
+
 			pack();
 			setLocationRelativeTo(parent);
 		}

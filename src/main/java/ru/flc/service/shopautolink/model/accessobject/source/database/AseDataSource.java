@@ -6,6 +6,7 @@ import ru.flc.service.shopautolink.model.TitleLink;
 import ru.flc.service.shopautolink.model.Utils;
 import ru.flc.service.shopautolink.model.settings.DatabaseSettings;
 import ru.flc.service.shopautolink.model.settings.Settings;
+import ru.flc.service.shopautolink.model.settings.type.Password;
 import ru.flc.service.shopautolink.view.Constants;
 
 import java.sql.*;
@@ -122,7 +123,7 @@ public class AseDataSource implements DataSource
 
 	private String url;
 	private String user;
-	private String password;
+	private Password password;
 	private String tableName;
 	private String storedProcedureName;
 	private int channelId;
@@ -139,8 +140,7 @@ public class AseDataSource implements DataSource
 	@Override
 	public void open() throws SQLException
 	{
-		//TODO: Utils.caesarCipherDecrypt(password, 4);
-		connection = DriverManager.getConnection(url, user, password);
+		connection = DriverManager.getConnection(url, user, new String(password.getKey()));
 		connection.setAutoCommit(false);
 		
 		DatabaseMetaData metaData = connection.getMetaData();
@@ -295,7 +295,7 @@ public class AseDataSource implements DataSource
 		
 		url = buildDatabaseUrl(settings);
 		user = settings.getUserName();
-		password = settings.getPassword().getSecret();
+		password = settings.getPassword();
 		tableName = settings.getTableName();
 		storedProcedureName = settings.getStoredProcedureName();
 		channelId = settings.getChannelId();

@@ -51,7 +51,9 @@ public class LogEventTable extends JTable
 			
 			if (column.getModelIndex() == 0)
 			{
-				column.setMaxWidth(120);
+				column.setCellRenderer(DATE_TIME_CELL_RENDERER);
+				column.setMinWidth(100);
+				column.setMaxWidth(130);
 				
 				break;
 			}
@@ -63,17 +65,6 @@ public class LogEventTable extends JTable
 		setCellSelectionEnabled(false);
 		getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		getColumnModel().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	}
-	
-	@Override
-	public TableCellRenderer getCellRenderer(int row, int column)
-	{
-		int modelColumnIndex = convertColumnIndexToModel(column);
-		
-		if (modelColumnIndex == 0)
-			return DATE_TIME_CELL_RENDERER;
-		else
-			return super.getCellRenderer(row, column);
 	}
 	
 	public LogEvent getLogEvent(int row, int column)

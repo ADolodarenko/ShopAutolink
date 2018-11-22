@@ -59,6 +59,9 @@ public class TableCellEditorFactory
 				break;
 			case Constants.CLASS_NAME_FILE:
 				editor = new FileCellEditor(fileChooser);
+				break;
+			case Constants.CLASS_NAME_PASSWORD:
+				editor = new PasswordCellEditor();
 		}
 
 		if (editor != null)

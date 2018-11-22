@@ -75,7 +75,7 @@ public abstract class TransmissiveSettings implements Settings
 		else if (Constants.CLASS_NAME_FILE.equals(className))
 			value = new File(Constants.MESS_SP_LOG_FILE_DEFAULT_PATTERN);
 		else if (Constants.CLASS_NAME_PASSWORD.equals(className))
-			value = new Password(null);
+			value = new Password("");
 		else if (Constants.CLASS_NAME_STRING.equals(className))
 			value = "";
 		
@@ -127,7 +127,11 @@ public abstract class TransmissiveSettings implements Settings
 			value = new File(fileName);
 		}
 		else if (Constants.CLASS_NAME_PASSWORD.equals(className))
-			value = new Password(keyString);
+		{
+			String secret = SettingsManager.getStringValue(keyString);
+
+			value = new Password(secret);
+		}
 		
 		if (value == null)
 			throw new Exception(Constants.EXCPT_VALUE_TYPE_WRONG);
