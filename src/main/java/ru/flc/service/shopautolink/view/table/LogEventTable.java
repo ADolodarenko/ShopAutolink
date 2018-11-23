@@ -3,7 +3,7 @@ package ru.flc.service.shopautolink.view.table;
 import ru.flc.service.shopautolink.model.LogEvent;
 import ru.flc.service.shopautolink.view.Constants;
 import ru.flc.service.shopautolink.view.table.editor.TableCellEditorFactory;
-import ru.flc.service.shopautolink.view.table.renderer.FormattedCellRenderer;
+import ru.flc.service.shopautolink.view.table.renderer.DateTimeCellRenderer;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -12,9 +12,6 @@ import java.util.Enumeration;
 
 public class LogEventTable extends JTable
 {
-	private static final TableCellRenderer DATE_TIME_CELL_RENDERER =
-			new FormattedCellRenderer(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss"));
-	
 	private TableCellEditorFactory editorFactory;
 
 	public LogEventTable(TableModel model, TableCellEditorFactory editorFactory)
@@ -51,7 +48,7 @@ public class LogEventTable extends JTable
 			
 			if (column.getModelIndex() == 0)
 			{
-				column.setCellRenderer(DATE_TIME_CELL_RENDERER);
+				column.setCellRenderer(new DateTimeCellRenderer());
 				column.setMinWidth(100);
 				column.setMaxWidth(130);
 				

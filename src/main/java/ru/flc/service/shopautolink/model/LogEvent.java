@@ -27,7 +27,7 @@ public class LogEvent
 
 	public LogEvent(Exception exception)
 	{
-		this(LogEvent.resourceManager, exception.getMessage());
+		this(LogEvent.resourceManager, exception.toString());
 	}
 
     public LogEvent(ResourceManager resourceManager, String textPattern, Object... textParameters)

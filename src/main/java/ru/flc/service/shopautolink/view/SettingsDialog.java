@@ -44,7 +44,7 @@ public class SettingsDialog extends JDialog
 		settingsList = new LinkedList<>();
         settingsList.add(new DatabaseSettings(this.resourceManager));
         settingsList.add(new FileSettings(this.resourceManager));
-        settingsList.add(new ViewSettings(resourceManager, null));
+        settingsList.add(new ViewSettings(this.resourceManager, parent.getPreferredSize()));
 
         initComponents();
 

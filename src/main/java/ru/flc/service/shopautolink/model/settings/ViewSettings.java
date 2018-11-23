@@ -26,6 +26,10 @@ public class ViewSettings extends TransmissiveSettings
 		
 		this.mainWindowPreferredSize = mainWindowPreferredSize;
 		
+		mainWindowMaximized = false;
+		mainWindowPosition = new Point(0, 0);
+		mainWindowSize = new Dimension(this.mainWindowPreferredSize);
+		
 		init();
 	}
 	

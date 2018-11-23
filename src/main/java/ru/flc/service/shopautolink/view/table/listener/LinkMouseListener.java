@@ -6,7 +6,6 @@ import ru.flc.service.shopautolink.model.logic.LinkRunner;
 import ru.flc.service.shopautolink.view.Constants;
 import ru.flc.service.shopautolink.view.table.LogEventTable;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
