@@ -35,6 +35,9 @@ public class SettingsTable extends JTable
 		setColumnAppearance();
 		setSelectionStrategy();
 
+		this.setAutoCreateRowSorter(true);
+		this.setFillsViewportHeight(true);
+
 		setRowHeight((int) (getRowHeight() * 1.3));
 	}
 
