@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Class-Path: curvesapi-1.04.jar dav-service-1.0.jar commons-codec-1.10.
+ jar jconn3.jar commons-io-2.6.jar commons-compress-1.18.jar commons-c
+ ollections4-4.2.jar xmlbeans-3.0.1.jar poi-ooxml-4.0.0.jar poi-4.0.0.
+ jar poi-ooxml-schemas-4.0.0.jar
+Main-Class: ru.flc.service.shopautolink.Main
+
