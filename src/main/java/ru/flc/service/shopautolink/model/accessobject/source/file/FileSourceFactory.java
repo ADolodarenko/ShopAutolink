@@ -20,7 +20,7 @@ public class FileSourceFactory
             return new XLSXFileSource(forWriting);
         
         if ("txt".equals(extension) || "csv".equals(extension))
-            return new PlainTextFileSource();
+            return new PlainTextFileSource(forWriting);
 
         return null;
     }

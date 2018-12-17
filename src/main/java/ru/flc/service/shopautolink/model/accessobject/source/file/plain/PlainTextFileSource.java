@@ -12,6 +12,21 @@ import java.util.List;
 
 public class PlainTextFileSource implements FileSource
 {
+	static int getFieldIntValue(String field)
+	{
+		int result = -1;
+
+		if (field != null)
+			try
+			{
+				result = Integer.parseInt(field);
+			}
+			catch (NumberFormatException e)
+			{}
+
+		return result;
+	}
+
 	private static String buildStringFromElements(List<Element> elementList, char elementSeparator)
 	{
 		if (elementList == null || elementList.isEmpty())
@@ -30,16 +45,42 @@ public class PlainTextFileSource implements FileSource
 		return builder.toString();
 	}
 
+	private boolean forWriting;
 	private char elementSeparator = ';';
-
 	private File file;
-	
 	private PrintWriter writer;
+	private BufferedReader reader;
+
+	public PlainTextFileSource(boolean forWriting)
+	{
+		this.forWriting = forWriting;
+	}
 	
 	@Override
-	public TitleLink getNextLink() throws IllegalStateException
+	public TitleLink getNextLink() throws Exception
 	{
-		throw new IllegalStateException(Constants.EXCPT_FILE_SOURCE_WRITES);
+		if (forWriting)
+			throw new IllegalStateException(Constants.EXCPT_FILE_SOURCE_WRITES);
+
+		String line = reader.readLine();
+		if (line == null)
+			return null;
+
+		String[] elements = line.split(Character.toString(elementSeparator));
+		if (elements.length < 3)
+			return null;
+
+		int titleId = getFieldIntValue(elements[0]);
+		if (titleId < 0)
+			return null;
+
+		String productCode = elements[1];
+
+		int forSale = getFieldIntValue(elements[2]);
+		if (forSale < 0)
+			return null;
+
+		return new TitleLink(titleId, productCode, forSale);
 	}
 	
 	@Override
@@ -61,7 +102,10 @@ public class PlainTextFileSource implements FileSource
 	@Override
 	public void open() throws Exception
 	{
-		writer = new PrintWriter(file) ;
+		if (forWriting)
+			writer = new PrintWriter(file);
+		else
+			reader = new BufferedReader(new FileReader(file));
 	}
 	
 	@Override
@@ -69,6 +113,9 @@ public class PlainTextFileSource implements FileSource
 	{
 		if (writer != null)
 			writer.close();
+
+		if (reader != null)
+			reader.close();
 	}
 	
 	@Override

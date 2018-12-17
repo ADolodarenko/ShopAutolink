@@ -306,7 +306,7 @@ public class MainFrame extends JFrame
     {
     	fileChooser.resetChoosableFileFilters();
 
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("XLS(X)", "XLS", "XLSX"));
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("XLS/XLSX/CSV/TXT", "XLS", "XLSX", "CSV", "TXT"));
 
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {

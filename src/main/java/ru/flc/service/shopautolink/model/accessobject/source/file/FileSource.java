@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface FileSource extends Source
 {
-	TitleLink getNextLink() throws IllegalStateException;
+	TitleLink getNextLink() throws Exception;
 	void putResultLine(List<Element> line) throws Exception;
 	String getAbsolutePath();
 }

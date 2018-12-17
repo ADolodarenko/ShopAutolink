@@ -105,7 +105,7 @@ public abstract class ExcelFileSource implements FileSource
 	}
 	
 	@Override
-	public TitleLink getNextLink() throws IllegalStateException
+	public TitleLink getNextLink() throws Exception
 	{
 		if (forWriting)
 			throw new IllegalStateException(Constants.EXCPT_FILE_SOURCE_WRITES);

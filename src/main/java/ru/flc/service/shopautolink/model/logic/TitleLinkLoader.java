@@ -103,7 +103,7 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
         }
         catch (Exception e)
         {
-
+        	logModel.addRow(new LogEvent(e));
         }
         finally
 		{
