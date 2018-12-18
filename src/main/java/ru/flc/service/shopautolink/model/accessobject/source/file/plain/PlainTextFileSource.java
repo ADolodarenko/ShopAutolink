@@ -27,7 +27,7 @@ public class PlainTextFileSource implements FileSource
 		return result;
 	}
 
-	private static String buildStringFromElements(List<Element> elementList, char elementSeparator)
+	private static String buildStringFromElements(List<Element> elementList, String elementDelimiter)
 	{
 		if (elementList == null || elementList.isEmpty())
 			return null;
@@ -37,7 +37,7 @@ public class PlainTextFileSource implements FileSource
 		for (int i = 0; i < elementList.size(); i++)
 		{
 			if (i > 0)
-				builder.append(elementSeparator);
+				builder.append(elementDelimiter);
 
 			builder.append(elementList.get(i).getValue().toString());
 		}
@@ -46,7 +46,7 @@ public class PlainTextFileSource implements FileSource
 	}
 
 	private boolean forWriting;
-	private char elementSeparator = ';';
+	private String elementDelimiter = "\\t";
 	private File file;
 	private PrintWriter writer;
 	private BufferedReader reader;
@@ -66,7 +66,7 @@ public class PlainTextFileSource implements FileSource
 		if (line == null)
 			return null;
 
-		String[] elements = line.split(Character.toString(elementSeparator));
+		String[] elements = line.split(elementDelimiter);
 		if (elements.length < 3)
 			return null;
 
@@ -87,7 +87,7 @@ public class PlainTextFileSource implements FileSource
 	public void putResultLine(List<Element> line) throws Exception
 	{
 		if (writer != null)
-			writer.println(buildStringFromElements(line, elementSeparator));
+			writer.println(buildStringFromElements(line, elementDelimiter));
 	}
 
 	@Override
@@ -140,5 +140,11 @@ public class PlainTextFileSource implements FileSource
 	private void resetParameters(FileSettings settings)
 	{
 		this.file = settings.getFile();
+
+		String delimiter = settings.getFieldDelimiter();
+		if (delimiter == null || delimiter.isEmpty())
+			this.elementDelimiter = "\\t";
+		else
+			this.elementDelimiter = delimiter;
 	}
 }
