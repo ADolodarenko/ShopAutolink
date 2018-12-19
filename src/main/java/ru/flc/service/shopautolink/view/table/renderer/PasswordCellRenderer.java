@@ -1,6 +1,6 @@
 package ru.flc.service.shopautolink.view.table.renderer;
 
-import ru.flc.service.shopautolink.model.Utils;
+import ru.flc.service.shopautolink.model.DataUtils;
 import ru.flc.service.shopautolink.model.settings.type.Password;
 import ru.flc.service.shopautolink.view.Constants;
 
@@ -23,7 +23,7 @@ public class PasswordCellRenderer extends DefaultTableCellRenderer
 			{
 				Password password = (Password) value;
 				
-				label.setText(Utils.toAsterisks(password.getSecret()));
+				label.setText(DataUtils.toAsterisks(password.getSecret()));
 			}
 		}
 		

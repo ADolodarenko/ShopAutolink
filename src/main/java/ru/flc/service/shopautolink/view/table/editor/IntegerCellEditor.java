@@ -1,6 +1,8 @@
 package ru.flc.service.shopautolink.view.table.editor;
 
+import ru.flc.service.shopautolink.model.DataUtils;
 import ru.flc.service.shopautolink.view.Constants;
+import ru.flc.service.shopautolink.view.ViewUtils;
 
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
@@ -10,16 +12,24 @@ public class IntegerCellEditor extends AbstractCellEditor implements TableCellEd
 {
 	private JSpinner editor;
 
-	public IntegerCellEditor()
+	private boolean confirmationRequired;
+	private Object oldValue;
+
+	public IntegerCellEditor(boolean confirmationRequired)
 	{
 		SpinnerNumberModel model = new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1);
 
 		editor = new JSpinner(model);
+
+		this.confirmationRequired = confirmationRequired;
 	}
 
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column)
 	{
+		if (confirmationRequired)
+			oldValue = value;
+
 		editor.setValue(0);
 
 		if (value != null)
@@ -36,6 +46,11 @@ public class IntegerCellEditor extends AbstractCellEditor implements TableCellEd
 	@Override
 	public Object getCellEditorValue()
 	{
-		return editor.getValue();
+		Object newValue = editor.getValue();
+
+		if (confirmationRequired && !newValue.equals(oldValue))
+			newValue = ViewUtils.confirmedValue(oldValue, newValue);
+
+		return newValue;
 	}
 }

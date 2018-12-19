@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 
-public class Utils
+public class DataUtils
 {
 	public static File getSelectedFileWithExtension(JFileChooser chooser)
 	{

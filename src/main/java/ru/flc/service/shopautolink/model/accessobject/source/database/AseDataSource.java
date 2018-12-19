@@ -3,7 +3,6 @@ package ru.flc.service.shopautolink.model.accessobject.source.database;
 import com.sybase.jdbcx.SybDriver;
 import ru.flc.service.shopautolink.model.Element;
 import ru.flc.service.shopautolink.model.TitleLink;
-import ru.flc.service.shopautolink.model.Utils;
 import ru.flc.service.shopautolink.model.settings.DatabaseSettings;
 import ru.flc.service.shopautolink.model.settings.Settings;
 import ru.flc.service.shopautolink.model.settings.type.Password;

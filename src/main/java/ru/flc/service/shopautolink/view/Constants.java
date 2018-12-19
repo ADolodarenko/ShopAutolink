@@ -19,6 +19,7 @@ public final class Constants
 	public static final String EXCPT_FILE_SETTINGS_WRONG = "Wrong file settings.";
 	public static final String EXCPT_FILE_SOURCE_WRITES = "This file source is for writing only.";
 	public static final String EXCPT_FILE_SOURCE_READS = "This file source is for reading only.";
+	public static final String EXCPT_FILE_SOURCE_INCORRECT = "This file source has an incorrect format.";
 
 	//Exceptions for the DataSource hierarchy
 	public static final String EXCPT_DATABASE_SETTINGS_EMPTY = "Database settings are empty.";
@@ -122,9 +123,19 @@ public final class Constants
 
 	//For SettingsDialog
     public static final String KEY_SETTINGS_DIALOG = "SettingsDialog";
-    public static final String KEY_BUTTON_OK = "OkButton";
-    public static final String KEY_BUTTON_CANCEL = "CancelButton";
-    
+
+    //For dialogs of any kind
+	public static final String KEY_CONFIRMATION_TITLE = "ConfirmationTitle";
+	public static final String KEY_CONFIRMATION_MESSAGE = "ConfirmationMessage";
+	public static final String KEY_BUTTON_OK = "OkButton";
+	public static final String KEY_BUTTON_CANCEL = "CancelButton";
+	public static final String KEY_BUTTON_YES = "YesButton";
+	public static final String KEY_BUTTON_NO = "NoButton";
+
+	//Keys for UIManager parameters
+	public static final String KEY_UI_OPTION_PANE_BUTTON_YES = "OptionPane.yesButtonText";
+	public static final String KEY_UI_OPTION_PANE_BUTTON_NO = "OptionPane.noButtonText";
+
 	//Icons
 	public static final String ICON_NAME_LINKING = "linking32.png";
 	public static final String ICON_NAME_LOADING = "loading_mod_green.gif";

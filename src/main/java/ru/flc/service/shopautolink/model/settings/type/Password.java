@@ -1,6 +1,8 @@
 package ru.flc.service.shopautolink.model.settings.type;
 
-import ru.flc.service.shopautolink.model.Utils;
+import ru.flc.service.shopautolink.model.DataUtils;
+
+import java.util.Objects;
 
 public class Password
 {
@@ -12,7 +14,7 @@ public class Password
 		if (key == null)
 			secret = null;
 		else
-			secret = Utils.caesarCipherEncrypt(new String(key),OFFSET);
+			secret = DataUtils.caesarCipherEncrypt(new String(key),OFFSET);
 	}
 
 	public Password(String secret)
@@ -30,6 +32,25 @@ public class Password
 		if (secret == null)
 			return null;
 		else
-			return Utils.caesarCipherDecrypt(secret, OFFSET).toCharArray();
+			return DataUtils.caesarCipherDecrypt(secret, OFFSET).toCharArray();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hashCode(this.secret);
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj == null) return false;
+
+		Class<?> objClass = obj.getClass();
+		if (!objClass.equals(this.getClass())) return false;
+
+		Password that = (Password) obj;
+
+		return Objects.equals(that.secret, this.secret);
 	}
 }

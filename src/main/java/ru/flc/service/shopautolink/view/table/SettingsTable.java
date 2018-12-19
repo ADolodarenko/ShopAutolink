@@ -8,6 +8,7 @@ import ru.flc.service.shopautolink.view.table.renderer.TableCellRendererFactory;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.util.Enumeration;
+import java.util.Locale;
 
 public class SettingsTable extends JTable
 {
@@ -96,7 +97,10 @@ public class SettingsTable extends JTable
 
 		if (rowData != null)
 		{
-			TableCellEditor editor = editorFactory.getEditor(rowData.getType());
+			Class<?> dataClass = rowData.getType();
+			boolean confirmationRequired = !Locale.class.equals(dataClass);
+
+			TableCellEditor editor = editorFactory.getEditor(dataClass, confirmationRequired);
 
 			if (editor != null)
 				return editor;

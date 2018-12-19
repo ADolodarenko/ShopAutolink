@@ -1,6 +1,8 @@
 package ru.flc.service.shopautolink.view.table.editor;
 
+import ru.flc.service.shopautolink.model.DataUtils;
 import ru.flc.service.shopautolink.view.Constants;
+import ru.flc.service.shopautolink.view.ViewUtils;
 
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
@@ -12,7 +14,10 @@ public class StringCellEditor extends AbstractCellEditor implements TableCellEdi
 {
 	private JTextField editor;
 
-	public StringCellEditor()
+	private boolean confirmationRequired;
+	private Object oldValue;
+
+	public StringCellEditor(boolean confirmationRequired)
 	{
 		editor = new JTextField();
 		editor.addFocusListener(new FocusAdapter() {
@@ -22,11 +27,16 @@ public class StringCellEditor extends AbstractCellEditor implements TableCellEdi
 				editor.selectAll();
 			}
 		});
+
+		this.confirmationRequired = confirmationRequired;
 	}
 
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column)
 	{
+		if (confirmationRequired)
+			oldValue = value;
+
 		editor.setText("");
 
 		if (value != null)
@@ -43,6 +53,11 @@ public class StringCellEditor extends AbstractCellEditor implements TableCellEdi
 	@Override
 	public Object getCellEditorValue()
 	{
-		return editor.getText();
+		Object newValue = editor.getText();
+
+		if (confirmationRequired && !newValue.equals(oldValue))
+			newValue = ViewUtils.confirmedValue(oldValue, newValue);
+
+		return newValue;
 	}
 }

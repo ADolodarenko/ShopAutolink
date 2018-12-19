@@ -2,26 +2,17 @@ package ru.flc.service.shopautolink.view.table;
 
 import ru.flc.service.shopautolink.model.LogEvent;
 import ru.flc.service.shopautolink.view.Constants;
-import ru.flc.service.shopautolink.view.table.editor.TableCellEditorFactory;
 import ru.flc.service.shopautolink.view.table.renderer.DateTimeCellRenderer;
 
 import javax.swing.*;
 import javax.swing.table.*;
-import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 
 public class LogEventTable extends JTable
 {
-	private TableCellEditorFactory editorFactory;
-
-	public LogEventTable(TableModel model, TableCellEditorFactory editorFactory)
+	public LogEventTable(TableModel model)
 	{
 		super(model);
-
-		if (editorFactory == null)
-			throw new IllegalArgumentException(Constants.EXCPT_TABLE_EDITOR_FACTORY_EMPTY);
-
-		this.editorFactory = editorFactory;
 
 		setHeaderAppearance();
 		setColumnAppearance();

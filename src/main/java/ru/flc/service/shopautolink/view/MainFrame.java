@@ -5,7 +5,7 @@ import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
 import ru.flc.service.shopautolink.SAResourceManager;
 import ru.flc.service.shopautolink.model.LogEvent;
-import ru.flc.service.shopautolink.model.Utils;
+import ru.flc.service.shopautolink.model.DataUtils;
 import ru.flc.service.shopautolink.model.settings.*;
 import ru.flc.service.shopautolink.view.table.LogEventTable;
 import ru.flc.service.shopautolink.view.table.LogEventTableModel;
@@ -14,7 +14,6 @@ import ru.flc.service.shopautolink.model.accessobject.TitleLinkDao;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkFao;
 import ru.flc.service.shopautolink.model.logic.TitleLinkLoader;
 import ru.flc.service.shopautolink.model.logic.TitleLinkProcessor;
-import ru.flc.service.shopautolink.view.table.editor.TableCellEditorFactory;
 import ru.flc.service.shopautolink.view.table.listener.LinkMouseListener;
 
 import javax.swing.*;
@@ -114,6 +113,8 @@ public class MainFrame extends JFrame
         titleAdjuster = new TitleAdjuster();
         buttonsManager = new MainFrameButtonsManager(COMMAND_PANEL_PREF_SIZE, BUTTON_MAX_SIZE,
                 resourceManager, titleAdjuster);
+
+        ViewUtils.adjustDialogs(); //TODO: Does it have to be here?
         
         initFileChooser();
 
@@ -200,6 +201,7 @@ public class MainFrame extends JFrame
 			resourceManager.setCurrentLocale(viewSettings.getAppLocale());
 			
 			repaintFrame();
+			ViewUtils.adjustDialogs();
 		}
 	}
 	
@@ -275,7 +277,7 @@ public class MainFrame extends JFrame
     	LogEvent.setResourceManager(resourceManager);
 
         logTableModel = new LogEventTableModel(resourceManager, null);
-        logTable = new LogEventTable(logTableModel, new TableCellEditorFactory(resourceManager, getFileChooser()));
+        logTable = new LogEventTable(logTableModel);
 
         if (isDesktopAvailable())
         	logTable.addMouseListener(new LinkMouseListener(resourceManager, new Cursor(Cursor.HAND_CURSOR)));
@@ -306,7 +308,8 @@ public class MainFrame extends JFrame
     {
     	fileChooser.resetChoosableFileFilters();
 
-		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("XLS/XLSX/CSV/TXT", "XLS", "XLSX", "CSV", "TXT"));
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV/TXT", "CSV", "TXT"));
+		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("XLS/XLSX", "XLS", "XLSX"));
 
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
@@ -328,7 +331,7 @@ public class MainFrame extends JFrame
     private void processTitleLinks()
     {
 		File outputFile = fileSettings.getStoredProcedureLogNamePattern();
-		outputFile = Utils.getFileWithCurrentTimeInName(outputFile);
+		outputFile = DataUtils.getFileWithCurrentTimeInName(outputFile);
 
 		fileObject = getFileObject(outputFile, true);
 		if (fileObject == null)

@@ -117,7 +117,7 @@ public abstract class ExcelFileSource implements FileSource
 			Cell cell = row.getCell(0);
 			int titleId = getCellIntValue(cell);
 			if (titleId < 0)
-				return null;
+				throw new Exception(Constants.EXCPT_FILE_SOURCE_INCORRECT);
 
 			cell = row.getCell(1);
 			String productCode = getCellStringValue(cell);
@@ -129,13 +129,13 @@ public abstract class ExcelFileSource implements FileSource
 					productCode = String.valueOf(tempValue);
 
 				if (productCode == null)
-					return null;
+					throw new Exception(Constants.EXCPT_FILE_SOURCE_INCORRECT);
 			}
 
 			cell = row.getCell(2);
 			int forSale = getCellIntValue(cell);
 			if (forSale < 0)
-				return null;
+				throw new Exception(Constants.EXCPT_FILE_SOURCE_INCORRECT);
 
 			return new TitleLink(titleId, productCode, forSale);
 		}

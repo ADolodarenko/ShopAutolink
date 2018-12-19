@@ -8,6 +8,7 @@ import ru.flc.service.shopautolink.model.settings.Settings;
 import ru.flc.service.shopautolink.view.Constants;
 
 import java.io.*;
+import java.util.IllegalFormatException;
 import java.util.List;
 
 public class PlainTextFileSource implements FileSource
@@ -46,7 +47,7 @@ public class PlainTextFileSource implements FileSource
 	}
 
 	private boolean forWriting;
-	private String elementDelimiter = "\\t";
+	private String elementDelimiter = "\t";
 	private File file;
 	private PrintWriter writer;
 	private BufferedReader reader;
@@ -68,17 +69,17 @@ public class PlainTextFileSource implements FileSource
 
 		String[] elements = line.split(elementDelimiter);
 		if (elements.length < 3)
-			return null;
+			throw new Exception(Constants.EXCPT_FILE_SOURCE_INCORRECT);
 
 		int titleId = getFieldIntValue(elements[0]);
 		if (titleId < 0)
-			return null;
+			throw new Exception(Constants.EXCPT_FILE_SOURCE_INCORRECT);
 
 		String productCode = elements[1];
 
 		int forSale = getFieldIntValue(elements[2]);
 		if (forSale < 0)
-			return null;
+			throw new Exception(Constants.EXCPT_FILE_SOURCE_INCORRECT);
 
 		return new TitleLink(titleId, productCode, forSale);
 	}
@@ -143,7 +144,7 @@ public class PlainTextFileSource implements FileSource
 
 		String delimiter = settings.getFieldDelimiter();
 		if (delimiter == null || delimiter.isEmpty())
-			this.elementDelimiter = "\\t";
+			this.elementDelimiter = "\t";
 		else
 			this.elementDelimiter = delimiter;
 	}

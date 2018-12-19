@@ -1,7 +1,9 @@
 package ru.flc.service.shopautolink.view.table.editor;
 
+import ru.flc.service.shopautolink.model.DataUtils;
 import ru.flc.service.shopautolink.model.settings.type.Password;
 import ru.flc.service.shopautolink.view.Constants;
+import ru.flc.service.shopautolink.view.ViewUtils;
 
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
@@ -13,7 +15,10 @@ public class PasswordCellEditor extends AbstractCellEditor implements TableCellE
 {
 	private JPasswordField editor;
 
-	public PasswordCellEditor()
+	private boolean confirmationRequired;
+	private Object oldValue;
+
+	public PasswordCellEditor(boolean confirmationRequired)
 	{
 		editor = new JPasswordField();
 		editor.addFocusListener(new FocusAdapter() {
@@ -23,11 +28,16 @@ public class PasswordCellEditor extends AbstractCellEditor implements TableCellE
 				editor.selectAll();
 			}
 		});
+
+		this.confirmationRequired = confirmationRequired;
 	}
 
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column)
 	{
+		if (confirmationRequired)
+			oldValue = value;
+
 		editor.setText("");
 
 		if (value != null)
@@ -44,6 +54,11 @@ public class PasswordCellEditor extends AbstractCellEditor implements TableCellE
 	@Override
 	public Object getCellEditorValue()
 	{
-		return new Password(editor.getPassword());
+		Object newValue = new Password(editor.getPassword());
+
+		if (confirmationRequired && !newValue.equals(oldValue))
+			newValue = ViewUtils.confirmedValue(oldValue, newValue);
+
+		return newValue;
 	}
 }

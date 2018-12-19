@@ -1,6 +1,8 @@
 package ru.flc.service.shopautolink.view.table.editor;
 
+import ru.flc.service.shopautolink.model.DataUtils;
 import ru.flc.service.shopautolink.view.Constants;
+import ru.flc.service.shopautolink.view.ViewUtils;
 
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
@@ -10,14 +12,22 @@ public class BooleanCellEditor extends AbstractCellEditor implements TableCellEd
 {
 	private JCheckBox editor;
 
-	public BooleanCellEditor()
+	private boolean confirmationRequired;
+	private Object oldValue;
+
+	public BooleanCellEditor(boolean confirmationRequired)
 	{
 		editor = new JCheckBox();
+
+		this.confirmationRequired = confirmationRequired;
 	}
 
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column)
 	{
+		if (confirmationRequired)
+			oldValue = value;
+
 		editor.setSelected(false);
 
 		if (value != null)
@@ -34,6 +44,11 @@ public class BooleanCellEditor extends AbstractCellEditor implements TableCellEd
 	@Override
 	public Object getCellEditorValue()
 	{
-		return editor.isSelected();
+		Object newValue = editor.isSelected();
+
+		if (confirmationRequired && !newValue.equals(oldValue))
+			newValue = ViewUtils.confirmedValue(oldValue, newValue);
+
+		return newValue;
 	}
 }

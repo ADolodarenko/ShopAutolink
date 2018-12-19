@@ -22,7 +22,7 @@ public class TableCellEditorFactory
 		this.editors = new HashMap<>();
 	}
 
-	public TableCellEditor getEditor(Class<?> dataClass)
+	public TableCellEditor getEditor(Class<?> dataClass, boolean confirmationRequired)
 	{
 		TableCellEditor editor;
 
@@ -31,37 +31,37 @@ public class TableCellEditorFactory
 		if (editors.containsKey(dataClassName))
 			editor = editors.get(dataClassName);
 		else
-			editor = createEditor(dataClassName);
+			editor = createEditor(dataClassName, confirmationRequired);
 
 		return editor;
 	}
 
-	private TableCellEditor createEditor(String forClassName)
+	private TableCellEditor createEditor(String forClassName, boolean confirmationRequired)
 	{
 		TableCellEditor editor = null;
 
 		switch (forClassName)
 		{
 			case Constants.CLASS_NAME_BOOLEAN:
-				editor = new BooleanCellEditor();
+				editor = new BooleanCellEditor(confirmationRequired);
 				break;
 			case Constants.CLASS_NAME_INTEGER:
-				editor = new IntegerCellEditor();
+				editor = new IntegerCellEditor(confirmationRequired);
 				break;
 			case Constants.CLASS_NAME_DOUBLE:
-				editor = new DoubleCellEditor();
+				editor = new DoubleCellEditor(confirmationRequired);
 				break;
 			case Constants.CLASS_NAME_STRING:
-				editor = new StringCellEditor();
+				editor = new StringCellEditor(confirmationRequired);
 				break;
 			case Constants.CLASS_NAME_LOCALE:
-				editor = new LocaleCellEditor(resourceManager);
+				editor = new LocaleCellEditor(resourceManager, confirmationRequired);
 				break;
 			case Constants.CLASS_NAME_FILE:
-				editor = new FileCellEditor(fileChooser);
+				editor = new FileCellEditor(fileChooser, confirmationRequired);
 				break;
 			case Constants.CLASS_NAME_PASSWORD:
-				editor = new PasswordCellEditor();
+				editor = new PasswordCellEditor(confirmationRequired);
 		}
 
 		if (editor != null)

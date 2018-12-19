@@ -1,7 +1,8 @@
 package ru.flc.service.shopautolink.view.table.editor;
 
-import ru.flc.service.shopautolink.model.Utils;
+import ru.flc.service.shopautolink.model.DataUtils;
 import ru.flc.service.shopautolink.view.Constants;
+import ru.flc.service.shopautolink.view.ViewUtils;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -15,7 +16,10 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
 {
 	private JTextField editor;
 
-	public FileCellEditor(JFileChooser fileChooser)
+	private boolean confirmationRequired;
+	private Object oldValue;
+
+	public FileCellEditor(JFileChooser fileChooser, boolean confirmationRequired)
 	{
 		editor = new JTextField();
 		editor.setEditable(false);
@@ -31,14 +35,19 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
 				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("XLSX", "XLSX"));
 
 				if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
-					editor.setText(Utils.getSelectedFileWithExtension(fileChooser).getAbsolutePath());
+					editor.setText(DataUtils.getSelectedFileWithExtension(fileChooser).getAbsolutePath());
 			}
 		});
+
+		this.confirmationRequired = confirmationRequired;
 	}
 
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column)
 	{
+		if (confirmationRequired)
+			oldValue = value;
+
 		editor.setText("");
 
 		if (value != null)
@@ -55,6 +64,11 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
 	@Override
 	public Object getCellEditorValue()
 	{
-		return editor.getText();
+		Object newValue = editor.getText();
+
+		if (confirmationRequired && !newValue.equals(oldValue))
+			newValue = ViewUtils.confirmedValue(oldValue, newValue);
+
+		return newValue;
 	}
 }
