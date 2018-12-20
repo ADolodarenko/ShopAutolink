@@ -11,13 +11,11 @@ import java.util.Map;
 public class TableCellEditorFactory
 {
 	private ResourceManager resourceManager;
-	private JFileChooser fileChooser;
 	private Map<String, TableCellEditor> editors;
 
-	public TableCellEditorFactory(ResourceManager resourceManager, JFileChooser fileChooser)
+	public TableCellEditorFactory(ResourceManager resourceManager)
 	{
 		this.resourceManager = resourceManager;
-		this.fileChooser = fileChooser;
 
 		this.editors = new HashMap<>();
 	}
@@ -58,7 +56,7 @@ public class TableCellEditorFactory
 				editor = new LocaleCellEditor(resourceManager, confirmationRequired);
 				break;
 			case Constants.CLASS_NAME_FILE:
-				editor = new FileCellEditor(fileChooser, confirmationRequired);
+				editor = new FileCellEditor(confirmationRequired);
 				break;
 			case Constants.CLASS_NAME_PASSWORD:
 				editor = new PasswordCellEditor(confirmationRequired);

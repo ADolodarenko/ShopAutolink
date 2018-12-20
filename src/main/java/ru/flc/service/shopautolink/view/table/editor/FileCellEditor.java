@@ -19,7 +19,7 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
 	private boolean confirmationRequired;
 	private Object oldValue;
 
-	public FileCellEditor(JFileChooser fileChooser, boolean confirmationRequired)
+	public FileCellEditor(boolean confirmationRequired)
 	{
 		editor = new JTextField();
 		editor.setEditable(false);
@@ -27,6 +27,8 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
+				JFileChooser fileChooser = ViewUtils.getFileChooser();
+
 				fileChooser.resetChoosableFileFilters();
 
 				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("TXT", "TXT"));

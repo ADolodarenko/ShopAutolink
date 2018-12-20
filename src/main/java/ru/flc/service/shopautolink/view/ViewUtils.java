@@ -5,6 +5,7 @@ import org.dav.service.view.Title;
 import ru.flc.service.shopautolink.SAResourceManager;
 
 import javax.swing.*;
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class ViewUtils
 {
 	private static ResourceManager resourceManager = SAResourceManager.getInstance();
 	private static List<UITextParameter> uiTextParameters;
+	private static JFileChooser fileChooser;
 
 	static
 	{
@@ -20,6 +22,41 @@ public class ViewUtils
 				new Title(resourceManager, Constants.KEY_BUTTON_YES)));
 		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_OPTION_PANE_BUTTON_NO,
 				new Title(resourceManager, Constants.KEY_BUTTON_NO)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_TITLE_OPEN,
+				new Title(resourceManager, Constants.KEY_CAPTION_OPEN)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_TITLE_SAVE,
+				new Title(resourceManager, Constants.KEY_CAPTION_SAVE)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_LABEL_LOOK_IN,
+				new Title(resourceManager, Constants.KEY_LABEL_LOOK_IN)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_LABEL_SAVE_IN,
+				new Title(resourceManager, Constants.KEY_LABEL_SAVE_IN)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_TOOLTIP_UP_FOLDER,
+				new Title(resourceManager, Constants.KEY_TOOLTIP_UP_FOLDER)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_TOOLTIP_NEW_FOLDER,
+				new Title(resourceManager, Constants.KEY_TOOLTIP_NEW_FOLDER)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_LABEL_VIEW_MENU,
+				new Title(resourceManager, Constants.KEY_TOOLTIP_VIEW_MENU)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_LABEL_FILE_NAME,
+				new Title(resourceManager, Constants.KEY_LABEL_FILE_NAME)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_LABEL_FILE_TYPES,
+				new Title(resourceManager, Constants.KEY_LABEL_FILE_TYPES)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_BUTTON_OPEN,
+				new Title(resourceManager, Constants.KEY_CAPTION_OPEN)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_BUTTON_SAVE,
+				new Title(resourceManager, Constants.KEY_CAPTION_SAVE)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_BUTTON_CANCEL,
+				new Title(resourceManager, Constants.KEY_BUTTON_CANCEL)));
+	}
+
+	private static void initFileChooser()
+	{
+		File currentDirectory = new File(".");
+		if (fileChooser != null)
+			currentDirectory = fileChooser.getCurrentDirectory();
+
+		fileChooser = new JFileChooser(currentDirectory);
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		fileChooser.setAcceptAllFileFilterUsed(false);
 	}
 
 	public static Object confirmedValue(Object oldValue, Object newValue)
@@ -38,5 +75,15 @@ public class ViewUtils
 	{
 		for (UITextParameter parameter : uiTextParameters)
 			UIManager.put(parameter.getKey(), parameter.getValue().getText());
+
+		initFileChooser();
+	}
+
+	public static JFileChooser getFileChooser()
+	{
+		if (fileChooser == null)
+			initFileChooser();
+
+		return fileChooser;
 	}
 }

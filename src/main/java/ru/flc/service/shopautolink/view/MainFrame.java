@@ -38,8 +38,7 @@ public class MainFrame extends JFrame
     private ViewSettings viewSettings;
     private DatabaseSettings dbSettings;
     private FileSettings fileSettings;
-    
-    private JFileChooser fileChooser;
+
     private SettingsDialog settingsDialog;
     
     private TitleLinkFao fileObject;
@@ -114,9 +113,7 @@ public class MainFrame extends JFrame
         buttonsManager = new MainFrameButtonsManager(COMMAND_PANEL_PREF_SIZE, BUTTON_MAX_SIZE,
                 resourceManager, titleAdjuster);
 
-        ViewUtils.adjustDialogs(); //TODO: Does it have to be here?
-        
-        initFileChooser();
+		ViewUtils.adjustDialogs();
 
         add(initCommandPanel(), BorderLayout.WEST);
         add(initLogPanel());
@@ -127,13 +124,6 @@ public class MainFrame extends JFrame
         titleAdjuster.resetComponents();
 
         pack();
-    }
-
-    private void initFileChooser()
-    {
-        fileChooser = new JFileChooser(".");
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fileChooser.setAcceptAllFileFilterUsed(false);
     }
 
     private void initFrame()
@@ -201,6 +191,7 @@ public class MainFrame extends JFrame
 			resourceManager.setCurrentLocale(viewSettings.getAppLocale());
 			
 			repaintFrame();
+
 			ViewUtils.adjustDialogs();
 		}
 	}
@@ -306,6 +297,8 @@ public class MainFrame extends JFrame
 
     private void loadTitleLinks()
     {
+    	JFileChooser fileChooser = ViewUtils.getFileChooser();
+
     	fileChooser.resetChoosableFileFilters();
 
 		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV/TXT", "CSV", "TXT"));
@@ -346,11 +339,6 @@ public class MainFrame extends JFrame
 				evt -> doForWorkerEvent(evt));
 		linkProcessor.execute();
     }
-
-    public JFileChooser getFileChooser()
-	{
-		return fileChooser;
-	}
 
     private void showSettings()
 	{
