@@ -36,7 +36,7 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
 				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("XLS", "XLS"));
 				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("XLSX", "XLSX"));
 
-				if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
+				if (fileChooser.showSaveDialog(ViewUtils.getDialogOwner()) == JFileChooser.APPROVE_OPTION)
 					editor.setText(DataUtils.getSelectedFileWithExtension(fileChooser).getAbsolutePath());
 			}
 		});

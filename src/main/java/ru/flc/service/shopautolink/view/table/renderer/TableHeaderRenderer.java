@@ -1,4 +1,4 @@
-package ru.flc.service.shopautolink.view.table;
+package ru.flc.service.shopautolink.view.table.renderer;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;

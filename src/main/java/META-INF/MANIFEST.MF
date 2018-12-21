@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Class-Path: curvesapi-1.04.jar dav-service-1.0.jar commons-codec-1.10.
- jar jconn3.jar commons-io-2.6.jar commons-compress-1.18.jar commons-c
- ollections4-4.2.jar xmlbeans-3.0.1.jar poi-ooxml-4.0.0.jar poi-4.0.0.
- jar poi-ooxml-schemas-4.0.0.jar
+Class-Path: ShopAutolink.jar C:\JSoft\lib\commons-codec-1.10.jar C:\JSoft\lib\dav-service-1.0.jar C:\JSoft\lib\poi-ooxml-4.0.0
+ .jar C:\JSoft\lib\poi-ooxml-schemas-4.0.0.jar C:\JSoft\lib\commons-io-2.6.jar C:\JSoft\lib\xmlbeans-3.0.1.ja
+ r C:\JSoft\lib\curvesapi-1.04.jar C:\JSoft\lib\jconn3.jar C:\JSoft\lib\commons-compress-1.18.jar C:\JSoft\lib\poi-4.0.0.j
+ ar C:\JSoft\lib\commons-collections4-4.2.jar
 Main-Class: ru.flc.service.shopautolink.Main
 

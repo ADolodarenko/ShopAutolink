@@ -138,8 +138,14 @@ public final class Constants
 	public static final String KEY_TOOLTIP_UP_FOLDER = "FileChooserUpFolderToolTip";
 	public static final String KEY_TOOLTIP_NEW_FOLDER = "FileChooserNewFolderToolTip";
 	public static final String KEY_TOOLTIP_VIEW_MENU = "FileChooserViewMenuToolTip";
+	public static final String KEY_TOOLTIP_LIST_VIEW = "FileChooserListViewButtonToolTip";
+	public static final String KEY_TOOLTIP_DETAILS_VIEW = "FileChooserDetailsViewButtonToolTip";
 	public static final String KEY_LABEL_FILE_NAME = "FileChooserFileNameLabel";
 	public static final String KEY_LABEL_FILE_TYPES = "FileChooserFilesOfTypeLabel";
+	public static final String KEY_TOOLTIP_OPEN_FILE = "FileChooserOpenFileToolTip";
+	public static final String KEY_TOOLTIP_OPEN_DIRECTORY = "FileChooserOpenDirectoryToolTip";
+	public static final String KEY_TOOLTIP_SAVE_FILE = "FileChooserSaveToolTip";
+	public static final String KEY_TOOLTIP_CANCEL = "FileChooserCancelToolTip";
 
 	//Keys for UIManager parameters
 	public static final String KEY_UI_OPTION_PANE_BUTTON_YES = "OptionPane.yesButtonText";
@@ -151,11 +157,18 @@ public final class Constants
 	public static final String KEY_UI_FILE_CHOOSER_TOOLTIP_UP_FOLDER = "FileChooser.upFolderToolTipText";
 	public static final String KEY_UI_FILE_CHOOSER_TOOLTIP_NEW_FOLDER = "FileChooser.newFolderToolTipText";
 	public static final String KEY_UI_FILE_CHOOSER_LABEL_VIEW_MENU = "FileChooser.viewMenuLabelText";
+	public static final String KEY_UI_FILE_CHOOSER_LABEL_LIST_VIEW = "FileChooser.listViewActionLabelText";
+	public static final String KEY_UI_FILE_CHOOSER_LABEL_DETAILS_VIEW = "FileChooser.detailsViewActionLabelText";
 	public static final String KEY_UI_FILE_CHOOSER_LABEL_FILE_NAME = "FileChooser.fileNameLabelText";
 	public static final String KEY_UI_FILE_CHOOSER_LABEL_FILE_TYPES = "FileChooser.filesOfTypeLabelText";
 	public static final String KEY_UI_FILE_CHOOSER_BUTTON_OPEN = "FileChooser.openButtonText";
+	public static final String KEY_UI_FILE_CHOOSER_TOOLTIP_OPEN = "FileChooser.openButtonToolTipText";
+	public static final String KEY_UI_FILE_CHOOSER_BUTTON_DIRECTORY_OPEN = "FileChooser.directoryOpenButtonText";
+	public static final String KEY_UI_FILE_CHOOSER_TOOLTIP_DIRECTORY_OPEN = "FileChooser.directoryOpenButtonToolTipText";
 	public static final String KEY_UI_FILE_CHOOSER_BUTTON_SAVE = "FileChooser.saveButtonText";
+	public static final String KEY_UI_FILE_CHOOSER_TOOLTIP_SAVE = "FileChooser.saveButtonToolTipText";
 	public static final String KEY_UI_FILE_CHOOSER_BUTTON_CANCEL = "FileChooser.cancelButtonText";
+	public static final String KEY_UI_FILE_CHOOSER_TOOLTIP_CANCEL = "FileChooser.cancelButtonToolTipText";
 
 	//Icons
 	public static final String ICON_NAME_LINKING = "linking32.png";

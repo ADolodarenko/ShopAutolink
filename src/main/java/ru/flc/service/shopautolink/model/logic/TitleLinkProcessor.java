@@ -81,15 +81,19 @@ public class TitleLinkProcessor extends SwingWorker<LogEvent, LogEvent>
         {
             openAccessObjects();
 
-            List<List<Element>> resultLines = dataObject.processLinks();
-            
-            fileObject.putResultLines(resultLines);
+            List<List<Element>> resultLines = null;
+
+            if (!isCancelled())
+            {
+                resultLines = dataObject.processLinks();
+                fileObject.putResultLines(resultLines);
+            }
 
             result = resultLines.size();
         }
         catch (Exception e)
         {
-
+            logModel.addRow(new LogEvent(e));
         }
         finally
         {

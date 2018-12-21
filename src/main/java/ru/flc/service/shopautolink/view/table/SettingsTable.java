@@ -4,6 +4,7 @@ import ru.flc.service.shopautolink.model.settings.parameter.Parameter;
 import ru.flc.service.shopautolink.view.Constants;
 import ru.flc.service.shopautolink.view.table.editor.*;
 import ru.flc.service.shopautolink.view.table.renderer.TableCellRendererFactory;
+import ru.flc.service.shopautolink.view.table.renderer.TableHeaderRenderer;
 
 import javax.swing.*;
 import javax.swing.table.*;

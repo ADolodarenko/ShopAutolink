@@ -5,6 +5,7 @@ import org.dav.service.view.Title;
 import ru.flc.service.shopautolink.SAResourceManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +14,7 @@ public class ViewUtils
 {
 	private static ResourceManager resourceManager = SAResourceManager.getInstance();
 	private static List<UITextParameter> uiTextParameters;
+	private static Component dialogOwner;
 	private static JFileChooser fileChooser;
 
 	static
@@ -36,16 +38,41 @@ public class ViewUtils
 				new Title(resourceManager, Constants.KEY_TOOLTIP_NEW_FOLDER)));
 		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_LABEL_VIEW_MENU,
 				new Title(resourceManager, Constants.KEY_TOOLTIP_VIEW_MENU)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_LABEL_LIST_VIEW,
+				new Title(resourceManager, Constants.KEY_TOOLTIP_LIST_VIEW)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_LABEL_DETAILS_VIEW,
+				new Title(resourceManager, Constants.KEY_TOOLTIP_DETAILS_VIEW)));
 		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_LABEL_FILE_NAME,
 				new Title(resourceManager, Constants.KEY_LABEL_FILE_NAME)));
 		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_LABEL_FILE_TYPES,
 				new Title(resourceManager, Constants.KEY_LABEL_FILE_TYPES)));
 		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_BUTTON_OPEN,
 				new Title(resourceManager, Constants.KEY_CAPTION_OPEN)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_BUTTON_DIRECTORY_OPEN,
+				new Title(resourceManager, Constants.KEY_CAPTION_OPEN)));
 		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_BUTTON_SAVE,
 				new Title(resourceManager, Constants.KEY_CAPTION_SAVE)));
 		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_BUTTON_CANCEL,
 				new Title(resourceManager, Constants.KEY_BUTTON_CANCEL)));
+
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_TOOLTIP_OPEN,
+				new Title(resourceManager, Constants.KEY_TOOLTIP_OPEN_FILE)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_TOOLTIP_DIRECTORY_OPEN,
+				new Title(resourceManager, Constants.KEY_TOOLTIP_OPEN_DIRECTORY)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_TOOLTIP_SAVE,
+				new Title(resourceManager, Constants.KEY_TOOLTIP_SAVE_FILE)));
+		uiTextParameters.add(new UITextParameter(Constants.KEY_UI_FILE_CHOOSER_TOOLTIP_CANCEL,
+				new Title(resourceManager, Constants.KEY_TOOLTIP_CANCEL)));
+	}
+
+	public static void setDialogOwner(Component owner)
+	{
+		dialogOwner = owner;
+	}
+
+	public static Component getDialogOwner()
+	{
+		return dialogOwner;
 	}
 
 	private static void initFileChooser()

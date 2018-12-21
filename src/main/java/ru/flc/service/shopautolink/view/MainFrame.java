@@ -7,6 +7,7 @@ import ru.flc.service.shopautolink.SAResourceManager;
 import ru.flc.service.shopautolink.model.LogEvent;
 import ru.flc.service.shopautolink.model.DataUtils;
 import ru.flc.service.shopautolink.model.settings.*;
+import ru.flc.service.shopautolink.view.dialog.SettingsDialog;
 import ru.flc.service.shopautolink.view.table.LogEventTable;
 import ru.flc.service.shopautolink.view.table.LogEventTableModel;
 import ru.flc.service.shopautolink.model.accessobject.AccessObjectFactory;
@@ -113,6 +114,7 @@ public class MainFrame extends JFrame
         buttonsManager = new MainFrameButtonsManager(COMMAND_PANEL_PREF_SIZE, BUTTON_MAX_SIZE,
                 resourceManager, titleAdjuster);
 
+        ViewUtils.setDialogOwner(this);
 		ViewUtils.adjustDialogs();
 
         add(initCommandPanel(), BorderLayout.WEST);
@@ -170,11 +172,23 @@ public class MainFrame extends JFrame
             @Override
             public void windowClosing(WindowEvent e)
             {
-                //cancelSearch();
+                cancelProcesses();
                 updateViewSettings();
             }
         });
     }
+
+    private void cancelProcesses()
+	{
+		cancelProcess(linkLoader);
+		cancelProcess(linkProcessor);
+	}
+
+	private void cancelProcess(SwingWorker<?, ?> worker)
+	{
+		if (worker != null && !worker.isDone() && !worker.isCancelled())
+			worker.cancel(false);
+	}
 
     public void reloadSettings()
 	{
@@ -304,7 +318,7 @@ public class MainFrame extends JFrame
 		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("CSV/TXT", "CSV", "TXT"));
 		fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("XLS/XLSX", "XLS", "XLSX"));
 
-        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+        if (fileChooser.showOpenDialog(ViewUtils.getDialogOwner()) == JFileChooser.APPROVE_OPTION)
         {
             fileObject = getFileObject(fileChooser.getSelectedFile(), false);
             if (fileObject == null)

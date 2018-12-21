@@ -1,10 +1,12 @@
-package ru.flc.service.shopautolink.view;
+package ru.flc.service.shopautolink.view.dialog;
 
 import org.dav.service.util.ResourceManager;
 import org.dav.service.view.Title;
 import org.dav.service.view.TitleAdjuster;
 import ru.flc.service.shopautolink.model.settings.*;
 import ru.flc.service.shopautolink.model.settings.parameter.Parameter;
+import ru.flc.service.shopautolink.view.Constants;
+import ru.flc.service.shopautolink.view.MainFrame;
 import ru.flc.service.shopautolink.view.table.SettingsTable;
 import ru.flc.service.shopautolink.view.table.SettingsTableModel;
 import ru.flc.service.shopautolink.view.table.editor.TableCellEditorFactory;
