@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Class-Path: ShopAutolink.jar C:\JSoft\lib\commons-codec-1.10.jar C:\JSoft\lib\dav-service-1.0.jar C:\JSoft\lib\poi-ooxml-4.0.0
- .jar C:\JSoft\lib\poi-ooxml-schemas-4.0.0.jar C:\JSoft\lib\commons-io-2.6.jar C:\JSoft\lib\xmlbeans-3.0.1.ja
- r C:\JSoft\lib\curvesapi-1.04.jar C:\JSoft\lib\jconn3.jar C:\JSoft\lib\commons-compress-1.18.jar C:\JSoft\lib\poi-4.0.0.j
- ar C:\JSoft\lib\commons-collections4-4.2.jar
+Class-Path: ../lib/commons-codec-1.10.jar ../lib/dav-service-1.0.jar ../lib/poi-ooxml-4.0.0
+ .jar ../lib/poi-ooxml-schemas-4.0.0.jar ../lib/commons-io-2.6.jar ../lib/xmlbeans-3.0.1.ja
+ r ../lib/curvesapi-1.04.jar ../lib/jconn3.jar ../lib/commons-compress-1.18.jar ../lib/poi-4.0.0.j
+ ar ../lib/commons-collections4-4.2.jar
 Main-Class: ru.flc.service.shopautolink.Main
 
