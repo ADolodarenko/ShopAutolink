@@ -140,6 +140,11 @@ public class AseDataSource implements DataSource
 	public void open() throws SQLException
 	{
 		connection = DriverManager.getConnection(url, user, new String(password.getKey()));
+
+		SQLWarning warning = connection.getWarnings();
+		if (warning != null)
+			throw warning;
+
 		connection.setAutoCommit(false);
 		
 		DatabaseMetaData metaData = connection.getMetaData();

@@ -25,9 +25,9 @@ public class LogEvent
 		this(LogEvent.resourceManager, textPattern, textParameters);
 	}
 
-	public LogEvent(Exception exception)
+	public LogEvent(Throwable throwable)
 	{
-		this(LogEvent.resourceManager, exception.toString());
+		this(LogEvent.resourceManager, throwable.toString());
 	}
 
     public LogEvent(ResourceManager resourceManager, String textPattern, Object... textParameters)

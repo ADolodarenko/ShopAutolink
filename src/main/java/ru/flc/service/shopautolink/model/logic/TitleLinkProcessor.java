@@ -2,6 +2,7 @@ package ru.flc.service.shopautolink.model.logic;
 
 import ru.flc.service.shopautolink.model.Element;
 import ru.flc.service.shopautolink.model.LogEvent;
+import ru.flc.service.shopautolink.model.LogEventWriter;
 import ru.flc.service.shopautolink.model.accessobject.TitleLinkFao;
 import ru.flc.service.shopautolink.view.Constants;
 import ru.flc.service.shopautolink.view.table.LogEventTableModel;
@@ -13,110 +14,110 @@ import java.util.concurrent.ExecutionException;
 
 public class TitleLinkProcessor extends SwingWorker<LogEvent, LogEvent>
 {
-    private TitleLinkDao dataObject;
-    private TitleLinkFao fileObject;
-    private LogEventTableModel logModel;
+	private TitleLinkDao dataObject;
+	private TitleLinkFao fileObject;
+	private LogEventTableModel logModel;
 
-    public TitleLinkProcessor(TitleLinkDao dataObject, TitleLinkFao fileObject, LogEventTableModel logModel)
-    {
-        if (dataObject == null)
-            throw new IllegalArgumentException(Constants.EXCPT_DATA_OBJECT_EMPTY);
-    
-        if (fileObject == null)
-            throw new IllegalArgumentException(Constants.EXCPT_FILE_OBJECT_EMPTY);
+	public TitleLinkProcessor(TitleLinkDao dataObject, TitleLinkFao fileObject, LogEventTableModel logModel)
+	{
+		if (dataObject == null)
+			throw new IllegalArgumentException(Constants.EXCPT_DATA_OBJECT_EMPTY);
 
-        this.dataObject = dataObject;
-        this.fileObject = fileObject;
-        this.logModel = logModel;
-    }
+		if (fileObject == null)
+			throw new IllegalArgumentException(Constants.EXCPT_FILE_OBJECT_EMPTY);
 
-    @Override
-    protected LogEvent doInBackground() throws Exception
-    {
-        int result = processLinks();
+		this.dataObject = dataObject;
+		this.fileObject = fileObject;
+		this.logModel = logModel;
+	}
 
-        if (result > -1)
-            return new LogEvent(Constants.KEY_PROCESSOR_SUCCESS, result, fileObject.getAbsolutePath());
-        else
-            return new LogEvent(Constants.KEY_PROCESSOR_FAILURE);
-    }
+	@Override
+	protected LogEvent doInBackground() throws Exception
+	{
+		int result = processLinks();
 
-    @Override
-    protected void process(List<LogEvent> chunks)
-    {
-        if (isCancelled())
-            return;
+		if (result > -1)
+			return new LogEvent(Constants.KEY_PROCESSOR_SUCCESS, fileObject.getAbsolutePath());
+		else
+			return new LogEvent(Constants.KEY_PROCESSOR_FAILURE);
+	}
 
-        if (logModel != null)
-            for (LogEvent chunk : chunks)
-                logModel.addRow(chunk);
-    }
+	@Override
+	protected void process(List<LogEvent> chunks)
+	{
+		if (isCancelled())
+			return;
 
-    @Override
-    protected void done()
-    {
-        if (logModel != null)
-            if (!isCancelled())
-            {
-                try
-                {
-                    logModel.addRow(get());
-                }
-                catch (InterruptedException e)
-                {
-                }
-                catch (ExecutionException e)
-                {
-                }
-            }
-            else
-                logModel.addRow(new LogEvent(Constants.KEY_PROCESSOR_CANCELLED));
-    }
+		if (logModel != null)
+			for (LogEvent chunk : chunks)
+				LogEventWriter.writeEvent(chunk, logModel);
+	}
 
-    private int processLinks()
-    {
-        int result = -1;
+	@Override
+	protected void done()
+	{
+		if (logModel != null)
+			if (!isCancelled())
+			{
+				try
+				{
+					LogEventWriter.writeEvent(get(), logModel);
+				}
+				catch (InterruptedException e)
+				{
+				}
+				catch (ExecutionException e)
+				{
+				}
+			}
+			else
+				LogEventWriter.writeMessage(Constants.KEY_PROCESSOR_CANCELLED, logModel);
+	}
 
-        try
-        {
-            openAccessObjects();
+	private int processLinks()
+	{
+		int result = -1;
 
-            List<List<Element>> resultLines = null;
+		try
+		{
+			openAccessObjects();
 
-            if (!isCancelled())
-            {
-                resultLines = dataObject.processLinks();
-                fileObject.putResultLines(resultLines);
-            }
+			List<List<Element>> resultLines = null;
 
-            result = resultLines.size();
-        }
-        catch (Exception e)
-        {
-            logModel.addRow(new LogEvent(e));
-        }
-        finally
-        {
-            try
-            {
-                closeAccessObjects();
-            }
-            catch (Exception e)
-            {}
-        }
+			if (!isCancelled())
+			{
+				resultLines = dataObject.processLinks();
+				fileObject.putResultLines(resultLines);
+			}
 
-        return result;
-    }
+			result = resultLines.size();
+		}
+		catch (Exception e)
+		{
+			LogEventWriter.writeThrowable(e, logModel);
+		}
+		finally
+		{
+			try
+			{
+				closeAccessObjects();
+			}
+			catch (Exception e)
+			{}
+		}
 
-    private void openAccessObjects() throws Exception
-    {
-        fileObject.open();
-        dataObject.open();
-    }
+		return result;
+	}
 
-    private void closeAccessObjects() throws Exception
-    {
-        dataObject.close();
-        fileObject.close();
-    }
+	private void openAccessObjects() throws Exception
+	{
+		fileObject.open();
+		dataObject.open();
+	}
+
+	private void closeAccessObjects() throws Exception
+	{
+		dataObject.close();
+		fileObject.close();
+	}
 }

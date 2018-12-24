@@ -1,5 +1,8 @@
 package ru.flc.service.shopautolink;
 
+import org.dav.service.filesystem.FileSystem;
+import org.dav.service.log.LogUtil;
+import ru.flc.service.shopautolink.view.Constants;
 import ru.flc.service.shopautolink.view.MainFrame;
 
 import javax.swing.*;
@@ -38,6 +41,8 @@ public class Main
 
 	public Main()
 	{
+		LogUtil.setLogger(FileSystem.getCurrentDir(Main.class), Constants.MESS_LOGGING_PROPERTIES_FILE_NAME);
+
 		EventQueue.invokeLater(() ->
 		{
 			setLookAndFeel();

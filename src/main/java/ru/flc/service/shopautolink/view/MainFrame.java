@@ -6,6 +6,7 @@ import org.dav.service.view.TitleAdjuster;
 import ru.flc.service.shopautolink.SAResourceManager;
 import ru.flc.service.shopautolink.model.LogEvent;
 import ru.flc.service.shopautolink.model.DataUtils;
+import ru.flc.service.shopautolink.model.LogEventWriter;
 import ru.flc.service.shopautolink.model.settings.*;
 import ru.flc.service.shopautolink.view.dialog.SettingsDialog;
 import ru.flc.service.shopautolink.view.table.LogEventTable;
@@ -451,8 +452,7 @@ public class MainFrame extends JFrame
 
     public void log(Exception e)
     {
-        if (logTableModel != null)
-            logTableModel.addRow(new LogEvent(e));
+		LogEventWriter.writeThrowable(e, logTableModel);
     }
 
     private class LoadTitleLinksListener implements ActionListener

@@ -1,6 +1,7 @@
 package ru.flc.service.shopautolink.model.logic;
 
 import ru.flc.service.shopautolink.model.LogEvent;
+import ru.flc.service.shopautolink.model.LogEventWriter;
 import ru.flc.service.shopautolink.view.Constants;
 import ru.flc.service.shopautolink.view.table.LogEventTableModel;
 import ru.flc.service.shopautolink.model.TitleLink;
@@ -50,7 +51,7 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
     	
     	if (logModel != null)
         	for (LogEvent chunk : chunks)
-        		logModel.addRow(chunk);
+				LogEventWriter.writeEvent(chunk, logModel);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
 			{
 				try
 				{
-					logModel.addRow(get());
+					LogEventWriter.writeEvent(get(), logModel);
 				}
 				catch (InterruptedException e)
 				{
@@ -71,7 +72,7 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
 				}
 			}
         	else
-        		logModel.addRow(new LogEvent(Constants.KEY_LOADER_CANCELLED));
+				LogEventWriter.writeMessage(Constants.KEY_LOADER_CANCELLED, logModel);
     }
 
     private int uploadLinks()
@@ -103,7 +104,7 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
         }
         catch (Exception e)
         {
-        	logModel.addRow(new LogEvent(e));
+			LogEventWriter.writeThrowable(e, logModel);
         }
         finally
 		{
