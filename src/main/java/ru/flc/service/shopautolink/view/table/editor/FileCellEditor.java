@@ -27,7 +27,7 @@ public class FileCellEditor extends AbstractCellEditor implements TableCellEdito
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				JFileChooser fileChooser = ViewUtils.getFileChooser();
+				JFileChooser fileChooser = ViewUtils.getFileChooser(null);
 
 				fileChooser.resetChoosableFileFilters();
 

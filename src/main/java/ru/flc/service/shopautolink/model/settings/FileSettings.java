@@ -8,7 +8,7 @@ import java.io.File;
 
 public class FileSettings extends TransmissiveSettings
 {
-	private static final int PARAM_COUNT = 3;
+	private static final int PARAM_COUNT = 6;
 	
 	private File file;
 	private boolean fileWritable;
@@ -21,6 +21,9 @@ public class FileSettings extends TransmissiveSettings
 		headers[0] = new ParameterHeader(Constants.KEY_PARAM_PACK_SIZE, Integer.class);
 		headers[1] = new ParameterHeader(Constants.KEY_PARAM_SP_LOG_PATTERN, File.class);
 		headers[2] = new ParameterHeader(Constants.KEY_PARAM_FIELD_DELIMITER, String.class);
+		headers[3] = new ParameterHeader(Constants.KEY_PARAM_SOURCE_FILE_PATH, File.class);
+		headers[4] = new ParameterHeader(Constants.KEY_PARAM_SOURCE_FILE_FIRST_ROW, Integer.class);
+		headers[5] = new ParameterHeader(Constants.KEY_PARAM_SOURCE_FILE_FIRST_COLUMN, Integer.class);
 
 		init();
 	}
@@ -31,6 +34,9 @@ public class FileSettings extends TransmissiveSettings
 		SettingsManager.setIntValue(headers[0].getKeyString(), getPackSize());
 		SettingsManager.setStringValue(headers[1].getKeyString(), getStoredProcedureLogNamePattern().getAbsolutePath());
 		SettingsManager.setStringValue(headers[2].getKeyString(), getFieldDelimiter());
+		SettingsManager.setStringValue(headers[3].getKeyString(), getSourceFilePath().getAbsolutePath());
+		SettingsManager.setIntValue(headers[4].getKeyString(), getSourceFileFirstRow());
+		SettingsManager.setIntValue(headers[5].getKeyString(), getSourceFileFirstColumn());
 		
 		SettingsManager.saveSettings();
 	}
@@ -68,5 +74,20 @@ public class FileSettings extends TransmissiveSettings
 	public String getFieldDelimiter()
 	{
 		return (String) paramMap.get(headers[2].getKeyString()).getValue();
+	}
+
+	public File getSourceFilePath()
+	{
+		return (File) paramMap.get(headers[3].getKeyString()).getValue();
+	}
+
+	public int getSourceFileFirstRow()
+	{
+		return ((Integer) paramMap.get(headers[4].getKeyString()).getValue());
+	}
+
+	public int getSourceFileFirstColumn()
+	{
+		return ((Integer) paramMap.get(headers[5].getKeyString()).getValue());
 	}
 }

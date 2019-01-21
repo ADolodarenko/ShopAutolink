@@ -75,11 +75,15 @@ public class ViewUtils
 		return dialogOwner;
 	}
 
-	private static void initFileChooser()
+	private static void initFileChooser(File initialDirectory)
 	{
-		File currentDirectory = new File(".");
-		if (fileChooser != null)
-			currentDirectory = fileChooser.getCurrentDirectory();
+		File currentDirectory = initialDirectory;
+
+		if (currentDirectory == null)
+			if (fileChooser != null)
+				currentDirectory = fileChooser.getCurrentDirectory();
+			else
+				currentDirectory = new File(".");
 
 		fileChooser = new JFileChooser(currentDirectory);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -103,13 +107,13 @@ public class ViewUtils
 		for (UITextParameter parameter : uiTextParameters)
 			UIManager.put(parameter.getKey(), parameter.getValue().getText());
 
-		initFileChooser();
+		initFileChooser(null);
 	}
 
-	public static JFileChooser getFileChooser()
+	public static JFileChooser getFileChooser(File initialDirectory)
 	{
 		if (fileChooser == null)
-			initFileChooser();
+			initFileChooser(initialDirectory);
 
 		return fileChooser;
 	}

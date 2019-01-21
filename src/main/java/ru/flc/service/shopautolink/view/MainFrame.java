@@ -312,7 +312,7 @@ public class MainFrame extends JFrame
 
     private void loadTitleLinks()
     {
-    	JFileChooser fileChooser = ViewUtils.getFileChooser();
+    	JFileChooser fileChooser = ViewUtils.getFileChooser(fileSettings.getSourceFilePath());
 
     	fileChooser.resetChoosableFileFilters();
 
