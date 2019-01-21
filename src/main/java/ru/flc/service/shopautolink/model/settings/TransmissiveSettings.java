@@ -73,7 +73,16 @@ public abstract class TransmissiveSettings implements Settings
 		else if (Constants.CLASS_NAME_LOCALE.equals(className))
 			value = resourceManager.getCurrentLocale();
 		else if (Constants.CLASS_NAME_FILE.equals(className))
-			value = new File(Constants.MESS_SP_LOG_FILE_DEFAULT_PATTERN);
+		{
+			switch (keyString)
+			{
+				case Constants.KEY_PARAM_SP_LOG_PATTERN:
+					value = new File(Constants.MESS_SP_LOG_FILE_DEFAULT_PATTERN);
+					break;
+				default:
+					value = new File(Constants.MESS_CURRENT_PATH);
+			}
+		}
 		else if (Constants.CLASS_NAME_PASSWORD.equals(className))
 			value = new Password("");
 		else if (Constants.CLASS_NAME_STRING.equals(className))
@@ -122,7 +131,14 @@ public abstract class TransmissiveSettings implements Settings
 			String fileName = SettingsManager.getStringValue(keyString);
 
 			if (fileName == null)
-				fileName = Constants.MESS_SP_LOG_FILE_DEFAULT_PATTERN;
+				switch (keyString)
+				{
+					case Constants.KEY_PARAM_SP_LOG_PATTERN:
+						fileName = Constants.MESS_SP_LOG_FILE_DEFAULT_PATTERN;
+						break;
+					default:
+						fileName = Constants.MESS_CURRENT_PATH;
+				}
 
 			value = new File(fileName);
 		}

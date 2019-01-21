@@ -321,7 +321,7 @@ public class MainFrame extends JFrame
 
         if (fileChooser.showOpenDialog(ViewUtils.getDialogOwner()) == JFileChooser.APPROVE_OPTION)
         {
-            fileObject = getFileObject(fileChooser.getSelectedFile(), false);
+        	fileObject = getFileObject(fileChooser.getSelectedFile(), false);
             if (fileObject == null)
                 return;
 

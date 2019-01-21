@@ -84,6 +84,7 @@ public final class Constants
 	public static final String MESS_FILE_REF_BEGINNING = "file:/";
 	public static final String MESS_SP_LOG_FILE_DEFAULT_PATTERN = "./ShopAutolink.txt";
 	public static final String MESS_LOGGING_PROPERTIES_FILE_NAME = "shop_autolink_logging.conf";
+	public static final String MESS_CURRENT_PATH = ".";
 	
 	//Titles for main frame
 	public static final String KEY_MAIN_FRAME = "MainFrame";
