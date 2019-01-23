@@ -8,10 +8,11 @@ import java.io.File;
 
 public class FileSettings extends TransmissiveSettings
 {
-	private static final int PARAM_COUNT = 6;
+	private static final int PARAM_COUNT = 5;
 	
 	private File file;
 	private boolean fileWritable;
+	private File sourceFilePath;
 	
 	public FileSettings(ResourceManager resourceManager) throws Exception
 	{
@@ -21,22 +22,38 @@ public class FileSettings extends TransmissiveSettings
 		headers[0] = new ParameterHeader(Constants.KEY_PARAM_PACK_SIZE, Integer.class);
 		headers[1] = new ParameterHeader(Constants.KEY_PARAM_SP_LOG_PATTERN, File.class);
 		headers[2] = new ParameterHeader(Constants.KEY_PARAM_FIELD_DELIMITER, String.class);
-		headers[3] = new ParameterHeader(Constants.KEY_PARAM_SOURCE_FILE_PATH, File.class);
-		headers[4] = new ParameterHeader(Constants.KEY_PARAM_SOURCE_FILE_FIRST_ROW, Integer.class);
-		headers[5] = new ParameterHeader(Constants.KEY_PARAM_SOURCE_FILE_FIRST_COLUMN, Integer.class);
+		headers[3] = new ParameterHeader(Constants.KEY_PARAM_SOURCE_FILE_FIRST_ROW, Integer.class);
+		headers[4] = new ParameterHeader(Constants.KEY_PARAM_SOURCE_FILE_FIRST_COLUMN, Integer.class);
+
+		sourceFilePath = new File(Constants.MESS_CURRENT_PATH);
 
 		init();
 	}
-	
+
+	@Override
+	public void load() throws Exception
+	{
+		super.load();
+
+		loadSourceFilePath();
+	}
+
+	private void loadSourceFilePath()
+	{
+		if (SettingsManager.hasValue(Constants.KEY_PARAM_SOURCE_FILE_PATH))
+			sourceFilePath = new File(SettingsManager.getStringValue(Constants.KEY_PARAM_SOURCE_FILE_PATH));
+	}
+
 	@Override
 	public void save() throws Exception
 	{
 		SettingsManager.setIntValue(headers[0].getKeyString(), getPackSize());
 		SettingsManager.setStringValue(headers[1].getKeyString(), getStoredProcedureLogNamePattern().getAbsolutePath());
 		SettingsManager.setStringValue(headers[2].getKeyString(), getFieldDelimiter());
-		SettingsManager.setStringValue(headers[3].getKeyString(), getSourceFilePath().getAbsolutePath());
-		SettingsManager.setIntValue(headers[4].getKeyString(), getSourceFileFirstRow());
-		SettingsManager.setIntValue(headers[5].getKeyString(), getSourceFileFirstColumn());
+		SettingsManager.setIntValue(headers[3].getKeyString(), getSourceFileFirstRow());
+		SettingsManager.setIntValue(headers[4].getKeyString(), getSourceFileFirstColumn());
+
+		SettingsManager.setStringValue(Constants.KEY_PARAM_SOURCE_FILE_PATH, sourceFilePath.getAbsolutePath());
 		
 		SettingsManager.saveSettings();
 	}
@@ -78,21 +95,21 @@ public class FileSettings extends TransmissiveSettings
 
 	public File getSourceFilePath()
 	{
-		return (File) paramMap.get(headers[3].getKeyString()).getValue();
+		return sourceFilePath;
 	}
 
 	public void setSourceFilePath(File filePath)
 	{
-		paramMap.get(headers[3].getKeyString()).setValue(filePath);
+		sourceFilePath = filePath;
 	}
 
 	public int getSourceFileFirstRow()
 	{
-		return ((Integer) paramMap.get(headers[4].getKeyString()).getValue());
+		return ((Integer) paramMap.get(headers[3].getKeyString()).getValue());
 	}
 
 	public int getSourceFileFirstColumn()
 	{
-		return ((Integer) paramMap.get(headers[5].getKeyString()).getValue());
+		return ((Integer) paramMap.get(headers[4].getKeyString()).getValue());
 	}
 }

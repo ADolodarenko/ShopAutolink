@@ -131,7 +131,7 @@ public class SettingsDialog extends JDialog
 			}
 			
 			if (!allSettingsList.isEmpty())
-				tableModel.addVisibleRows(allSettingsList);
+				tableModel.addAllRows(allSettingsList);
 
 			titleAdjuster.resetComponents();
 			tableModel.fireTableStructureChanged();

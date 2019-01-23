@@ -135,32 +135,6 @@ public class SettingsTableModel extends AbstractTableModel
 			fireTableRowsInserted(firstIndex, lastIndex);
 		}
 	}
-
-	public void addVisibleRows(List<Parameter> rowList)
-	{
-		if (rowList != null && !rowList.isEmpty())
-		{
-			int firstIndex = data.size();
-			int lastIndex = firstIndex;
-
-			int i = 0, j = 0;
-			while (i < rowList.size())
-			{
-				Parameter row = rowList.get(i);
-				if (row.isVisible())
-				{
-					data.add(row);
-					j++;
-				}
-
-				i++;
-			}
-
-			lastIndex += (j - 1);
-
-			fireTableRowsInserted(firstIndex, lastIndex);
-		}
-	}
 	
 	public Parameter getRow(int rowIndex)
 	{

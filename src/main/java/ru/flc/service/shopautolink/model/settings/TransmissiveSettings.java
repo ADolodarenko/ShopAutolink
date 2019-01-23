@@ -61,7 +61,6 @@ public abstract class TransmissiveSettings implements Settings
 		
 		Title key = new Title(resourceManager, keyString);
 		Object value = null;
-		boolean visible = true;
 		
 		String className = cl.getSimpleName();
 		
@@ -82,7 +81,6 @@ public abstract class TransmissiveSettings implements Settings
 					break;
 				default:
 					value = new File(Constants.MESS_CURRENT_PATH);
-					visible = false;
 			}
 		}
 		else if (Constants.CLASS_NAME_PASSWORD.equals(className))
@@ -93,7 +91,7 @@ public abstract class TransmissiveSettings implements Settings
 		if (value == null)
 			throw new Exception(Constants.EXCPT_VALUE_TYPE_WRONG);
 		
-		return new Parameter(key, value, cl, visible);
+		return new Parameter(key, value, cl);
 	}
 	
 	private Parameter getParameter(ParameterHeader header) throws Exception
@@ -103,7 +101,6 @@ public abstract class TransmissiveSettings implements Settings
 		
 		Title key = new Title(resourceManager, keyString);
 		Object value = null;
-		boolean visible = true;
 		
 		String className = cl.getSimpleName();
 		
@@ -131,9 +128,6 @@ public abstract class TransmissiveSettings implements Settings
 		}
 		else if (Constants.CLASS_NAME_FILE.equals(className))
 		{
-			if (Constants.KEY_PARAM_SOURCE_FILE_PATH.equals(keyString))
-				visible = false;
-
 			String fileName = SettingsManager.getStringValue(keyString);
 
 			if (fileName == null)
@@ -158,7 +152,7 @@ public abstract class TransmissiveSettings implements Settings
 		if (value == null)
 			throw new Exception(Constants.EXCPT_VALUE_TYPE_WRONG);
 		
-		return new Parameter(key, value, cl, visible);
+		return new Parameter(key, value, cl);
 	}
 	
 	private Locale findLocale(String localeName)
