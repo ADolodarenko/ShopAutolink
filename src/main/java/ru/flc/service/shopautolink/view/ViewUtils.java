@@ -75,17 +75,9 @@ public class ViewUtils
 		return dialogOwner;
 	}
 
-	private static void initFileChooser(File initialDirectory)
+	private static void initFileChooser()
 	{
-		File currentDirectory = initialDirectory;
-
-		if (currentDirectory == null)
-			if (fileChooser != null)
-				currentDirectory = fileChooser.getCurrentDirectory();
-			else
-				currentDirectory = new File(".");
-
-		fileChooser = new JFileChooser(currentDirectory);
+		fileChooser = new JFileChooser();
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 	}
@@ -107,13 +99,34 @@ public class ViewUtils
 		for (UITextParameter parameter : uiTextParameters)
 			UIManager.put(parameter.getKey(), parameter.getValue().getText());
 
-		initFileChooser(null);
+		File directory = getFileChooserDirectory(null);
+
+		initFileChooser();
+
+		fileChooser.setCurrentDirectory(directory);
 	}
 
-	public static JFileChooser getFileChooser(File initialDirectory)
+	private static File getFileChooserDirectory(File currentDirectory)
 	{
+		File directory = currentDirectory;
+
+		if (directory == null)
+			if (fileChooser != null)
+				directory = fileChooser.getCurrentDirectory();
+			else
+				directory = new File(".");
+
+		return directory;
+	}
+
+	public static JFileChooser getFileChooser(File currentDirectory)
+	{
+		File directory = getFileChooserDirectory(currentDirectory);
+
 		if (fileChooser == null)
-			initFileChooser(initialDirectory);
+			initFileChooser();
+
+		fileChooser.setCurrentDirectory(directory);
 
 		return fileChooser;
 	}

@@ -81,6 +81,11 @@ public class FileSettings extends TransmissiveSettings
 		return (File) paramMap.get(headers[3].getKeyString()).getValue();
 	}
 
+	public void setSourceFilePath(File filePath)
+	{
+		paramMap.get(headers[3].getKeyString()).setValue(filePath);
+	}
+
 	public int getSourceFileFirstRow()
 	{
 		return ((Integer) paramMap.get(headers[4].getKeyString()).getValue());

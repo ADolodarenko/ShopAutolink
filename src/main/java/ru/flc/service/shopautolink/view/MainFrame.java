@@ -248,15 +248,20 @@ public class MainFrame extends JFrame
         viewSettings.setMainWindowPosition(getBounds().getLocation());
         viewSettings.setMainWindowSize(getSize());
 
-        try
-        {
-            viewSettings.save();
-        }
-        catch (Exception e)
-        {
-            log(e);
-        }
+        updateSpecificSettings(viewSettings);
     }
+
+    private void updateSpecificSettings(Settings settings)
+	{
+		try
+		{
+			settings.save();
+		}
+		catch (Exception e)
+		{
+			log(e);
+		}
+	}
 
     public JPanel initCommandPanel()
     {
@@ -321,6 +326,10 @@ public class MainFrame extends JFrame
 
         if (fileChooser.showOpenDialog(ViewUtils.getDialogOwner()) == JFileChooser.APPROVE_OPTION)
         {
+        	File currentDirectory = fileChooser.getCurrentDirectory();
+        	fileSettings.setSourceFilePath(currentDirectory);
+        	updateSpecificSettings(fileSettings);
+
         	fileObject = getFileObject(fileChooser.getSelectedFile(), false);
             if (fileObject == null)
                 return;

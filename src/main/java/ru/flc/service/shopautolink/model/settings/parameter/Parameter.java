@@ -16,8 +16,9 @@ public class Parameter
     private Title key;
     private Object value;
     private Class<?> type;
+    private boolean visible;
 
-    public Parameter(Title key, Object value, Class<?> type)
+    public Parameter(Title key, Object value, Class<?> type, boolean visible)
     {
     	if (key == null)
             throw new IllegalArgumentException(Constants.EXCPT_PARAM_KEY_EMPTY);
@@ -31,6 +32,7 @@ public class Parameter
         this.key = key;
         this.value = value;
         this.type = type;
+        this.visible = visible;
     }
 
     public String getDisplayName()
@@ -87,4 +89,9 @@ public class Parameter
     {
         return type;
     }
+
+    public boolean isVisible()
+	{
+		return visible;
+	}
 }
