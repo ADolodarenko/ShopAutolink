@@ -103,7 +103,26 @@ public abstract class ExcelFileSource implements FileSource
 		else
 			throw new IllegalArgumentException(Constants.EXCPT_FILE_SETTINGS_EMPTY);
 	}
-	
+
+	@Override
+	public void moveForward(int rowNumber) throws Exception
+	{
+		if (rowNumber > 1)
+		{
+			int previousRowNumber = rowNumber - 1;
+			int i = 0;
+
+			while (i < previousRowNumber)
+			{
+				if (!hasNextRow())
+					throw new Exception(Constants.EXCPT_FILE_SOURCE_FEW_ROWS);
+
+				rowIterator.next();
+				i++;
+			}
+		}
+	}
+
 	@Override
 	public TitleLink getNextLink() throws Exception
 	{

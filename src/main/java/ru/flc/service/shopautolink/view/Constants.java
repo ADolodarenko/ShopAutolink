@@ -20,6 +20,8 @@ public final class Constants
 	public static final String EXCPT_FILE_SOURCE_WRITES = "This file source is for writing only.";
 	public static final String EXCPT_FILE_SOURCE_READS = "This file source is for reading only.";
 	public static final String EXCPT_FILE_SOURCE_INCORRECT = "This file source has an incorrect format.";
+	public static final String EXCPT_FILE_SOURCE_FEW_ROWS = "This file source has too few rows.";
+	public static final String EXCPT_FILE_SOURCE_FEW_COLUMNS = "This file source has too few columns.";
 
 	//Exceptions for the DataSource hierarchy
 	public static final String EXCPT_DATABASE_SETTINGS_EMPTY = "Database settings are empty.";
