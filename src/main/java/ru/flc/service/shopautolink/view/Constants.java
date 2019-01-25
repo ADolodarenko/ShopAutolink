@@ -22,6 +22,7 @@ public final class Constants
 	public static final String EXCPT_FILE_SOURCE_INCORRECT = "This file source has an incorrect format.";
 	public static final String EXCPT_FILE_SOURCE_FEW_ROWS = "This file source has too few rows.";
 	public static final String EXCPT_FILE_SOURCE_FEW_COLUMNS = "This file source has too few columns.";
+	public static final String EXCPT_FILE_SOURCE_NOT_READY = "This file source is not ready.";
 
 	//Exceptions for the DataSource hierarchy
 	public static final String EXCPT_DATABASE_SETTINGS_EMPTY = "Database settings are empty.";

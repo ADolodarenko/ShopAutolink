@@ -30,6 +30,8 @@ public abstract class ExcelFileSource implements FileSource
 
 	private int lastRowNum;
 
+	private int firstCellNumber;
+
 	static int getCellIntValue(Cell cell)
 	{
 		if (cell != null && cell.getCellType() == CellType.NUMERIC)
@@ -105,8 +107,14 @@ public abstract class ExcelFileSource implements FileSource
 	}
 
 	@Override
-	public void moveForward(int rowNumber) throws Exception
+	public void moveToRow(int rowNumber) throws Exception
 	{
+		if (forWriting)
+			throw new IllegalStateException(Constants.EXCPT_FILE_SOURCE_WRITES);
+
+		if (sheet == null)
+			throw new IllegalStateException(Constants.EXCPT_FILE_SOURCE_NOT_READY);
+
 		if (rowNumber > 1)
 		{
 			int previousRowNumber = rowNumber - 1;
@@ -124,6 +132,12 @@ public abstract class ExcelFileSource implements FileSource
 	}
 
 	@Override
+	public void moveToColumn(int columnNumber) throws Exception
+	{
+		firstCellNumber = columnNumber - 1;
+	}
+
+	@Override
 	public TitleLink getNextLink() throws Exception
 	{
 		if (forWriting)
@@ -133,12 +147,12 @@ public abstract class ExcelFileSource implements FileSource
 		{
 			Row row = rowIterator.next();
 
-			Cell cell = row.getCell(0);
+			Cell cell = row.getCell(firstCellNumber);
 			int titleId = getCellIntValue(cell);
 			if (titleId < 0)
 				throw new Exception(Constants.EXCPT_FILE_SOURCE_INCORRECT);
 
-			cell = row.getCell(1);
+			cell = row.getCell(firstCellNumber + 1);
 			String productCode = getCellStringValue(cell);
 			if (productCode == null)
 			{
@@ -151,7 +165,7 @@ public abstract class ExcelFileSource implements FileSource
 					throw new Exception(Constants.EXCPT_FILE_SOURCE_INCORRECT);
 			}
 
-			cell = row.getCell(2);
+			cell = row.getCell(firstCellNumber + 2);
 			int forSale = getCellIntValue(cell);
 			if (forSale < 0)
 				throw new Exception(Constants.EXCPT_FILE_SOURCE_INCORRECT);

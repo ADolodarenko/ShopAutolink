@@ -56,7 +56,36 @@ public class PlainTextFileSource implements FileSource
 	{
 		this.forWriting = forWriting;
 	}
-	
+
+	@Override
+	public void moveToRow(int rowNumber) throws Exception
+	{
+		if (forWriting)
+			throw new IllegalStateException(Constants.EXCPT_FILE_SOURCE_WRITES);
+
+		if (rowNumber > 1)
+		{
+			int previousRowNumber = rowNumber - 1;
+			int i = 0;
+
+			while (i < previousRowNumber)
+			{
+				String line = reader.readLine();
+				if (line == null)
+					throw new Exception(Constants.EXCPT_FILE_SOURCE_FEW_ROWS);
+
+				i++;
+			}
+		}
+	}
+
+	@Override
+	public void moveToColumn(int columnNumber) throws Exception
+	{
+
+
+	}
+
 	@Override
 	public TitleLink getNextLink() throws Exception
 	{
