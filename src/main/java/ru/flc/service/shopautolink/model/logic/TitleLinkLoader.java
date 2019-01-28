@@ -17,9 +17,12 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
 	private TitleLinkFao fileObject;
     private TitleLinkDao dataObject;
     private LogEventTableModel logModel;
+    private int firstRowInFile;
+	private int firstColumnInFile;
 
     public TitleLinkLoader(TitleLinkFao fileObject, TitleLinkDao dataObject,
-						   LogEventTableModel logModel)
+						   LogEventTableModel logModel,
+						   int firstRowInFile, int firstColumnInFile)
     {
 		if (fileObject == null)
             throw new IllegalArgumentException(Constants.EXCPT_FILE_OBJECT_EMPTY);
@@ -30,6 +33,8 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
         this.fileObject = fileObject;
         this.dataObject = dataObject;
         this.logModel = logModel;
+        this.firstRowInFile = firstRowInFile;
+        this.firstColumnInFile = firstColumnInFile;
     }
 
     @Override
@@ -82,7 +87,7 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
 
         try
         {
-        	openAccessObjects();
+        	prepareAccessObjects();
         	
             while (!isCancelled() && fileObject.hasMoreLinks())
             {
@@ -119,9 +124,15 @@ public class TitleLinkLoader extends SwingWorker<LogEvent, LogEvent>
         return result;
     }
     
-    private void openAccessObjects() throws Exception
+    private void prepareAccessObjects() throws Exception
 	{
 		fileObject.open();
+
+		if (firstRowInFile > 1)
+			fileObject.moveToRow(firstRowInFile);
+		if (firstColumnInFile > 1)
+			fileObject.moveToColumn(firstColumnInFile);
+
 		dataObject.open();
 	}
 	

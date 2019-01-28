@@ -47,6 +47,16 @@ public class TitleLinkFao implements AccessObject
 	{
 		source.open();
 	}
+
+	public void moveToRow(int rowNumber) throws Exception
+	{
+		source.moveToRow(rowNumber);
+	}
+
+	public void moveToColumn(int columnNumber) throws Exception
+	{
+		source.moveToColumn(columnNumber);
+	}
 	
 	@Override
 	public void close() throws Exception

@@ -8,7 +8,6 @@ import ru.flc.service.shopautolink.model.settings.Settings;
 import ru.flc.service.shopautolink.view.Constants;
 
 import java.io.*;
-import java.util.IllegalFormatException;
 import java.util.List;
 
 public class PlainTextFileSource implements FileSource
@@ -52,9 +51,14 @@ public class PlainTextFileSource implements FileSource
 	private PrintWriter writer;
 	private BufferedReader reader;
 
+	private int firstCellNumber;
+
 	public PlainTextFileSource(boolean forWriting)
 	{
 		this.forWriting = forWriting;
+
+		if (!this.forWriting)
+			this.firstCellNumber = 0;
 	}
 
 	@Override
@@ -82,8 +86,7 @@ public class PlainTextFileSource implements FileSource
 	@Override
 	public void moveToColumn(int columnNumber) throws Exception
 	{
-
-
+		firstCellNumber = columnNumber - 1;
 	}
 
 	@Override
@@ -97,16 +100,16 @@ public class PlainTextFileSource implements FileSource
 			return null;
 
 		String[] elements = line.split(elementDelimiter);
-		if (elements.length < 3)
+		if (elements.length < (firstCellNumber + 3))
 			throw new Exception(Constants.EXCPT_FILE_SOURCE_INCORRECT);
 
-		int titleId = getFieldIntValue(elements[0]);
+		int titleId = getFieldIntValue(elements[firstCellNumber]);
 		if (titleId < 0)
 			throw new Exception(Constants.EXCPT_FILE_SOURCE_INCORRECT);
 
-		String productCode = elements[1];
+		String productCode = elements[firstCellNumber + 1];
 
-		int forSale = getFieldIntValue(elements[2]);
+		int forSale = getFieldIntValue(elements[firstCellNumber + 2]);
 		if (forSale < 0)
 			throw new Exception(Constants.EXCPT_FILE_SOURCE_INCORRECT);
 

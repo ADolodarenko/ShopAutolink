@@ -338,7 +338,9 @@ public class MainFrame extends JFrame
             if (dataObject == null)
                 return;
 
-            linkLoader = new TitleLinkLoader(fileObject, dataObject, logTableModel);
+            linkLoader = new TitleLinkLoader(fileObject, dataObject, logTableModel,
+					fileSettings.getSourceFileFirstRow(), fileSettings.getSourceFileFirstColumn());
+
             linkLoader.getPropertyChangeSupport().addPropertyChangeListener("state",
 					evt -> doForWorkerEvent(evt) );
             linkLoader.execute();

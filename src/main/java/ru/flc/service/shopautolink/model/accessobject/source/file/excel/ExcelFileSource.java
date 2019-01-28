@@ -54,6 +54,8 @@ public abstract class ExcelFileSource implements FileSource
 
 		if (this.forWriting)
 			this.lastRowNum = 0;
+		else
+			this.firstCellNumber = 0;
 	}
 	
 	@Override
