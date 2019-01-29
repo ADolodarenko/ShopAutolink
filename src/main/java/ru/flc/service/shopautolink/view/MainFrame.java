@@ -122,7 +122,12 @@ public class MainFrame extends JFrame
         add(initLogPanel());
 	
 		setIconImage(resourceManager.getImageIcon(Constants.ICON_NAME_LINKING).getImage());
-		titleAdjuster.registerComponent(this, new Title(resourceManager, Constants.KEY_MAIN_FRAME));
+		titleAdjuster.registerComponent(this,
+				new Title(resourceManager,
+						Constants.KEY_MAIN_FRAME,
+						ViewUtils.getAssemblyInformationString(this, " - ",
+								new ExtensionInfoType[]{ExtensionInfoType.IMPLEMENTATION_TITLE,
+														ExtensionInfoType.IMPLEMENTATION_VERSION})));
         
         titleAdjuster.resetComponents();
 

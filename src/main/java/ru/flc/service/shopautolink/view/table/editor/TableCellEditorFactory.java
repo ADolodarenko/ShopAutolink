@@ -3,7 +3,6 @@ package ru.flc.service.shopautolink.view.table.editor;
 import org.dav.service.util.ResourceManager;
 import ru.flc.service.shopautolink.view.Constants;
 
-import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,10 +43,12 @@ public class TableCellEditorFactory
 				editor = new BooleanCellEditor(confirmationRequired);
 				break;
 			case Constants.CLASS_NAME_INTEGER:
-				editor = new IntegerCellEditor(confirmationRequired);
+				editor = new IntegerCellEditor(confirmationRequired,
+						1, 1, Integer.MAX_VALUE, 1);
 				break;
 			case Constants.CLASS_NAME_DOUBLE:
-				editor = new DoubleCellEditor(confirmationRequired);
+				editor = new DoubleCellEditor(confirmationRequired,
+						0.0, Double.MIN_VALUE, Double.MAX_VALUE, 0.01);
 				break;
 			case Constants.CLASS_NAME_STRING:
 				editor = new StringCellEditor(confirmationRequired);

@@ -19,11 +19,11 @@ public class FileSettings extends TransmissiveSettings
 		super(resourceManager);
 		
 		headers = new ParameterHeader[PARAM_COUNT];
-		headers[0] = new ParameterHeader(Constants.KEY_PARAM_PACK_SIZE, Integer.class);
-		headers[1] = new ParameterHeader(Constants.KEY_PARAM_SP_LOG_PATTERN, File.class);
-		headers[2] = new ParameterHeader(Constants.KEY_PARAM_FIELD_DELIMITER, String.class);
-		headers[3] = new ParameterHeader(Constants.KEY_PARAM_SOURCE_FILE_FIRST_ROW, Integer.class);
-		headers[4] = new ParameterHeader(Constants.KEY_PARAM_SOURCE_FILE_FIRST_COLUMN, Integer.class);
+		headers[0] = new ParameterHeader(Constants.KEY_PARAM_PACK_SIZE, Integer.class, Integer.valueOf(1));
+		headers[1] = new ParameterHeader(Constants.KEY_PARAM_SP_LOG_PATTERN, File.class, new File(Constants.MESS_SP_LOG_FILE_DEFAULT_PATTERN));
+		headers[2] = new ParameterHeader(Constants.KEY_PARAM_FIELD_DELIMITER, String.class, "\t");
+		headers[3] = new ParameterHeader(Constants.KEY_PARAM_SOURCE_FILE_FIRST_ROW, Integer.class, Integer.valueOf(1));
+		headers[4] = new ParameterHeader(Constants.KEY_PARAM_SOURCE_FILE_FIRST_COLUMN, Integer.class, Integer.valueOf(1));
 
 		sourceFilePath = new File(Constants.MESS_CURRENT_PATH);
 

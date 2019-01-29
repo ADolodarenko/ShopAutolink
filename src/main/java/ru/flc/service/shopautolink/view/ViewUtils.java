@@ -130,4 +130,50 @@ public class ViewUtils
 
 		return fileChooser;
 	}
+
+	public static String getAssemblyInformationString(Object targetObject, String dataDelimiter, ExtensionInfoType... infoTypes)
+	{
+		if (targetObject == null || infoTypes == null || infoTypes.length < 1)
+			return null;
+
+		Package targetPackage = targetObject.getClass().getPackage();
+
+		if (dataDelimiter == null || dataDelimiter.length() < 1)
+			dataDelimiter = " ";
+
+		StringBuilder builder = new StringBuilder();
+		for (ExtensionInfoType infoType : infoTypes)
+		{
+			if (builder.length() > 0)
+				builder.append(dataDelimiter);
+
+			String info = getAssemblyInfoByType(targetPackage, infoType);
+			if (info == null)
+				info = "";
+			builder.append(info);
+		}
+
+		return builder.toString();
+	}
+
+	private static String getAssemblyInfoByType(Package targetPackage, ExtensionInfoType infoType)
+	{
+		switch (infoType)
+		{
+			case SPECIFICATION_TITLE:
+				return targetPackage.getSpecificationTitle();
+			case SPECIFICATION_VERSION:
+				return targetPackage.getSpecificationVersion();
+			case SPECIFICATION_VENDOR:
+				return targetPackage.getSpecificationVendor();
+			case IMPLEMENTATION_TITLE:
+				return targetPackage.getImplementationTitle();
+			case IMPLEMENTATION_VERSION:
+				return targetPackage.getImplementationVersion();
+			case IMPLEMENTATION_VENDOR:
+				return targetPackage.getImplementationVendor();
+			default:
+				return null;
+		}
+	}
 }

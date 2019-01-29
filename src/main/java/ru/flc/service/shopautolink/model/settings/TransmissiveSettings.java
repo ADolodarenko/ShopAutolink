@@ -57,39 +57,11 @@ public abstract class TransmissiveSettings implements Settings
 	private Parameter initParameter(ParameterHeader header) throws Exception
 	{
 		String keyString = header.getKeyString();
-		Class<?> cl = header.getType();
-		
 		Title key = new Title(resourceManager, keyString);
-		Object value = null;
-		
-		String className = cl.getSimpleName();
-		
-		if (Constants.CLASS_NAME_BOOLEAN.equals(className))
-			value = Boolean.FALSE;
-		else if (Constants.CLASS_NAME_INTEGER.equals(className))
-			value = Integer.valueOf(0);
-		else if (Constants.CLASS_NAME_DOUBLE.equals(className))
-			value = Double.valueOf(0.0);
-		else if (Constants.CLASS_NAME_LOCALE.equals(className))
-			value = resourceManager.getCurrentLocale();
-		else if (Constants.CLASS_NAME_FILE.equals(className))
-		{
-			switch (keyString)
-			{
-				case Constants.KEY_PARAM_SP_LOG_PATTERN:
-					value = new File(Constants.MESS_SP_LOG_FILE_DEFAULT_PATTERN);
-					break;
-				default:
-					value = new File(Constants.MESS_CURRENT_PATH);
-			}
-		}
-		else if (Constants.CLASS_NAME_PASSWORD.equals(className))
-			value = new Password("");
-		else if (Constants.CLASS_NAME_STRING.equals(className))
-			value = "";
-		
-		if (value == null)
-			throw new Exception(Constants.EXCPT_VALUE_TYPE_WRONG);
+
+		Class<?> cl = header.getType();
+
+		Object value = header.getInitialValue();
 		
 		return new Parameter(key, value, cl);
 	}
@@ -107,9 +79,17 @@ public abstract class TransmissiveSettings implements Settings
 		if (Constants.CLASS_NAME_BOOLEAN.equals(className))
 			value = SettingsManager.getBooleanValue(keyString);
 		else if (Constants.CLASS_NAME_INTEGER.equals(className))
-			value = SettingsManager.getIntValue(keyString);
+		{
+			int defaultValue = ((Integer) header.getInitialValue()).intValue();
+
+			value = SettingsManager.getIntValue(keyString, defaultValue);
+		}
 		else if (Constants.CLASS_NAME_DOUBLE.equals(className))
-			value = SettingsManager.getDoubleValue(keyString);
+		{
+			double defaultValue = ((Double) header.getInitialValue()).doubleValue();
+
+			value = SettingsManager.getDoubleValue(keyString, defaultValue);
+		}
 		else if (Constants.CLASS_NAME_STRING.equals(className))
 		{
 			value = SettingsManager.getStringValue(keyString);

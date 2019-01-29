@@ -22,7 +22,7 @@ public class ViewSettings extends TransmissiveSettings
 		super(resourceManager);
 		
 		headers = new ParameterHeader[PARAM_COUNT];
-		headers[0] = new ParameterHeader(Constants.KEY_PARAM_APP_LOCALE, Locale.class);
+		headers[0] = new ParameterHeader(Constants.KEY_PARAM_APP_LOCALE, Locale.class, resourceManager.getCurrentLocale());
 		
 		this.mainWindowPreferredSize = mainWindowPreferredSize;
 		
@@ -73,11 +73,11 @@ public class ViewSettings extends TransmissiveSettings
 	{
 		int x = 0;
 		if (SettingsManager.hasValue(Constants.KEY_PARAM_MAIN_WIN_X))
-			x = SettingsManager.getIntValue(Constants.KEY_PARAM_MAIN_WIN_X);
+			x = SettingsManager.getIntValue(Constants.KEY_PARAM_MAIN_WIN_X, x);
 		
 		int y = 0;
 		if (SettingsManager.hasValue(Constants.KEY_PARAM_MAIN_WIN_Y))
-			y = SettingsManager.getIntValue(Constants.KEY_PARAM_MAIN_WIN_Y);
+			y = SettingsManager.getIntValue(Constants.KEY_PARAM_MAIN_WIN_Y, y);
 		
 		mainWindowPosition = new Point(x, y);
 	}
@@ -86,11 +86,11 @@ public class ViewSettings extends TransmissiveSettings
 	{
 		int width = 0;
 		if (SettingsManager.hasValue(Constants.KEY_PARAM_MAIN_WIN_WIDTH))
-			width = SettingsManager.getIntValue(Constants.KEY_PARAM_MAIN_WIN_WIDTH);
+			width = SettingsManager.getIntValue(Constants.KEY_PARAM_MAIN_WIN_WIDTH, width);
 		
 		int height = 0;
 		if (SettingsManager.hasValue(Constants.KEY_PARAM_MAIN_WIN_HEIGHT))
-			height = SettingsManager.getIntValue(Constants.KEY_PARAM_MAIN_WIN_HEIGHT);
+			height = SettingsManager.getIntValue(Constants.KEY_PARAM_MAIN_WIN_HEIGHT, height);
 		
 		if (width > 0 && height > 0)
 			mainWindowSize = new Dimension(width, height);

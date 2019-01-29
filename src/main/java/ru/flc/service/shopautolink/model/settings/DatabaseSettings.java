@@ -15,17 +15,17 @@ public class DatabaseSettings extends TransmissiveSettings
 		
 		headers = new ParameterHeader[PARAM_COUNT];
 		
-		headers[0] = new ParameterHeader(Constants.KEY_PARAM_DB_DRIVER, String.class);
-		headers[1] = new ParameterHeader(Constants.KEY_PARAM_DB_CONN_PREF, String.class);
-		headers[2] = new ParameterHeader(Constants.KEY_PARAM_DB_HOST, String.class);
-		headers[3] = new ParameterHeader(Constants.KEY_PARAM_DB_PORT, Integer.class);
-		headers[4] = new ParameterHeader(Constants.KEY_PARAM_DB_CATALOG, String.class);
-		headers[5] = new ParameterHeader(Constants.KEY_PARAM_DB_USER, String.class);
-		headers[6] = new ParameterHeader(Constants.KEY_PARAM_DB_PASSWORD, Password.class);
-		headers[7] = new ParameterHeader(Constants.KEY_PARAM_DB_TABLE, String.class);
-		headers[8] = new ParameterHeader(Constants.KEY_PARAM_DB_SP, String.class);
-		headers[9] = new ParameterHeader(Constants.KEY_PARAM_CHANNEL, Integer.class);
-		headers[10] = new ParameterHeader(Constants.KEY_PARAM_PRICE_LIST, Integer.class);
+		headers[0] = new ParameterHeader(Constants.KEY_PARAM_DB_DRIVER, String.class, "");
+		headers[1] = new ParameterHeader(Constants.KEY_PARAM_DB_CONN_PREF, String.class, "");
+		headers[2] = new ParameterHeader(Constants.KEY_PARAM_DB_HOST, String.class, "");
+		headers[3] = new ParameterHeader(Constants.KEY_PARAM_DB_PORT, Integer.class, Integer.valueOf(1));
+		headers[4] = new ParameterHeader(Constants.KEY_PARAM_DB_CATALOG, String.class, "");
+		headers[5] = new ParameterHeader(Constants.KEY_PARAM_DB_USER, String.class, "");
+		headers[6] = new ParameterHeader(Constants.KEY_PARAM_DB_PASSWORD, Password.class, new Password(""));
+		headers[7] = new ParameterHeader(Constants.KEY_PARAM_DB_TABLE, String.class, "");
+		headers[8] = new ParameterHeader(Constants.KEY_PARAM_DB_SP, String.class, "");
+		headers[9] = new ParameterHeader(Constants.KEY_PARAM_CHANNEL, Integer.class, Integer.valueOf(1));
+		headers[10] = new ParameterHeader(Constants.KEY_PARAM_PRICE_LIST, Integer.class, Integer.valueOf(1));
 		
 		init();
 	}

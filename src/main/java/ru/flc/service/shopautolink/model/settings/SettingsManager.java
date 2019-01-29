@@ -27,14 +27,14 @@ public class SettingsManager
 		properties.setProperty(key, value);
 	}
 
-	public static int getIntValue(String key) throws NumberFormatException
+	public static int getIntValue(String key, int defaultValue) throws NumberFormatException
 	{
 		String stringValue = getStringValue(key);
 
 		if (stringValue != null)
 			return Integer.parseInt(stringValue);
 		else
-			return Integer.valueOf(0);
+			return defaultValue;
 	}
 
 	public static void setIntValue(String key, int value)
@@ -52,14 +52,14 @@ public class SettingsManager
 		setStringValue(key, String.valueOf(value));
 	}
 
-	public static Double getDoubleValue(String key) throws NumberFormatException
+	public static Double getDoubleValue(String key, double defaultValue) throws NumberFormatException
 	{
 		String stringValue = getStringValue(key);
 
 		if (stringValue != null)
 			return Double.parseDouble(stringValue);
 		else
-			return Double.valueOf(0.0);
+			return defaultValue;
 	}
 
 	public static void setDoubleValue(String key, double value)

@@ -4,4 +4,7 @@ Class-Path: ../lib/commons-codec-1.10.jar ../lib/dav-service-1.0.jar ../lib/poi-
  r ../lib/curvesapi-1.04.jar ../lib/jconn3.jar ../lib/commons-compress-1.18.jar ../lib/poi-4.0.0.j
  ar ../lib/commons-collections4-4.2.jar
 Main-Class: ru.flc.service.shopautolink.Main
+Implementation-Title: ShopAutolink
+Implementation-Version: 1.1.0
+Implementation-Vendor: Family Leisure Club
 

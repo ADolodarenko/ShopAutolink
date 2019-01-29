@@ -15,9 +15,10 @@ public class DoubleCellEditor extends AbstractCellEditor implements TableCellEdi
 	private boolean confirmationRequired;
 	private Object oldValue;
 	
-	public DoubleCellEditor(boolean confirmationRequired)
+	public DoubleCellEditor(boolean confirmationRequired,
+							double initialValue, double minimum, double maximum, double stepSize)
 	{
-		SpinnerNumberModel model = new SpinnerNumberModel(0.0, Double.MIN_VALUE, Double.MAX_VALUE, 0.01);
+		SpinnerNumberModel model = new SpinnerNumberModel(initialValue, minimum, maximum, stepSize);
 
 		editor = new JSpinner(model);
 
